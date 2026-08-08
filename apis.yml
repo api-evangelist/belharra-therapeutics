@@ -1,18 +1,106 @@
 aid: belharra-therapeutics
 name: Belharra Therapeutics
-description: 'Belharra Therapeutics is a company surfaced via the API Evangelist harvest backlog (source:
-  secondary-market) and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Belharra Therapeutics is a privately held, next-generation chemoproteomics company headquartered at
+  3985 Sorrento Valley Boulevard, Suite C, San Diego, California, that is building small molecule
+  therapeutics against targets the industry has long considered undruggable. Its Searchlight platform
+  is an unbiased chemoproteomics screening system designed to illuminate novel, previously invisible
+  binding pockets on high-value proteins across the proteome — the company states it can identify
+  small molecule binders for any binding site, on any protein, in any conformational state, in any
+  cell type, and reported having identified more than four thousand drug-like pocket probes by
+  January 2024. The company was incubated and supported by Versant Ventures out of foundational
+  chemoproteomics research at The Scripps Research Institute, with co-founders including Christopher
+  G. Parker and Benjamin Cravatt of Scripps Research and Stuart Schreiber of the Broad Institute of
+  MIT and Harvard. Jeff Jonker was hired as chief executive officer in September 2021, and the
+  company debuted publicly in January 2023 with $130 million in hand — a $50 million Series A led by
+  Versant Ventures plus an $80 million upfront payment from a multi-year Genentech collaboration
+  spanning oncology, immuno-oncology, autoimmune and neurodegenerative disease. In June 2024 it
+  announced a strategic immunology collaboration with Sanofi carrying up to $40 million in upfront
+  and near-term milestone payments, and in January 2025 it appointed Sean Buchanan as chief
+  scientific officer. Belharra runs no developer program and publishes no product API, developer
+  portal, API reference, or SDK. The only machine-readable surface reachable without credentials is
+  the WordPress REST content API behind belharratx.com, catalogued here.
+image: https://belharratx.com/wp-content/uploads/2024/12/belharra-logo.png
 url: https://raw.githubusercontent.com/api-evangelist/belharra-therapeutics/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enriched
 specificationVersion: '0.20'
 created: '2026-08-06'
 modified: '2026-08-06'
 tags:
 - Company
-apis: []
+- biotechnology
+- pharmaceuticals
+- chemoproteomics
+- drug-discovery
+- small-molecule-therapeutics
+- proteomics
+- life-sciences
+- oncology
+- immunology
+- content-api
+apis:
+- aid: belharra-therapeutics:belharra-therapeutics-content-api
+  name: Belharra Therapeutics Content API
+  description: >-
+    The anonymously readable WordPress REST API behind belharratx.com. It exposes the company's
+    editorial and corporate content: four press releases spanning the January 2023 $130 million
+    debut and Genentech collaboration, the June 2024 Sanofi immunology collaboration and the
+    January 2025 chief scientific officer appointment; twenty-one company-news items; ten blog
+    posts across the Company News and Press Releases categories; ten multimedia-file records; the
+    twenty-nine published corporate pages (About, Our Story, Our Values, Our Team with Leadership,
+    Founders, Board of Directors, Senior Advisors and BTX Crew, Our Approach with Platform and
+    Publications, Science, Program, Partners, Patients, Careers, Newsroom, Podcast, Multimedia
+    Library, Contact, Privacy and Terms); the 430-item media library; the two news categories; the
+    registered post types, taxonomies and post statuses; cross-content search across 74 records;
+    and the oEmbed 1.0 provider endpoint. This is not a developer product Belharra markets; it is
+    the site's own content surface, registered at /wp-json/ and verified to return data without
+    credentials. The OpenAPI in this repo is derived from the published route index.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://belharratx.com/wp-json
+  tags:
+  - content
+  - wordpress
+  - corporate
+  - news
+  - press-releases
+  - media
+  properties:
+  - type: OpenAPI
+    url: openapi/belharra-therapeutics-content-openapi.yml
+  - type: Overlay
+    url: overlays/belharra-therapeutics-content-overlay.yaml
+  - type: Authentication
+    url: authentication/belharra-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/belharra-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/belharra-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/belharra-therapeutics-data-model.yml
+  x-contract-provenance: >-
+    Derived by the API Evangelist enrichment pipeline from the WordPress REST route index the site
+    publishes at https://belharratx.com/wp-json/ — 198 routes across 11 namespaces (oembed/1.0,
+    wpe/cache-plugin/v1, wpe_sign_on_plugin/v1, contact-form-7/v1, redirection/v1, podcastplayer/v1,
+    duplicate-post/v1, wp/v2, wp-site-health/v1, wp-block-editor/v1, wp-abilities/v1) — and verified
+    against live anonymous responses on 2026-08-06. Only operations that returned data without
+    credentials are modelled; every write route and the entire plugin-administration surface is
+    excluded. Anonymous denials recorded at harvest: /wp/v2/settings, /wp/v2/menus,
+    /wp/v2/menu-locations, /wp/v2/themes, /wp/v2/plugins, /wp/v2/block-types,
+    /wp/v2/font-collections, /wp/v2/icons, /wp/v2/sidebars, /wp/v2/widget-types, /wp/v2/templates,
+    /wp/v2/template-parts, /wp/v2/global-styles, /wp/v2/block-patterns/*,
+    /wp/v2/pattern-directory/patterns, /wp-site-health/v1/*, /podcastplayer/v1/* (401) and
+    /wp/v2/comments (403 rest_comment_disabled), /contact-form-7/v1/contact-forms (403
+    wpcf7_forbidden). Notably the site registers the WordPress Abilities API (wp-abilities/v1), an
+    agent-facing capability registry, but every wp-abilities/v1 route returned 401 rest_forbidden
+    anonymously, so no MCP or agent surface is claimed for this provider and no MCPServer pointer is
+    emitted. The site is served by WP Engine behind Cloudflare and sets x-robots-tag: noindex on API
+    responses. Belharra publishes no developer documentation, no API reference, no getting-started
+    guide and no support channel for this surface, so no Documentation / APIReference /
+    GettingStarted pointers are emitted; the humanURL above is the upstream WordPress REST handbook
+    that defines the wp/v2 contract.
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +108,87 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
+  url: https://belharratx.com/
+- type: About
+  url: https://belharratx.com/about/
+- type: OurStory
+  url: https://belharratx.com/about/our-story/
+- type: Leadership
+  url: https://belharratx.com/about/our-team/leadership/
+- type: Platform
+  url: https://belharratx.com/our-approach/platform/
+- type: Publications
+  url: https://belharratx.com/our-approach/publications/
+- type: Partners
+  url: https://belharratx.com/partners/
+- type: News
+  url: https://belharratx.com/newsroom/
+- type: PressReleases
+  url: https://belharratx.com/press-releases/
+- type: BlogRSS
+  url: https://belharratx.com/feed/
+- type: Careers
+  url: https://belharratx.com/careers/
+- type: Contact
+  url: https://belharratx.com/contact/
+- type: PatientResources
+  url: https://belharratx.com/patients/
+- type: PrivacyPolicy
+  url: https://belharratx.com/privacy/
+- type: TermsOfService
+  url: https://belharratx.com/terms/
+- type: GitHubOrganization
+  url: https://github.com/belharra-tx
+- type: LinkedIn
+  url: https://www.linkedin.com/company/belharra-therapeutics/
+- type: SecondaryMarket
   url: https://www.nasdaqprivatemarket.com/
+- type: Authentication
+  url: authentication/belharra-therapeutics-authentication.yml
+- type: Conventions
+  url: conventions/belharra-therapeutics-conventions.yml
+- type: Conformance
+  url: conformance/belharra-therapeutics-conformance.yml
+- type: ErrorCatalog
+  url: errors/belharra-therapeutics-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/belharra-therapeutics-lifecycle.yml
+- type: DataModel
+  url: data-model/belharra-therapeutics-data-model.yml
+- type: WellKnown
+  url: well-known/belharra-therapeutics-well-known.yml
+- type: DomainSecurity
+  url: security/belharra-therapeutics-domain-security.yml
+- type: LLMsTxt
+  url: llms/belharra-therapeutics-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-08-06'
+  status: enriched
+  artifacts_added: 13
+  pass: local-v1
+x-coverage:
+  state: covered
+  reason: machine-readable-contract-harvested
+  detail: >-
+    Belharra Therapeutics runs no developer program and markets no product API, but it does serve a
+    real machine-readable contract anonymously — the 198-route WordPress REST index at
+    https://belharratx.com/wp-json/, verified route by route and modelled into a 22-operation
+    OpenAPI. The harvest stub's Website pointer was wrong (it pointed at nasdaqprivatemarket.com,
+    the harvest source); the real corporate host is belharratx.com. The alias domain
+    belharratherapeutics.com is a parked lander that answers 200 on every path including
+    /.well-known/agent-card.json and /openapi.json, and was rejected as a soft-404 against a
+    nonsense control path.
+  evidence:
+  - url: https://belharratx.com/wp-json/
+    status: 200
+  - url: https://belharratx.com/wp/v2/press-release
+    status: 200
+  - url: https://belharratx.com/.well-known/agent-card.json
+    status: 404
+  - url: https://belharratx.com/llms.txt
+    status: 404
+  - url: https://belharratherapeutics.com/this-path-does-not-exist-xyz123
+    status: 200
+  checked: '2026-08-06'
