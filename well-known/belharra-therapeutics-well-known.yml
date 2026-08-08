@@ -1,0 +1,104 @@
+generated: '2026-08-06'
+method: probed
+source: live GET probes of the /.well-known/ discovery surface on belharratx.com
+host: https://belharratx.com
+note: >-
+  Belharra Therapeutics publishes no /.well-known/ discovery documents. Every RFC 8615 path probed
+  on 2026-08-06 returned 404. The site is WordPress on WP Engine behind Cloudflare; /.well-known/
+  paths under the WordPress rewrite return the theme 404 body, while security.txt and llms.txt
+  return the bare nginx 404 page — both are genuine misses, not SPA catch-alls answering 200.
+  Absence is recorded here as valid data. No agent card was found at either the A2A 1.0.0 canonical
+  path or the pre-0.3 legacy path, so no a2a/ artifact is written for this provider.
+documents:
+- path: /.well-known/security.txt          # RFC 9116
+  status: 404
+- path: /.well-known/openid-configuration  # OIDC discovery
+  status: 404
+- path: /.well-known/oauth-authorization-server  # RFC 8414
+  status: 404
+- path: /.well-known/api-catalog           # RFC 9727
+  status: 404
+- path: /.well-known/ai-plugin.json
+  status: 404
+- path: /.well-known/agent-card.json       # A2A 1.0.0 canonical
+  status: 404
+- path: /.well-known/agent.json            # A2A pre-0.3 legacy
+  status: 404
+- path: /llms.txt
+  status: 404
+related:
+- path: /robots.txt
+  status: 200
+  note: >-
+    WordPress core block. Disallows /wp-admin/ (allowing admin-ajax.php), sets Crawl-delay: 10 and
+    points at https://belharratx.com/wp-sitemap.xml. No AI-agent directives, no LLM policy.
+- path: /wp-sitemap.xml
+  status: 200
+  note: WordPress core XML sitemap index.
+- path: /sitemap.xml
+  status: 200
+  note: Resolves via the Redirection plugin to the core sitemap index.
+- path: /feed/
+  status: 200
+  note: WordPress RSS 2.0 feed for the 10-item post archive. Wired in apis.yml as type BlogRSS.
+- path: /wp-json/
+  status: 200
+  note: >-
+    The WordPress REST route index — the only machine-readable contract this provider exposes.
+    Modelled in openapi/belharra-therapeutics-content-openapi.yml.
+- path: /graphql
+  status: 404
+  note: No GraphQL surface. WPGraphQL is not installed.
+- path: /openapi.json
+  status: 404
+- path: /swagger.json
+  status: 404
+- path: /api-docs
+  status: 404
+other_hosts_probed:
+- host: www.belharratx.com
+  results:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: belharratherapeutics.com
+  verdict: soft-404-catch-all
+  detail: >-
+    This alias domain answers HTTP 200 on EVERY path, including /.well-known/agent-card.json,
+    /.well-known/agent.json, /openapi.json and /.well-known/security.txt. A control probe of
+    /this-path-does-not-exist-xyz123 returned a byte-identical 114-byte body
+    (<!DOCTYPE html><html><head><script>window.onload=function(){window.location.href="/lander"}
+    </script></head></html>), confirming a domain-parking catch-all rather than any published
+    document. Two paths differ from the catch-all — /robots.txt (66 bytes) and /llms.txt (65
+    bytes) — but both carry generic parking-service boilerplate in robots.txt syntax, not llms.txt
+    format, and neither references Belharra. NOTHING from this host is credited. A 200 is not
+    evidence; the control path is.
+  results:
+  - path: /.well-known/agent-card.json
+    status: 200
+    credited: false
+    reason: soft-404, body identical to nonsense control path
+  - path: /.well-known/agent.json
+    status: 200
+    credited: false
+    reason: soft-404, body identical to nonsense control path
+  - path: /openapi.json
+    status: 200
+    credited: false
+    reason: soft-404, body identical to nonsense control path
+  - path: /.well-known/security.txt
+    status: 200
+    credited: false
+    reason: soft-404, body identical to nonsense control path
+  - path: /llms.txt
+    status: 200
+    credited: false
+    reason: parking-service boilerplate in robots.txt syntax, not an llms.txt and not Belharra's
+- host: belharra.com
+  results:
+  - path: /
+    status: null
+    note: Connection timed out. Not operated as a Belharra web property.

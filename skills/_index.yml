@@ -1,0 +1,37 @@
+generated: '2026-08-06'
+method: generated
+source: openapi/belharra-therapeutics-content-openapi.yml
+note: >-
+  Packaged Agent Skills for the only public API surface Belharra Therapeutics exposes — the
+  WordPress REST content API behind belharratx.com. Every operationId referenced below exists
+  verbatim in openapi/belharra-therapeutics-content-openapi.yml, which is itself derived from the
+  provider's live route index and verified against anonymous responses on 2026-08-06. Belharra
+  publishes no AGENTS.md and no skill files of its own; these are API Evangelist generations. There
+  is no write flow to package — every write route on the surface requires an authenticated
+  WordPress user.
+skills:
+- file: belharra-therapeutics-track-announcements.md
+  name: Track Belharra Therapeutics announcements across all five content collections
+  description: >-
+    Read the company's full published record — 4 press releases, 21 company-news coverage items and
+    10 blog posts — from the three separate collections they actually live in, with correct
+    pagination and incremental sync via modified_after. Written specifically to prevent the common
+    failure of querying only /wp/v2/posts and missing most of the archive.
+  api: openapi/belharra-therapeutics-content-openapi.yml
+  operations: [listPostTypes, listCategories, listPosts, getPost, listPressReleases, getPressRelease, listCompanyNews, getCompanyNewsItem]
+- file: belharra-therapeutics-search-and-resolve.md
+  name: Search Belharra Therapeutics content and resolve the hits
+  description: >-
+    Use cross-content search to find material across posts, pages and the three custom post types
+    without knowing where it lives, then map each hit's subtype to a rest_base via /wp/v2/types and
+    resolve it to the full object.
+  api: openapi/belharra-therapeutics-content-openapi.yml
+  operations: [search, listPostTypes, listTaxonomies, getPost, getPage, getPressRelease, getCompanyNewsItem, getMultimediaFile]
+- file: belharra-therapeutics-harvest-media-library.md
+  name: Harvest the Belharra Therapeutics media library
+  description: >-
+    Enumerate the 430-item media library, filter by media type, MIME type, parent and modification
+    date, resolve featured images from any content record, and select the right generated size
+    variant instead of downloading originals.
+  api: openapi/belharra-therapeutics-content-openapi.yml
+  operations: [listMedia, getMediaItem, listMultimediaFiles, getMultimediaFile, getOembed]

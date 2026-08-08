@@ -1,0 +1,1388 @@
+openapi: 3.1.0
+info:
+  title: Belharra Therapeutics Content API
+  version: wp/v2
+  summary: Anonymously readable WordPress REST content API behind belharratx.com.
+  description: >-
+    The read-only content surface Belharra Therapeutics exposes at https://belharratx.com/wp-json.
+    Belharra Therapeutics is a privately held, next-generation chemoproteomics company in San Diego
+    building small molecule therapeutics against undruggable targets with its Searchlight platform,
+    incubated by Versant Ventures out of chemoproteomics research at The Scripps Research Institute
+    and partnered with Genentech (January 2023) and Sanofi (June 2024). It runs no developer program
+    and markets no product API. This document is an API Evangelist derivation of the WordPress
+    `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the
+    operations that were verified to return data anonymously on 2026-08-06. Write operations,
+    `/wp/v2/settings`, `/wp/v2/menus`, `/wp/v2/menu-locations`, `/wp/v2/themes`, `/wp/v2/plugins`,
+    `/wp/v2/block-types`, `/wp/v2/font-collections`, `/wp/v2/icons`, `/wp/v2/sidebars`,
+    `/wp/v2/widget-types`, `/wp/v2/templates`, `/wp/v2/template-parts`, `/wp/v2/global-styles`,
+    `/wp/v2/block-patterns/*`, `/wp/v2/pattern-directory/patterns`, the `wp-abilities/v1` capability
+    registry, the `wp-site-health/v1`, `podcastplayer/v1`, `redirection/v1`, `contact-form-7/v1`,
+    `duplicate-post/v1`, `wpe/cache-plugin/v1` and `wpe_sign_on_plugin/v1` namespaces, and the whole
+    plugin-administration surface all require authentication or were denied anonymously, and are
+    deliberately excluded — see x-api-evangelist-provenance.
+  contact:
+    name: Belharra Therapeutics
+    url: https://belharratx.com/contact/
+    email: info@belharratx.com
+  x-api-evangelist-provenance: >-
+    Derived by the API Evangelist enrichment pipeline from the live WordPress REST route index at
+    https://belharratx.com/wp-json/ (198 routes across 11 namespaces) and verified against live
+    anonymous responses on 2026-08-06. Every parameter below appears verbatim in the route index
+    `args` for that endpoint, every schema property was read from a live anonymous response body,
+    and every collection count in a description was read from the `X-WP-Total` response header on
+    that date. Belharra Therapeutics publishes no OpenAPI, no developer documentation and no API
+    reference for this surface; the humanURL in apis.yml points at the upstream WordPress REST
+    handbook that defines the wp/v2 contract. The deployment is served by WP Engine behind
+    Cloudflare, and API responses carry `x-robots-tag: noindex` and `cache-control:
+    max-age=600, must-revalidate`. Nothing here was obtained with credentials.
+servers:
+  - url: https://belharratx.com/wp-json
+    description: Production content API
+tags:
+  - name: posts
+    description: Blog/news archive (10 published at harvest time), categorised as Company News or Press Releases.
+  - name: pages
+    description: Corporate pages (29 published at harvest time).
+  - name: media
+    description: Media library (430 attachments at harvest time).
+  - name: taxonomy
+    description: Categories and tags. Two categories are registered (Company News, Press Releases); the post_tag taxonomy is registered but empty.
+  - name: custom-types
+    description: Belharra's three custom post types — press-release (4 items), company-news (21 items) and multimedia-file (10 items).
+  - name: search
+    description: Cross-content search across published objects (74 searchable records at harvest time).
+  - name: discovery
+    description: Route, type, taxonomy, status and author discovery documents.
+  - name: oembed
+    description: oEmbed 1.0 provider endpoint for belharratx.com URLs.
+paths:
+  /:
+    get:
+      tags: [discovery]
+      operationId: getApiIndex
+      summary: Get the REST API index
+      description: >-
+        Returns the site index — name, description, URL, home, the registered namespaces, the
+        supported authentication methods (WordPress application passwords), the site logo and icon,
+        and the full 198-entry route table.
+      parameters:
+        - $ref: '#/components/parameters/Context'
+        - name: namespace
+          in: query
+          description: Restrict the response to a single namespace.
+          schema:
+            type: string
+            examples: ['wp/v2']
+      responses:
+        '200':
+          description: Site index
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiIndex'
+
+  /wp/v2/posts:
+    get:
+      tags: [posts]
+      operationId: listPosts
+      summary: List blog and news posts
+      description: >-
+        Lists published posts. On this deployment the collection is the company's blog/news archive
+        — 10 items spanning January 2023 (the $130 million debut and the Genentech collaboration)
+        through June 2024 (the Sanofi immunology collaboration), including press coverage in
+        Endpoints News, Fierce Pharma, C&EN and the Timmerman Report. Paginated; `X-WP-Total` and
+        `X-WP-TotalPages` are exposed via `Access-Control-Expose-Headers`.
+      parameters:
+        - $ref: '#/components/parameters/Context'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/SearchColumns'
+        - $ref: '#/components/parameters/SearchSemantics'
+        - $ref: '#/components/parameters/After'
+        - $ref: '#/components/parameters/Before'
+        - $ref: '#/components/parameters/ModifiedAfter'
+        - $ref: '#/components/parameters/ModifiedBefore'
+        - $ref: '#/components/parameters/Exclude'
+        - $ref: '#/components/parameters/Include'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/Status'
+        - name: author
+          in: query
+          description: Limit result set to posts assigned to specific authors.
+          schema: { type: array, items: { type: integer } }
+        - name: author_exclude
+          in: query
+          description: Ensure result set excludes posts assigned to specific authors.
+          schema: { type: array, items: { type: integer } }
+        - name: categories
+          in: query
+          description: Limit result set to items with specific category terms (1 = Company News, 7 = Press Releases).
+          schema: { type: array, items: { type: integer } }
+        - name: categories_exclude
+          in: query
+          description: Limit result set to items except those with specific category terms.
+          schema: { type: array, items: { type: integer } }
+        - name: tags
+          in: query
+          description: Limit result set to items with specific tag terms. The post_tag taxonomy is empty on this deployment.
+          schema: { type: array, items: { type: integer } }
+        - name: tags_exclude
+          in: query
+          description: Limit result set to items except those with specific tag terms.
+          schema: { type: array, items: { type: integer } }
+        - name: tax_relation
+          in: query
+          description: Limit result set based on relationship between multiple taxonomies.
+          schema: { type: string, enum: [AND, OR] }
+        - name: sticky
+          in: query
+          description: Limit result set to items that are sticky.
+          schema: { type: boolean }
+        - name: ignore_sticky
+          in: query
+          description: Whether to ignore sticky posts.
+          schema: { type: boolean }
+        - name: format
+          in: query
+          description: Limit result set to items assigned one or more given formats.
+          schema: { type: array, items: { type: string } }
+        - name: orderby
+          in: query
+          description: Sort collection by post attribute.
+          schema:
+            type: string
+            enum: [author, date, id, include, modified, parent, relevance, slug, include_slugs, title]
+            default: date
+      responses:
+        '200':
+          description: A page of posts
+          headers:
+            X-WP-Total:
+              description: Total number of matching posts.
+              schema: { type: integer, examples: [10] }
+            X-WP-TotalPages:
+              description: Total number of pages available.
+              schema: { type: integer, examples: [1] }
+            Link:
+              description: RFC 8288 pagination links (rel="next" / rel="prev").
+              schema: { type: string }
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Post' }
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+
+  /wp/v2/posts/{id}:
+    get:
+      tags: [posts]
+      operationId: getPost
+      summary: Get a single post
+      description: Retrieves one published post by its numeric ID.
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+        - $ref: '#/components/parameters/Context'
+        - name: password
+          in: query
+          description: The password for the post if it is password protected.
+          schema: { type: string }
+      responses:
+        '200':
+          description: The post
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Post' }
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /wp/v2/pages:
+    get:
+      tags: [pages]
+      operationId: listPages
+      summary: List corporate pages
+      description: >-
+        Lists published pages. On this deployment the collection is the 29-page corporate site —
+        About, Our Story, Our Values, Our Team (Leadership, Founders, Board of Directors, Senior
+        Advisors, BTX Crew), Our Approach (Platform, Publications), Science, Program, Partners,
+        Patients, Careers, Newsroom, Press Releases, Company News, Podcast, Multimedia Library,
+        Contact, Privacy and Terms.
+      parameters:
+        - $ref: '#/components/parameters/Context'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/SearchColumns'
+        - $ref: '#/components/parameters/SearchSemantics'
+        - $ref: '#/components/parameters/After'
+        - $ref: '#/components/parameters/Before'
+        - $ref: '#/components/parameters/ModifiedAfter'
+        - $ref: '#/components/parameters/ModifiedBefore'
+        - $ref: '#/components/parameters/Exclude'
+        - $ref: '#/components/parameters/Include'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/Status'
+        - name: author
+          in: query
+          description: Limit result set to pages assigned to specific authors.
+          schema: { type: array, items: { type: integer } }
+        - name: author_exclude
+          in: query
+          description: Ensure result set excludes pages assigned to specific authors.
+          schema: { type: array, items: { type: integer } }
+        - name: parent
+          in: query
+          description: Limit result set to items with particular parent IDs.
+          schema: { type: array, items: { type: integer } }
+        - name: parent_exclude
+          in: query
+          description: Limit result set to all items except those of a particular parent ID.
+          schema: { type: array, items: { type: integer } }
+        - name: menu_order
+          in: query
+          description: Limit result set to posts with a specific menu_order value.
+          schema: { type: integer }
+        - name: orderby
+          in: query
+          description: Sort collection by post attribute.
+          schema:
+            type: string
+            enum: [author, date, id, include, modified, parent, relevance, slug, include_slugs, title, menu_order]
+            default: date
+      responses:
+        '200':
+          description: A page of pages
+          headers:
+            X-WP-Total:
+              schema: { type: integer, examples: [29] }
+            X-WP-TotalPages:
+              schema: { type: integer, examples: [3] }
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Page' }
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+
+  /wp/v2/pages/{id}:
+    get:
+      tags: [pages]
+      operationId: getPage
+      summary: Get a single page
+      description: Retrieves one published corporate page by its numeric ID.
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+        - $ref: '#/components/parameters/Context'
+        - name: password
+          in: query
+          description: The password for the page if it is password protected.
+          schema: { type: string }
+      responses:
+        '200':
+          description: The page
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Page' }
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /wp/v2/press-release:
+    get:
+      tags: [custom-types]
+      operationId: listPressReleases
+      summary: List press releases
+      description: >-
+        Lists the `press-release` custom post type — 4 published items at harvest time: the
+        January 2023 debut with $130 million in funding, the January 2023 broad Genentech
+        collaboration, the June 2024 Sanofi immunology collaboration, and the January 2025
+        appointment of Sean Buchanan as chief scientific officer.
+      parameters:
+        - $ref: '#/components/parameters/Context'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/SearchColumns'
+        - $ref: '#/components/parameters/SearchSemantics'
+        - $ref: '#/components/parameters/After'
+        - $ref: '#/components/parameters/Before'
+        - $ref: '#/components/parameters/ModifiedAfter'
+        - $ref: '#/components/parameters/ModifiedBefore'
+        - $ref: '#/components/parameters/Exclude'
+        - $ref: '#/components/parameters/Include'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/Status'
+        - $ref: '#/components/parameters/MenuOrder'
+        - $ref: '#/components/parameters/OrderByCustomType'
+      responses:
+        '200':
+          description: A page of press releases
+          headers:
+            X-WP-Total:
+              schema: { type: integer, examples: [4] }
+            X-WP-TotalPages:
+              schema: { type: integer, examples: [1] }
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/CustomPost' }
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+
+  /wp/v2/press-release/{id}:
+    get:
+      tags: [custom-types]
+      operationId: getPressRelease
+      summary: Get a single press release
+      description: Retrieves one published press release by its numeric ID.
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+        - $ref: '#/components/parameters/Context'
+        - name: password
+          in: query
+          description: The password for the item if it is password protected.
+          schema: { type: string }
+      responses:
+        '200':
+          description: The press release
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CustomPost' }
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /wp/v2/company-news:
+    get:
+      tags: [custom-types]
+      operationId: listCompanyNews
+      summary: List company news items
+      description: >-
+        Lists the `company-news` custom post type — 21 published items at harvest time, the
+        "In the News" third-party coverage archive that backs https://belharratx.com/company-news/.
+      parameters:
+        - $ref: '#/components/parameters/Context'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/SearchColumns'
+        - $ref: '#/components/parameters/SearchSemantics'
+        - $ref: '#/components/parameters/After'
+        - $ref: '#/components/parameters/Before'
+        - $ref: '#/components/parameters/ModifiedAfter'
+        - $ref: '#/components/parameters/ModifiedBefore'
+        - $ref: '#/components/parameters/Exclude'
+        - $ref: '#/components/parameters/Include'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/Status'
+        - $ref: '#/components/parameters/MenuOrder'
+        - $ref: '#/components/parameters/OrderByCustomType'
+      responses:
+        '200':
+          description: A page of company news items
+          headers:
+            X-WP-Total:
+              schema: { type: integer, examples: [21] }
+            X-WP-TotalPages:
+              schema: { type: integer, examples: [3] }
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/CustomPost' }
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+
+  /wp/v2/company-news/{id}:
+    get:
+      tags: [custom-types]
+      operationId: getCompanyNewsItem
+      summary: Get a single company news item
+      description: Retrieves one published company news item by its numeric ID.
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+        - $ref: '#/components/parameters/Context'
+        - name: password
+          in: query
+          description: The password for the item if it is password protected.
+          schema: { type: string }
+      responses:
+        '200':
+          description: The company news item
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CustomPost' }
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /wp/v2/multimedia-file:
+    get:
+      tags: [custom-types]
+      operationId: listMultimediaFiles
+      summary: List multimedia files
+      description: >-
+        Lists the `multimedia-file` custom post type — 10 published items at harvest time, the
+        curated video/podcast library that backs https://belharratx.com/multimedia-library/,
+        including the "Birth of a Biotech" podcast series.
+      parameters:
+        - $ref: '#/components/parameters/Context'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/SearchColumns'
+        - $ref: '#/components/parameters/SearchSemantics'
+        - $ref: '#/components/parameters/After'
+        - $ref: '#/components/parameters/Before'
+        - $ref: '#/components/parameters/ModifiedAfter'
+        - $ref: '#/components/parameters/ModifiedBefore'
+        - $ref: '#/components/parameters/Exclude'
+        - $ref: '#/components/parameters/Include'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/Status'
+        - $ref: '#/components/parameters/MenuOrder'
+        - $ref: '#/components/parameters/OrderByCustomType'
+      responses:
+        '200':
+          description: A page of multimedia file records
+          headers:
+            X-WP-Total:
+              schema: { type: integer, examples: [10] }
+            X-WP-TotalPages:
+              schema: { type: integer, examples: [1] }
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/CustomPost' }
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+
+  /wp/v2/multimedia-file/{id}:
+    get:
+      tags: [custom-types]
+      operationId: getMultimediaFile
+      summary: Get a single multimedia file record
+      description: Retrieves one published multimedia file record by its numeric ID.
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+        - $ref: '#/components/parameters/Context'
+        - name: password
+          in: query
+          description: The password for the item if it is password protected.
+          schema: { type: string }
+      responses:
+        '200':
+          description: The multimedia file record
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CustomPost' }
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /wp/v2/media:
+    get:
+      tags: [media]
+      operationId: listMedia
+      summary: List media attachments
+      description: >-
+        Lists the media library — 430 attachments at harvest time, including the Belharra and
+        Searchlight logos, team photography, podcast artwork and the press-outlet logos used on the
+        newsroom pages. Each record carries `source_url`, `mime_type`, `media_details` with the
+        generated size variants, `alt_text` and `filesize`.
+      parameters:
+        - $ref: '#/components/parameters/Context'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/SearchColumns'
+        - $ref: '#/components/parameters/SearchSemantics'
+        - $ref: '#/components/parameters/After'
+        - $ref: '#/components/parameters/Before'
+        - $ref: '#/components/parameters/ModifiedAfter'
+        - $ref: '#/components/parameters/ModifiedBefore'
+        - $ref: '#/components/parameters/Exclude'
+        - $ref: '#/components/parameters/Include'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/Status'
+        - name: author
+          in: query
+          description: Limit result set to attachments assigned to specific authors.
+          schema: { type: array, items: { type: integer } }
+        - name: author_exclude
+          in: query
+          description: Ensure result set excludes attachments assigned to specific authors.
+          schema: { type: array, items: { type: integer } }
+        - name: parent
+          in: query
+          description: Limit result set to items with particular parent IDs.
+          schema: { type: array, items: { type: integer } }
+        - name: parent_exclude
+          in: query
+          description: Limit result set to all items except those of a particular parent ID.
+          schema: { type: array, items: { type: integer } }
+        - name: media_type
+          in: query
+          description: Limit result set to attachments of a particular media type.
+          schema:
+            type: string
+            enum: [image, video, text, application, audio]
+        - name: mime_type
+          in: query
+          description: Limit result set to attachments of a particular MIME type.
+          schema: { type: string, examples: ['image/png'] }
+        - name: orderby
+          in: query
+          description: Sort collection by attachment attribute.
+          schema:
+            type: string
+            enum: [author, date, id, include, modified, parent, relevance, slug, include_slugs, title]
+            default: date
+      responses:
+        '200':
+          description: A page of media attachments
+          headers:
+            X-WP-Total:
+              schema: { type: integer, examples: [430] }
+            X-WP-TotalPages:
+              schema: { type: integer, examples: [43] }
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/MediaItem' }
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+
+  /wp/v2/media/{id}:
+    get:
+      tags: [media]
+      operationId: getMediaItem
+      summary: Get a single media attachment
+      description: Retrieves one media attachment by its numeric ID.
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+        - $ref: '#/components/parameters/Context'
+      responses:
+        '200':
+          description: The media attachment
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MediaItem' }
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /wp/v2/categories:
+    get:
+      tags: [taxonomy]
+      operationId: listCategories
+      summary: List post categories
+      description: >-
+        Lists the `category` taxonomy terms. Two are registered on this deployment — Company News
+        (id 1, 7 posts) and Press Releases (id 7, 3 posts).
+      parameters:
+        - $ref: '#/components/parameters/Context'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Exclude'
+        - $ref: '#/components/parameters/Include'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Slug'
+        - name: orderby
+          in: query
+          description: Sort collection by term attribute.
+          schema:
+            type: string
+            enum: [id, include, name, slug, include_slugs, term_group, description, count]
+            default: name
+        - name: hide_empty
+          in: query
+          description: Whether to hide terms not assigned to any posts.
+          schema: { type: boolean, default: false }
+        - name: parent
+          in: query
+          description: Limit result set to terms assigned to a specific parent.
+          schema: { type: integer }
+        - name: post
+          in: query
+          description: Limit result set to terms assigned to a specific post.
+          schema: { type: integer }
+      responses:
+        '200':
+          description: A page of categories
+          headers:
+            X-WP-Total:
+              schema: { type: integer, examples: [2] }
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Term' }
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+
+  /wp/v2/categories/{id}:
+    get:
+      tags: [taxonomy]
+      operationId: getCategory
+      summary: Get a single category
+      description: Retrieves one category term by its numeric ID.
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+        - $ref: '#/components/parameters/Context'
+      responses:
+        '200':
+          description: The category term
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Term' }
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /wp/v2/tags:
+    get:
+      tags: [taxonomy]
+      operationId: listTags
+      summary: List post tags
+      description: >-
+        Lists the `post_tag` taxonomy terms. The taxonomy is registered and anonymously reachable
+        but empty on this deployment — `X-WP-Total` was 0 at harvest time.
+      parameters:
+        - $ref: '#/components/parameters/Context'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Exclude'
+        - $ref: '#/components/parameters/Include'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Slug'
+        - name: orderby
+          in: query
+          description: Sort collection by term attribute.
+          schema:
+            type: string
+            enum: [id, include, name, slug, include_slugs, term_group, description, count]
+            default: name
+        - name: hide_empty
+          in: query
+          description: Whether to hide terms not assigned to any posts.
+          schema: { type: boolean, default: false }
+        - name: post
+          in: query
+          description: Limit result set to terms assigned to a specific post.
+          schema: { type: integer }
+      responses:
+        '200':
+          description: A page of tags (empty on this deployment)
+          headers:
+            X-WP-Total:
+              schema: { type: integer, examples: [0] }
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Term' }
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+
+  /wp/v2/search:
+    get:
+      tags: [search]
+      operationId: search
+      summary: Search across published content
+      description: >-
+        Cross-content search returning lightweight `{id, title, url, type, subtype}` records. 74
+        objects were searchable at harvest time, spanning the post, page and the three custom post
+        types.
+      parameters:
+        - $ref: '#/components/parameters/Context'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Exclude'
+        - $ref: '#/components/parameters/Include'
+        - name: type
+          in: query
+          description: Limit results to items of an object type.
+          schema:
+            type: string
+            enum: [post, term, post-format]
+            default: post
+        - name: subtype
+          in: query
+          description: Limit results to items of one or more object subtypes.
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [post, page, company-news, multimedia-file, press-release, any]
+            default: [any]
+      responses:
+        '200':
+          description: A page of search results
+          headers:
+            X-WP-Total:
+              schema: { type: integer, examples: [74] }
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/SearchResult' }
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+
+  /wp/v2/users:
+    get:
+      tags: [discovery]
+      operationId: listAuthors
+      summary: List content authors
+      description: >-
+        Lists the users who have published content. Anonymous callers receive the `embed`-level
+        public author projection only — id, name, url, description, link, slug and avatar URLs. No
+        email addresses, roles or capabilities are exposed anonymously. Three authors were listed
+        at harvest time.
+      parameters:
+        - $ref: '#/components/parameters/Context'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/SearchColumns'
+        - $ref: '#/components/parameters/Exclude'
+        - $ref: '#/components/parameters/Include'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Slug'
+        - name: orderby
+          in: query
+          description: Sort collection by user attribute.
+          schema:
+            type: string
+            enum: [id, include, name, registered_date, slug, include_slugs, email, url]
+            default: name
+        - name: has_published_posts
+          in: query
+          description: Limit result set to users who have published posts.
+          schema: { type: array, items: { type: string } }
+      responses:
+        '200':
+          description: A page of public author records
+          headers:
+            X-WP-Total:
+              schema: { type: integer, examples: [3] }
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Author' }
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+
+  /wp/v2/types:
+    get:
+      tags: [discovery]
+      operationId: listPostTypes
+      summary: List registered post types
+      description: >-
+        Returns the registered post types keyed by name. Fourteen are registered on this
+        deployment: post, page, attachment, nav_menu_item, wp_block, wp_template,
+        wp_template_part, wp_global_styles, wp_navigation, wp_font_family, wp_font_face, plus
+        Belharra's three custom types company-news, multimedia-file and press-release.
+      parameters:
+        - $ref: '#/components/parameters/Context'
+      responses:
+        '200':
+          description: Registered post types keyed by name
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: { $ref: '#/components/schemas/PostType' }
+
+  /wp/v2/taxonomies:
+    get:
+      tags: [discovery]
+      operationId: listTaxonomies
+      summary: List registered taxonomies
+      description: >-
+        Returns the registered taxonomies keyed by name — category, post_tag, nav_menu and
+        wp_pattern_category. Note that none of Belharra's three custom post types declares a
+        taxonomy.
+      parameters:
+        - $ref: '#/components/parameters/Context'
+        - name: type
+          in: query
+          description: Limit results to taxonomies associated with a specific post type.
+          schema: { type: string, examples: ['post'] }
+      responses:
+        '200':
+          description: Registered taxonomies keyed by name
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: { $ref: '#/components/schemas/Taxonomy' }
+
+  /wp/v2/statuses:
+    get:
+      tags: [discovery]
+      operationId: listPostStatuses
+      summary: List registered post statuses
+      description: >-
+        Returns the post statuses visible anonymously. Two are exposed on this deployment —
+        `publish` and `acf-disabled` (an Advanced Custom Fields status).
+      parameters:
+        - $ref: '#/components/parameters/Context'
+      responses:
+        '200':
+          description: Registered post statuses keyed by slug
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: { $ref: '#/components/schemas/PostStatus' }
+
+  /oembed/1.0/embed:
+    get:
+      tags: [oembed]
+      operationId: getOembed
+      summary: Get an oEmbed response for a belharratx.com URL
+      description: >-
+        The oEmbed 1.0 provider endpoint. Given a belharratx.com permalink it returns the standard
+        oEmbed rich payload — version, provider_name, provider_url, author_name, author_url, title,
+        type, width, height and the iframe `html`.
+      parameters:
+        - name: url
+          in: query
+          required: true
+          description: The URL of the resource for which to fetch oEmbed data.
+          schema: { type: string, format: uri, examples: ['https://belharratx.com/'] }
+        - name: format
+          in: query
+          description: The oEmbed format to use.
+          schema: { type: string, enum: [json, xml], default: json }
+        - name: maxwidth
+          in: query
+          description: The maximum width of the embed frame in pixels.
+          schema: { type: integer, default: 600 }
+      responses:
+        '200':
+          description: The oEmbed response
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OembedResponse' }
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  parameters:
+    Context:
+      name: context
+      in: query
+      description: Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`.
+      schema:
+        type: string
+        enum: [view, embed, edit]
+        default: view
+    Page:
+      name: page
+      in: query
+      description: Current page of the collection.
+      schema: { type: integer, minimum: 1, default: 1 }
+    PerPage:
+      name: per_page
+      in: query
+      description: Maximum number of items to be returned in the result set.
+      schema: { type: integer, minimum: 1, maximum: 100, default: 10 }
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a string.
+      schema: { type: string }
+    SearchColumns:
+      name: search_columns
+      in: query
+      description: Array of column names to be searched.
+      schema: { type: array, items: { type: string } }
+    SearchSemantics:
+      name: search_semantics
+      in: query
+      description: How to interpret the search input.
+      schema: { type: string, enum: [exact] }
+    After:
+      name: after
+      in: query
+      description: Limit response to items published after a given ISO 8601 compliant date.
+      schema: { type: string, format: date-time }
+    Before:
+      name: before
+      in: query
+      description: Limit response to items published before a given ISO 8601 compliant date.
+      schema: { type: string, format: date-time }
+    ModifiedAfter:
+      name: modified_after
+      in: query
+      description: Limit response to items modified after a given ISO 8601 compliant date.
+      schema: { type: string, format: date-time }
+    ModifiedBefore:
+      name: modified_before
+      in: query
+      description: Limit response to items modified before a given ISO 8601 compliant date.
+      schema: { type: string, format: date-time }
+    Exclude:
+      name: exclude
+      in: query
+      description: Ensure result set excludes specific IDs.
+      schema: { type: array, items: { type: integer } }
+    Include:
+      name: include
+      in: query
+      description: Limit result set to specific IDs.
+      schema: { type: array, items: { type: integer } }
+    Offset:
+      name: offset
+      in: query
+      description: Offset the result set by a specific number of items.
+      schema: { type: integer }
+    Order:
+      name: order
+      in: query
+      description: Order sort attribute ascending or descending.
+      schema: { type: string, enum: [asc, desc], default: desc }
+    Slug:
+      name: slug
+      in: query
+      description: Limit result set to items with one or more specific slugs.
+      schema: { type: array, items: { type: string } }
+    Status:
+      name: status
+      in: query
+      description: Limit result set to items assigned one or more statuses. Anonymous callers may only request `publish`.
+      schema:
+        type: array
+        items: { type: string, enum: [publish, acf-disabled] }
+        default: [publish]
+    MenuOrder:
+      name: menu_order
+      in: query
+      description: Limit result set to items with a specific menu_order value.
+      schema: { type: integer }
+    OrderByCustomType:
+      name: orderby
+      in: query
+      description: Sort collection by object attribute.
+      schema:
+        type: string
+        enum: [author, date, id, include, modified, parent, relevance, slug, include_slugs, title, menu_order]
+        default: date
+    IdPath:
+      name: id
+      in: path
+      required: true
+      description: Unique identifier for the object.
+      schema: { type: integer }
+
+  responses:
+    NotFound:
+      description: The requested object does not exist or is not publicly visible.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          examples:
+            invalidPostId:
+              value:
+                code: rest_post_invalid_id
+                message: Invalid post ID.
+                data: { status: 404 }
+    InvalidParam:
+      description: One or more query parameters failed validation.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          examples:
+            perPageOutOfBounds:
+              value:
+                code: rest_invalid_param
+                message: 'Invalid parameter(s): per_page'
+                data:
+                  status: 400
+                  params:
+                    per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
+    Unauthorized:
+      description: The endpoint requires authentication. Anonymous callers receive this for the administrative surface.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          examples:
+            forbidden:
+              value:
+                code: rest_forbidden
+                message: Sorry, you are not allowed to do that.
+                data: { status: 401 }
+
+  schemas:
+    RenderedText:
+      type: object
+      description: A WordPress rendered-text field. `rendered` carries HTML-escaped markup.
+      properties:
+        rendered: { type: string }
+      required: [rendered]
+
+    Post:
+      type: object
+      description: A blog/news post. Field set observed on a live anonymous `context=view` response.
+      properties:
+        id: { type: integer, examples: [1234] }
+        date: { type: string, format: date-time }
+        date_gmt: { type: string, format: date-time }
+        guid: { $ref: '#/components/schemas/RenderedText' }
+        modified: { type: string, format: date-time }
+        modified_gmt: { type: string, format: date-time }
+        slug: { type: string }
+        status: { type: string, examples: ['publish'] }
+        type: { type: string, const: post }
+        link: { type: string, format: uri }
+        title: { $ref: '#/components/schemas/RenderedText' }
+        content:
+          allOf:
+            - $ref: '#/components/schemas/RenderedText'
+            - type: object
+              properties:
+                protected: { type: boolean }
+        excerpt:
+          allOf:
+            - $ref: '#/components/schemas/RenderedText'
+            - type: object
+              properties:
+                protected: { type: boolean }
+        author: { type: integer }
+        featured_media: { type: integer }
+        comment_status: { type: string, enum: [open, closed] }
+        ping_status: { type: string, enum: [open, closed] }
+        sticky: { type: boolean }
+        template: { type: string }
+        format: { type: string }
+        meta: { type: object, additionalProperties: true }
+        categories: { type: array, items: { type: integer } }
+        tags: { type: array, items: { type: integer } }
+        class_list: { type: array, items: { type: string } }
+        acf:
+          type: object
+          description: Advanced Custom Fields payload exposed on this deployment.
+          additionalProperties: true
+        _links: { $ref: '#/components/schemas/Links' }
+      required: [id, date, slug, status, type, link, title]
+
+    Page:
+      type: object
+      description: A corporate page. Field set observed on a live anonymous `context=view` response.
+      properties:
+        id: { type: integer }
+        date: { type: string, format: date-time }
+        date_gmt: { type: string, format: date-time }
+        guid: { $ref: '#/components/schemas/RenderedText' }
+        modified: { type: string, format: date-time }
+        modified_gmt: { type: string, format: date-time }
+        slug: { type: string, examples: ['our-story'] }
+        status: { type: string, examples: ['publish'] }
+        type: { type: string, const: page }
+        link: { type: string, format: uri }
+        title: { $ref: '#/components/schemas/RenderedText' }
+        content:
+          allOf:
+            - $ref: '#/components/schemas/RenderedText'
+            - type: object
+              properties:
+                protected: { type: boolean }
+        excerpt:
+          allOf:
+            - $ref: '#/components/schemas/RenderedText'
+            - type: object
+              properties:
+                protected: { type: boolean }
+        author: { type: integer }
+        featured_media: { type: integer }
+        parent: { type: integer }
+        menu_order: { type: integer }
+        comment_status: { type: string, enum: [open, closed] }
+        ping_status: { type: string, enum: [open, closed] }
+        template: { type: string }
+        meta: { type: object, additionalProperties: true }
+        class_list: { type: array, items: { type: string } }
+        acf: { type: object, additionalProperties: true }
+        _links: { $ref: '#/components/schemas/Links' }
+      required: [id, slug, status, type, link, title]
+
+    CustomPost:
+      type: object
+      description: >-
+        A record from one of Belharra's three custom post types — press-release, company-news or
+        multimedia-file. All three share the identical anonymous projection: unlike core posts they
+        carry no excerpt, author, comment_status, ping_status or taxonomy fields, and they do carry
+        menu_order. Field set observed on live anonymous `context=view` responses for all three.
+      properties:
+        id: { type: integer }
+        date: { type: string, format: date-time }
+        date_gmt: { type: string, format: date-time }
+        guid: { $ref: '#/components/schemas/RenderedText' }
+        modified: { type: string, format: date-time }
+        modified_gmt: { type: string, format: date-time }
+        slug: { type: string }
+        status: { type: string, examples: ['publish'] }
+        type:
+          type: string
+          enum: [press-release, company-news, multimedia-file]
+        link: { type: string, format: uri }
+        title: { $ref: '#/components/schemas/RenderedText' }
+        content:
+          allOf:
+            - $ref: '#/components/schemas/RenderedText'
+            - type: object
+              properties:
+                protected: { type: boolean }
+        featured_media: { type: integer }
+        menu_order: { type: integer }
+        template: { type: string }
+        meta: { type: object, additionalProperties: true }
+        class_list: { type: array, items: { type: string } }
+        acf:
+          type: object
+          description: >-
+            Advanced Custom Fields payload. On multimedia-file records this is where the video and
+            podcast references live; on company-news records it carries the outbound link to the
+            third-party coverage.
+          additionalProperties: true
+        _links: { $ref: '#/components/schemas/Links' }
+      required: [id, date, slug, status, type, link, title]
+
+    MediaItem:
+      type: object
+      description: A media library attachment. Field set observed on a live anonymous response.
+      properties:
+        id: { type: integer }
+        date: { type: string, format: date-time }
+        date_gmt: { type: string, format: date-time }
+        guid: { $ref: '#/components/schemas/RenderedText' }
+        modified: { type: string, format: date-time }
+        modified_gmt: { type: string, format: date-time }
+        slug: { type: string }
+        status: { type: string }
+        type: { type: string, const: attachment }
+        link: { type: string, format: uri }
+        title: { $ref: '#/components/schemas/RenderedText' }
+        author: { type: integer }
+        featured_media: { type: integer }
+        comment_status: { type: string, enum: [open, closed] }
+        ping_status: { type: string, enum: [open, closed] }
+        template: { type: string }
+        meta: { type: object, additionalProperties: true }
+        class_list: { type: array, items: { type: string } }
+        acf: { type: object, additionalProperties: true }
+        description: { $ref: '#/components/schemas/RenderedText' }
+        caption: { $ref: '#/components/schemas/RenderedText' }
+        alt_text: { type: string }
+        media_type: { type: string, enum: [image, file] }
+        mime_type: { type: string, examples: ['image/png'] }
+        media_details:
+          type: object
+          description: Width, height, file path and the generated size variants.
+          additionalProperties: true
+        post:
+          type: [integer, 'null']
+          description: The post this attachment is attached to, if any.
+        source_url:
+          type: string
+          format: uri
+          examples: ['https://belharratx.com/wp-content/uploads/2024/12/belharra-logo.png']
+        filename: { type: string }
+        filesize: { type: integer }
+        _links: { $ref: '#/components/schemas/Links' }
+      required: [id, type, link, source_url, mime_type]
+
+    Term:
+      type: object
+      description: A taxonomy term (category or tag).
+      properties:
+        id: { type: integer, examples: [1] }
+        count: { type: integer, examples: [7] }
+        description: { type: string }
+        link: { type: string, format: uri }
+        name: { type: string, examples: ['Company News'] }
+        slug: { type: string, examples: ['company-news'] }
+        taxonomy: { type: string, enum: [category, post_tag] }
+        parent: { type: integer }
+        meta: { type: object, additionalProperties: true }
+        acf: { type: object, additionalProperties: true }
+        _links: { $ref: '#/components/schemas/Links' }
+      required: [id, name, slug, taxonomy]
+
+    SearchResult:
+      type: object
+      description: A lightweight cross-content search hit.
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        url: { type: string, format: uri }
+        type: { type: string, examples: ['post'] }
+        subtype:
+          type: string
+          enum: [post, page, company-news, multimedia-file, press-release]
+        _links: { $ref: '#/components/schemas/Links' }
+      required: [id, title, url, type, subtype]
+
+    Author:
+      type: object
+      description: The public author projection returned to anonymous callers. No email, roles or capabilities are exposed.
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        url: { type: string }
+        description: { type: string }
+        link: { type: string, format: uri }
+        slug: { type: string }
+        avatar_urls:
+          type: object
+          description: Gravatar URLs keyed by pixel size (24, 48, 96).
+          additionalProperties: { type: string, format: uri }
+        meta: { type: object, additionalProperties: true }
+        acf: { type: object, additionalProperties: true }
+        _links: { $ref: '#/components/schemas/Links' }
+      required: [id, name, slug, link]
+
+    PostType:
+      type: object
+      description: A registered post type descriptor.
+      properties:
+        name: { type: string, examples: ['Press Releases'] }
+        slug: { type: string, examples: ['press-release'] }
+        rest_base: { type: string, examples: ['press-release'] }
+        rest_namespace: { type: string, examples: ['wp/v2'] }
+        description: { type: string }
+        hierarchical: { type: boolean }
+        has_archive: { type: [boolean, string] }
+        taxonomies: { type: array, items: { type: string } }
+        supports: { type: object, additionalProperties: { type: boolean } }
+        icon: { type: [string, 'null'] }
+        _links: { $ref: '#/components/schemas/Links' }
+
+    Taxonomy:
+      type: object
+      description: A registered taxonomy descriptor.
+      properties:
+        name: { type: string, examples: ['Categories'] }
+        slug: { type: string, examples: ['category'] }
+        rest_base: { type: string, examples: ['categories'] }
+        rest_namespace: { type: string, examples: ['wp/v2'] }
+        description: { type: string }
+        hierarchical: { type: boolean }
+        types: { type: array, items: { type: string } }
+        _links: { $ref: '#/components/schemas/Links' }
+
+    PostStatus:
+      type: object
+      description: A registered post status descriptor.
+      properties:
+        name: { type: string, examples: ['Published'] }
+        slug: { type: string, enum: [publish, acf-disabled] }
+        public: { type: boolean }
+        queryable: { type: boolean }
+        date_floating: { type: boolean }
+        _links: { $ref: '#/components/schemas/Links' }
+
+    OembedResponse:
+      type: object
+      description: An oEmbed 1.0 rich response.
+      properties:
+        version: { type: string, const: '1.0' }
+        provider_name: { type: string, examples: ['Belharra Therapeutics'] }
+        provider_url: { type: string, format: uri, examples: ['https://belharratx.com'] }
+        author_name: { type: string }
+        author_url: { type: string, format: uri }
+        title: { type: string }
+        type: { type: string, examples: ['rich'] }
+        width: { type: integer }
+        height: { type: integer }
+        html: { type: string, description: The iframe embed markup. }
+      required: [version, provider_name, provider_url, type]
+
+    ApiIndex:
+      type: object
+      description: The REST API root index document.
+      properties:
+        name: { type: string, examples: ['Belharra Therapeutics'] }
+        description: { type: string }
+        url: { type: string, format: uri }
+        home: { type: string, format: uri }
+        gmt_offset: { type: [integer, string] }
+        timezone_string: { type: string }
+        namespaces:
+          type: array
+          items: { type: string }
+          description: >-
+            The 11 registered namespaces at harvest time — oembed/1.0, wpe/cache-plugin/v1,
+            wpe_sign_on_plugin/v1, contact-form-7/v1, redirection/v1, podcastplayer/v1,
+            duplicate-post/v1, wp/v2, wp-site-health/v1, wp-block-editor/v1, wp-abilities/v1.
+        authentication:
+          type: object
+          description: >-
+            The supported authentication methods. This deployment advertises WordPress application
+            passwords with an authorization endpoint at /wp-admin/authorize-application.php.
+          additionalProperties: true
+        routes:
+          type: object
+          description: The full route table keyed by route pattern.
+          additionalProperties: true
+        site_logo: { type: integer }
+        site_icon: { type: integer }
+        site_icon_url: { type: string }
+        _links: { $ref: '#/components/schemas/Links' }
+      required: [name, url, namespaces, routes]
+
+    Links:
+      type: object
+      description: HAL-style `_links` hypermedia block WordPress attaches to every resource.
+      additionalProperties:
+        type: array
+        items:
+          type: object
+          properties:
+            href: { type: string, format: uri }
+            embeddable: { type: boolean }
+            templated: { type: boolean }
+            name: { type: string }
+            taxonomy: { type: string }
+
+    Error:
+      type: object
+      description: >-
+        The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as
+        `application/json` with a `code` / `message` / `data.status` shape.
+      properties:
+        code: { type: string, examples: ['rest_post_invalid_id'] }
+        message: { type: string, examples: ['Invalid post ID.'] }
+        data:
+          type: object
+          properties:
+            status: { type: integer, examples: [404] }
+            params:
+              type: object
+              additionalProperties: { type: string }
+            details:
+              type: object
+              additionalProperties: true
+      required: [code, message, data]

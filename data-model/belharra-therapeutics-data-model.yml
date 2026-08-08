@@ -1,0 +1,175 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/belharra-therapeutics-content-openapi.yml + live anonymous responses and _links inspection on 2026-08-06
+note: >-
+  The entity-relationship graph of the Belharra Therapeutics content API, derived from the OpenAPI
+  schemas, the id-reference fields on live responses, and the HAL-style `_links` relations
+  WordPress attaches to every resource. Belharra publishes no object reference of its own. The
+  notable shape here is that all three of Belharra's custom post types are FLAT — none declares a
+  taxonomy, none carries an author or excerpt, and each relates outward only through
+  featured_media. Editorial structure that would normally live in taxonomy terms lives instead in
+  the untyped `acf` payload.
+entities:
+- name: Post
+  rest_base: posts
+  schema: '#/components/schemas/Post'
+  count_at_harvest: 10
+  identity: {field: id, type: integer}
+  description: >-
+    The blog/news archive. Categorised into Company News (7) and Press Releases (3). Spans
+    2023-01-04 to 2024-06-18.
+- name: Page
+  rest_base: pages
+  schema: '#/components/schemas/Page'
+  count_at_harvest: 29
+  identity: {field: id, type: integer}
+  description: >-
+    The corporate site. Self-referentially hierarchical via `parent` — /about/ parents Our Story,
+    Our Values and Our Team, which in turn parents Leadership, Founders, Board of Directors, Senior
+    Advisors and BTX Crew; /our-approach/ parents Platform and Publications; /science/ parents
+    Program and Our Science.
+- name: PressRelease
+  rest_base: press-release
+  schema: '#/components/schemas/CustomPost'
+  count_at_harvest: 4
+  identity: {field: id, type: integer}
+  description: >-
+    Belharra's own announcements — the January 2023 $130M debut, the January 2023 Genentech
+    collaboration, the June 2024 Sanofi collaboration and the January 2025 CSO appointment.
+- name: CompanyNewsItem
+  rest_base: company-news
+  schema: '#/components/schemas/CustomPost'
+  count_at_harvest: 21
+  identity: {field: id, type: integer}
+  description: Third-party press coverage ("In the News"). Outbound article links live in `acf`.
+- name: MultimediaFile
+  rest_base: multimedia-file
+  schema: '#/components/schemas/CustomPost'
+  count_at_harvest: 10
+  identity: {field: id, type: integer}
+  description: >-
+    Curated video and podcast records backing the Multimedia Library, including the "Birth of a
+    Biotech" podcast series. Media references live in `acf`.
+- name: MediaItem
+  rest_base: media
+  schema: '#/components/schemas/MediaItem'
+  count_at_harvest: 430
+  identity: {field: id, type: integer}
+  description: >-
+    The attachment library. Carries source_url, mime_type, filesize, alt_text and a media_details
+    block holding the generated size variants.
+- name: Term
+  rest_base: categories | tags
+  schema: '#/components/schemas/Term'
+  count_at_harvest: 2
+  identity: {field: id, type: integer}
+  description: >-
+    Taxonomy terms. Only two exist, both in the `category` taxonomy — Company News (id 1, count 7)
+    and Press Releases (id 7, count 3). The `post_tag` taxonomy is registered but empty.
+- name: Author
+  rest_base: users
+  schema: '#/components/schemas/Author'
+  count_at_harvest: 3
+  identity: {field: id, type: integer}
+  description: >-
+    The public author projection. Anonymously readable on this deployment (unlike many WordPress
+    sites, which 401 this collection), but limited to id, name, url, description, link, slug and
+    avatar_urls. No emails, roles or capabilities are exposed.
+relationships:
+- from: Post
+  to: Author
+  kind: belongs_to
+  via: author
+  link_rel: author
+- from: Post
+  to: MediaItem
+  kind: has_one
+  via: featured_media
+  link_rel: 'wp:featuredmedia'
+  note: 0 means no featured image is set.
+- from: Post
+  to: Term
+  kind: has_many
+  via: categories
+  link_rel: 'wp:term'
+  target_taxonomy: category
+- from: Post
+  to: Term
+  kind: has_many
+  via: tags
+  link_rel: 'wp:term'
+  target_taxonomy: post_tag
+  note: Always empty — the post_tag taxonomy carries no terms on this deployment.
+- from: Page
+  to: Page
+  kind: belongs_to
+  via: parent
+  link_rel: up
+  note: Self-referential hierarchy. 0 means top level.
+- from: Page
+  to: Author
+  kind: belongs_to
+  via: author
+  link_rel: author
+- from: Page
+  to: MediaItem
+  kind: has_one
+  via: featured_media
+  link_rel: 'wp:featuredmedia'
+- from: PressRelease
+  to: MediaItem
+  kind: has_one
+  via: featured_media
+  link_rel: 'wp:featuredmedia'
+- from: CompanyNewsItem
+  to: MediaItem
+  kind: has_one
+  via: featured_media
+  link_rel: 'wp:featuredmedia'
+- from: MultimediaFile
+  to: MediaItem
+  kind: has_one
+  via: featured_media
+  link_rel: 'wp:featuredmedia'
+- from: MediaItem
+  to: Post
+  kind: belongs_to
+  via: post
+  note: The object the attachment was uploaded to. Null for library-only uploads.
+- from: MediaItem
+  to: Author
+  kind: belongs_to
+  via: author
+- from: Term
+  to: Term
+  kind: belongs_to
+  via: parent
+  note: Both live categories are top level (parent 0).
+- from: SearchResult
+  to: [Post, Page, PressRelease, CompanyNewsItem, MultimediaFile]
+  kind: polymorphic_reference
+  via: subtype
+  note: >-
+    Resolve `subtype` to a rest_base via /wp/v2/types, then GET /wp/v2/{rest_base}/{id}. For all
+    five subtypes on this deployment the subtype string IS the rest_base, but that is a property of
+    this installation and should be confirmed from /wp/v2/types rather than assumed.
+id_conventions:
+  scheme: WordPress auto-increment integers
+  shared_sequence: >-
+    Posts, pages, media and all three custom post types draw from a single wp_posts ID sequence, so
+    an ID is globally unique across those six collections but is NOT scoped per type — requesting a
+    valid page ID on /wp/v2/posts/{id} returns 404 rest_post_invalid_id.
+  taxonomy_sequence: >-
+    Terms use a separate wp_terms sequence, so term id 1 and post id 1 are unrelated.
+  prefixes: none
+untyped_surface:
+  field: acf
+  present_on: [Post, Page, MediaItem, Term, Author, PressRelease, CompanyNewsItem, MultimediaFile]
+  detail: >-
+    An Advanced Custom Fields payload is inlined on every resource. It is schemaless from the
+    consumer's point of view — the field keys are defined in the WordPress admin, which is
+    401-gated — and it is where Belharra's real editorial structure lives: outbound coverage URLs
+    on company-news, video and podcast references on multimedia-file, and the team/pipeline block
+    content on pages. It is modelled as `additionalProperties: true` in the OpenAPI rather than
+    guessed at, because the field definitions are not publicly readable.
+render: null

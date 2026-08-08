@@ -1,0 +1,29 @@
+generated: '2026-08-06'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: belharratx.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 30 20:02:48 2026 GMT
+  hsts: false
+- host: developer.wordpress.org
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 23 19:43:55 2026 GMT
+  hsts: false
+domains:
+- domain: belharratx.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: quarantine
+- domain: wordpress.org
+  dnssec: false
+  caa:
+  - 0 iodef "mailto:caa@wordpress.org"
+  - 0 issue "letsencrypt.org;validationmethods=dns-01;accounturi=https://acme-v02.api.letsencrypt.org/acme/acct/53691143"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

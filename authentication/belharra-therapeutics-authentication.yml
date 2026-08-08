@@ -1,0 +1,148 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/belharra-therapeutics-content-openapi.yml + live anonymous probes of https://belharratx.com/wp-json
+summary:
+  types: []
+  api_key_in: []
+  oauth2_flows: []
+  public_read: true
+note: >-
+  The Belharra Therapeutics content API declares no security schemes and requires no credentials
+  for any operation catalogued in this repo. The WordPress REST index at /wp-json/ does advertise
+  one authentication provider for discovery — WordPress application passwords, with an
+  authorization endpoint at https://belharratx.com/wp-admin/authorize-application.php — but that is
+  the WordPress core admin credential flow for authenticated site users, not a developer
+  authentication scheme Belharra publishes for API consumers. It is recorded below for accuracy and
+  is deliberately NOT modelled as a securityScheme in the OpenAPI, because no operation in this
+  repo uses it and no consumer can obtain such a credential. Belharra publishes no developer
+  authentication documentation because it runs no developer program; the read surface is simply
+  open.
+schemes: []
+advertised_by_index:
+- name: application-passwords
+  kind: wordpress-core-admin
+  authorization_endpoint: https://belharratx.com/wp-admin/authorize-application.php
+  transport: HTTP Basic over TLS
+  available_to_public: false
+  detail: >-
+    Reported in the `authentication` object of the /wp-json/ index. Requires an existing WordPress
+    user account on this installation, which is issued only to Belharra staff. No self-service
+    registration exists — https://belharratx.com/wp-login.php is the only entry point.
+anonymous_access:
+  readable:
+  - GET /
+  - GET /wp/v2/posts
+  - GET /wp/v2/posts/{id}
+  - GET /wp/v2/pages
+  - GET /wp/v2/pages/{id}
+  - GET /wp/v2/press-release
+  - GET /wp/v2/press-release/{id}
+  - GET /wp/v2/company-news
+  - GET /wp/v2/company-news/{id}
+  - GET /wp/v2/multimedia-file
+  - GET /wp/v2/multimedia-file/{id}
+  - GET /wp/v2/media
+  - GET /wp/v2/media/{id}
+  - GET /wp/v2/categories
+  - GET /wp/v2/categories/{id}
+  - GET /wp/v2/tags
+  - GET /wp/v2/search
+  - GET /wp/v2/users
+  - GET /wp/v2/types
+  - GET /wp/v2/taxonomies
+  - GET /wp/v2/statuses
+  - GET /wp/v2/blocks
+  - GET /wp/v2/navigation
+  - GET /oembed/1.0/embed
+  readable_but_empty:
+  - path: /wp/v2/tags
+    x_wp_total: 0
+    note: The post_tag taxonomy is registered but carries no terms.
+  - path: /wp/v2/blocks
+    x_wp_total: 0
+  - path: /wp/v2/navigation
+    x_wp_total: 0
+  gated:
+  - path: /wp/v2/settings
+    status: 401
+    code: rest_forbidden
+  - path: /wp/v2/menus
+    status: 401
+    code: rest_cannot_view
+  - path: /wp/v2/menu-locations
+    status: 401
+    code: rest_cannot_view
+  - path: /wp/v2/themes
+    status: 401
+    code: rest_cannot_view_themes
+  - path: /wp/v2/plugins
+    status: 401
+    code: rest_cannot_view_plugins
+  - path: /wp/v2/block-types
+    status: 401
+    code: rest_block_type_cannot_view
+  - path: /wp/v2/font-collections
+    status: 401
+    code: rest_cannot_read
+  - path: /wp/v2/icons
+    status: 401
+    code: rest_cannot_view
+  - path: /wp/v2/sidebars
+    status: 401
+    code: rest_cannot_manage_widgets
+  - path: /wp/v2/widget-types
+    status: 401
+    code: rest_cannot_manage_widgets
+  - path: /wp/v2/templates
+    status: 401
+    code: rest_cannot_manage_templates
+  - path: /wp/v2/template-parts
+    status: 401
+    code: rest_cannot_manage_templates
+  - path: /wp/v2/global-styles/themes/{stylesheet}
+    status: 401
+    code: rest_cannot_read_global_styles
+  - path: /wp/v2/block-patterns/patterns
+    status: 401
+    code: rest_cannot_view
+  - path: /wp/v2/block-patterns/categories
+    status: 401
+    code: rest_cannot_view
+  - path: /wp/v2/pattern-directory/patterns
+    status: 401
+    code: rest_pattern_directory_cannot_view
+  - path: /wp-abilities/v1/abilities
+    status: 401
+    code: rest_forbidden
+    note: >-
+      The WordPress Abilities API — an agent-facing capability registry. Gated, so no MCP or agent
+      surface is claimed for this provider.
+  - path: /wp-abilities/v1/categories
+    status: 401
+    code: rest_forbidden
+  - path: /wp-site-health/v1/directory-sizes
+    status: 401
+    code: rest_forbidden
+  - path: /wp-block-editor/v1/navigation-fallback
+    status: 401
+    code: rest_cannot_create
+  - path: /podcastplayer/v1/posttypes
+    status: 401
+    code: rest_forbidden
+  - path: /wp/v2/comments
+    status: 403
+    code: rest_comment_disabled
+    note: Commenting is switched off site-wide, so the collection is refused rather than empty.
+  - path: /contact-form-7/v1/contact-forms
+    status: 403
+    code: wpcf7_forbidden
+  write_operations: >-
+    Every POST/PUT/PATCH/DELETE route in the 198-route index requires an authenticated WordPress
+    user. None were exercised — the pipeline reads only.
+x-evidence:
+  probed: '2026-08-06'
+  index: https://belharratx.com/wp-json/
+  index_authentication_field:
+    application-passwords:
+      endpoints:
+        authorization: https://belharratx.com/wp-admin/authorize-application.php

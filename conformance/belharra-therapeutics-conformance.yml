@@ -1,0 +1,128 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/belharra-therapeutics-content-openapi.yml + live probes of https://belharratx.com on 2026-08-06
+note: >-
+  Cross-cutting standards conformance for the only public API surface Belharra Therapeutics
+  exposes. Belharra makes no published compliance claims of any kind — no trust center, no
+  SOC 2 / ISO 27001 / HIPAA statement, no certifications page — so no `Compliance` pointer is
+  emitted in apis.yml. Every entry below is derived from the deployed contract, not from a provider
+  assertion.
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: >-
+    openapi/belharra-therapeutics-content-openapi.yml is an API Evangelist derivation, not a
+    provider publication. Belharra itself publishes no OpenAPI.
+  published_by_provider: false
+- id: wordpress-rest-api-v2
+  conforms: true
+  evidence: >-
+    The /wp-json/ index declares the wp/v2 namespace and every modelled route matches the upstream
+    WordPress REST contract documented at https://developer.wordpress.org/rest-api/.
+- id: oembed-1.0
+  conforms: true
+  evidence: >-
+    /oembed/1.0/embed?url=https%3A%2F%2Fbelharratx.com%2F returned 200 with a valid oEmbed 1.0
+    rich response carrying version, provider_name, provider_url, author_name, author_url, title,
+    type, width, height and html.
+- id: rfc8288-web-linking
+  conforms: true
+  evidence: >-
+    Collection responses carry a Link header with rel="next"/rel="prev"; objects carry HAL-style
+    _links relations to self, collection, about and wp:attachment.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors use the WordPress envelope {code, message, data:{status}} served as application/json.
+    No type URI, no application/problem+json. See errors/belharra-therapeutics-problem-types.yml.
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No oauth2 security scheme. The /wp-json/ index advertises only WordPress application passwords
+    (HTTP Basic), which is not an OAuth flow and is not available to API consumers.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returned 404.
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: false
+  evidence: /.well-known/oauth-authorization-server returned 404.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: >-
+    /.well-known/security.txt returned 404 (bare nginx 404 body, not the WordPress theme 404
+    handler). No security contact is published anywhere on the public surface.
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returned 404.
+- id: a2a-agent-card
+  conforms: false
+  evidence: >-
+    Both /.well-known/agent-card.json (A2A 1.0.0 canonical) and /.well-known/agent.json (pre-0.3
+    legacy) returned 404 on belharratx.com. The parked alias domain belharratherapeutics.com
+    answers 200 on both paths, but the body is an identical 114-byte JavaScript redirect shell
+    (window.location.href="/lander") that is byte-identical to the response for a nonsense control
+    path, so it is a soft-404 catch-all and not a card. No a2a/ artifact is written.
+- id: llms-txt
+  conforms: false
+  evidence: >-
+    /llms.txt returned 404 on belharratx.com. The parked alias belharratherapeutics.com serves a
+    65-byte file at /llms.txt, but its content is robots.txt syntax ("User-agent: * / Allow: / /
+    Disallow-Training: / / Sitemap: /sitemap.xml"), not llms.txt markdown format, and it is
+    domain-parking boilerplate rather than anything Belharra authored. It is not credited. The
+    llms/belharra-therapeutics-llms.txt in this repo is an API Evangelist generation.
+- id: model-context-protocol
+  conforms: false
+  gated: true
+  evidence: >-
+    The site registers the WordPress Abilities API at /wp-json/wp-abilities/v1/ — an agent-facing
+    capability registry with abilities, categories and a per-ability /run route. Every
+    wp-abilities/v1 route returned 401 rest_forbidden anonymously. It is therefore a WordPress core
+    administrative surface bound to an authenticated user, not an agent endpoint Belharra publishes
+    for consumers. No MCPServer pointer is emitted and no tool list is derived — the live schema is
+    auth-gated and inventing one would fabricate an agent posture this provider does not have.
+- id: rate-limit-headers
+  conforms: false
+  evidence: No RateLimit-* or X-RateLimit-* headers on any /wp-json response.
+- id: idempotency
+  conforms: false
+  evidence: No idempotency key, no request deduplication contract, no anonymous write surface.
+- id: cors
+  conforms: true
+  evidence: >-
+    Access-Control-Allow-Headers advertises Authorization, X-WP-Nonce, Content-Disposition,
+    Content-MD5 and Content-Type; Access-Control-Expose-Headers advertises X-WP-Total,
+    X-WP-TotalPages and Link.
+- id: tls-1.3
+  conforms: true
+  evidence: TLSv1.3 negotiated on belharratx.com; see security/belharra-therapeutics-domain-security.yml.
+- id: hsts
+  conforms: false
+  evidence: >-
+    No Strict-Transport-Security header on the site root or on /wp-json responses. HTTPS is
+    enforced by redirect only.
+- id: dnssec
+  conforms: false
+  evidence: No DNSSEC on belharratx.com.
+- id: caa
+  conforms: false
+  evidence: >-
+    No CAA records on belharratx.com — any public CA may issue for the domain.
+- id: spf
+  conforms: true
+  evidence: An SPF record is published for belharratx.com.
+- id: dmarc
+  conforms: partial
+  evidence: >-
+    A DMARC record is published with p=quarantine — real but not full enforcement (p=reject). See
+    security/belharra-therapeutics-domain-security.yml.
+regulatory_context:
+  note: >-
+    Belharra Therapeutics is a preclinical-stage biotechnology company running a chemoproteomics
+    drug-discovery platform under partnership with Genentech and Sanofi. It is subject to FDA
+    regulation of any investigational product it advances, but that is drug-development regulation,
+    not API or data-processing regulation, and it confers nothing on the public content API
+    catalogued here. The site publishes a Privacy Policy and Terms of Use; neither describes an
+    API, a data-processing agreement or a compliance certification. No HIPAA, GDPR, SOC 2 or ISO
+    27001 claim is published anywhere on the public surface, and none is asserted on the company's
+    behalf. Belharra has no marketed product, no patient-facing service and no clinical trial of
+    its own listed on the site, so no clinical-data regime attaches.

@@ -1,0 +1,157 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Belharra Therapeutics Content API
+  version: 1.0.0
+extends: openapi/belharra-therapeutics-content-openapi.yml
+x-api-evangelist:
+  generated: '2026-08-06'
+  method: generated
+  source: >-
+    Records the enhancements the API Evangelist enrichment pipeline applied on top of the WordPress
+    REST route index Belharra Therapeutics publishes at https://belharratx.com/wp-json/. Belharra
+    publishes no OpenAPI, so the base document is itself a derivation; this overlay captures what we
+    added beyond the mechanical route-to-path mapping, so a later round can tell provider fact from
+    API Evangelist judgement.
+actions:
+- target: $.info
+  description: Stamp the independent-profile provenance on the document root.
+  update:
+    x-apievangelist-profile: https://apievangelist.com/
+    x-apievangelist-source: https://belharratx.com/wp-json/
+    x-apievangelist-harvested: '2026-08-06'
+    x-apievangelist-derived: true
+    x-apievangelist-provider-publishes-openapi: false
+
+- target: $.info
+  description: >-
+    Record that the surface was restricted to operations verified to return data without
+    credentials, and enumerate what was deliberately dropped.
+  update:
+    x-apievangelist-scope: anonymous-read-only
+    x-apievangelist-excluded:
+      write_operations: >-
+        Every POST/PUT/PATCH/DELETE route in the 198-route index. None was exercised.
+      auth_gated_401:
+      - /wp/v2/settings
+      - /wp/v2/menus
+      - /wp/v2/menu-locations
+      - /wp/v2/themes
+      - /wp/v2/plugins
+      - /wp/v2/block-types
+      - /wp/v2/font-collections
+      - /wp/v2/icons
+      - /wp/v2/sidebars
+      - /wp/v2/widget-types
+      - /wp/v2/templates
+      - /wp/v2/template-parts
+      - /wp/v2/global-styles
+      - /wp/v2/block-patterns/patterns
+      - /wp/v2/block-patterns/categories
+      - /wp/v2/pattern-directory/patterns
+      - /wp-abilities/v1/*
+      - /wp-site-health/v1/*
+      - /podcastplayer/v1/*
+      refused_403:
+      - path: /wp/v2/comments
+        code: rest_comment_disabled
+      - path: /contact-form-7/v1/contact-forms
+        code: wpcf7_forbidden
+      admin_plugin_namespaces:
+      - redirection/v1
+      - duplicate-post/v1
+      - wpe/cache-plugin/v1
+      - wpe_sign_on_plugin/v1
+
+- target: $.info
+  description: >-
+    Record the agent-surface finding explicitly, so no later round mistakes the registered
+    Abilities API for a published agent endpoint.
+  update:
+    x-apievangelist-agent-surface:
+      wp_abilities_registered: true
+      wp_abilities_anonymous_status: 401
+      wp_abilities_anonymous_code: rest_forbidden
+      mcp_claimed: false
+      note: >-
+        The WordPress Abilities API (wp-abilities/v1) is registered but auth-gated. It is a core
+        administrative capability registry bound to an authenticated WordPress user, not an agent
+        endpoint Belharra publishes. No MCPServer pointer is emitted and no tool list is derived.
+
+- target: $.info
+  description: >-
+    Record the soft-404 finding on the parked alias domain so a later round does not credit its
+    blanket 200s.
+  update:
+    x-apievangelist-soft-404:
+      host: belharratherapeutics.com
+      verdict: parked-lander-catch-all
+      control_path: /this-path-does-not-exist-xyz123
+      control_body_bytes: 114
+      note: >-
+        Answers 200 on /.well-known/agent-card.json, /.well-known/agent.json, /openapi.json and
+        /.well-known/security.txt with a body byte-identical to the nonsense control path. Nothing
+        from this host is credited.
+
+- target: $.servers[0]
+  description: Record the deployment platform observed in response headers.
+  update:
+    x-apievangelist-platform:
+      cms: WordPress
+      hosting: WP Engine
+      cdn: Cloudflare
+      response_headers: [x-powered-by, x-cacheable, x-cache, x-cache-group, cf-cache-status, x-robots-tag]
+      robots: 'x-robots-tag: noindex on every /wp-json response'
+
+- target: $.tags
+  description: >-
+    Tag names, descriptions and the whole tag taxonomy are API Evangelist additions — the route
+    index carries no grouping of any kind. The custom-types tag in particular groups Belharra's
+    three site-specific post types, which WordPress registers alongside core types with no
+    distinction.
+  update: {}
+
+- target: "$.paths..responses['200'].headers"
+  description: >-
+    X-WP-Total, X-WP-TotalPages and the RFC 8288 Link header are documented here from observed
+    response headers. They are absent from the route index, which describes only request args.
+  update: {}
+
+- target: "$.paths..responses['400']"
+  description: >-
+    The 400 and 404 responses, and the worked error examples attached to them, were captured by
+    deliberately issuing failing requests (per_page=999, posts/999999, oembed with no url) and
+    recording the real bodies. The route index declares no responses at all.
+  update: {}
+
+- target: $.components.schemas
+  description: >-
+    Every schema is an API Evangelist reconstruction from live anonymous response bodies, not a
+    provider-published model. Field sets were read from actual `context=view` responses per
+    collection. The `acf` property is typed as an open object on purpose: the ACF field definitions
+    are 401-gated, so any concrete shape would be invention.
+  update: {}
+
+- target: $.components.schemas.CustomPost
+  description: >-
+    A single schema is shared by press-release, company-news and multimedia-file because live
+    responses from all three returned an identical field set. This is an API Evangelist
+    consolidation; WordPress registers them as three independent types.
+  update:
+    x-apievangelist-consolidated-from: [press-release, company-news, multimedia-file]
+    x-apievangelist-verified: >-
+      Field sets compared across live anonymous context=view responses from all three collections
+      on 2026-08-06 and found identical.
+
+- target: $.components.schemas.Error
+  description: >-
+    Explicitly typed as the WordPress envelope, not RFC 9457. Called out because the absence of
+    problem+json is a scored fact, not an omission in this document.
+  update:
+    x-apievangelist-rfc9457: false
+
+- target: $.components.parameters
+  description: >-
+    Every parameter is copied verbatim from the `args` block the route index publishes for that
+    endpoint. Descriptions and enum values are upstream WordPress; only the OpenAPI packaging and
+    the per-collection examples are ours.
+  update: {}

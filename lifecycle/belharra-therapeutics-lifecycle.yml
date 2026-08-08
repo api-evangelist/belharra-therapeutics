@@ -1,0 +1,108 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/belharra-therapeutics-content-openapi.yml + live probes of https://belharratx.com on 2026-08-06
+note: >-
+  Belharra Therapeutics runs no developer program, so it publishes no API versioning policy, no
+  deprecation policy, no SLA and no status page. Nothing below is asserted on the company's behalf.
+  No `StatusPage` and no `Deprecation` pointer is emitted in apis.yml, because neither exists — the
+  operational-transparency checks those pointers feed would be false credit here.
+versioning:
+  scheme: uri-path-namespace
+  current: wp/v2
+  docs: https://developer.wordpress.org/rest-api/
+  provider_policy: null
+  detail: >-
+    The version lives in the route namespace and is set by WordPress core and the installed
+    plugins, not by Belharra. Namespaces observed on 2026-08-06: oembed/1.0, wpe/cache-plugin/v1,
+    wpe_sign_on_plugin/v1, contact-form-7/v1, redirection/v1, podcastplayer/v1, duplicate-post/v1,
+    wp/v2, wp-site-health/v1, wp-block-editor/v1, wp-abilities/v1. A plugin update can add, change
+    or remove routes at any time with no notice to consumers.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  detail: >-
+    No RFC 8594 Sunset header and no Deprecation header observed on any response. No deprecation
+    policy is published. Route churn is inherited from upstream WordPress and plugin releases.
+deprecated_operations: []
+sla:
+  url: null
+  uptime_target: null
+status_page:
+  url: null
+  detail: >-
+    No status page. status.belharratx.com is NXDOMAIN and no third-party status page (Statuspage,
+    Instatus, Better Stack) is linked from the site.
+support:
+  url: https://belharratx.com/contact/
+  email: info@belharratx.com
+  press_email: dfejeran@belharratx.com
+  detail: >-
+    The company publishes a general corporate contact page with a general and a press address at
+    3985 Sorrento Valley Boulevard, Suite C, San Diego, CA 92121. There is no developer support
+    channel, no forum, no help center and no issue tracker, so no `Support` pointer is emitted —
+    the corporate contact page is wired as `Contact` instead.
+changelog:
+  url: null
+  detail: >-
+    No API changelog. The company's /newsroom/, /press-releases/ and /company-news/ archives (wired
+    as News, PressReleases and BlogRSS in apis.yml) are corporate communications, not release notes
+    for this API, so no `ChangeLog` pointer is emitted.
+observed_freshness:
+  api_index_fetched: '2026-08-06'
+  route_count: 198
+  namespace_count: 11
+  most_recent_post_published: '2024-06-18'
+  most_recent_press_release_published: '2025-01-10'
+  most_recent_page_modified: '2026-06-26'
+  most_recent_media_modified: '2026-02-04'
+  detail: >-
+    The editorial surface has gone quiet — the newest press release is the January 2025 chief
+    scientific officer appointment, nineteen months before this pass, and the newest blog post is
+    the June 2024 Sanofi collaboration. The corporate pages are still being maintained, though:
+    the BTX Crew team page was modified 2026-06-26, six weeks before this pass, so the site is
+    live and tended rather than abandoned.
+platform:
+  cms: WordPress
+  custom_fields: Advanced Custom Fields (acf payload on every resource; acf-disabled post status registered)
+  plugins_visible_from_namespaces:
+  - Contact Form 7 (contact-form-7/v1)
+  - Redirection (redirection/v1)
+  - Podcast Player (podcastplayer/v1)
+  - Yoast Duplicate Post (duplicate-post/v1)
+  - WP Engine cache plugin (wpe/cache-plugin/v1)
+  - WP Engine sign-on plugin (wpe_sign_on_plugin/v1)
+  hosting: WP Engine
+  cdn: Cloudflare
+  detail: >-
+    Responses carry x-powered-by: WP Engine and server: cloudflare. No staging hostnames leak into
+    guid fields — page guids are either canonical belharratx.com permalinks or bare ?page_id=N
+    query forms, so there is no observable staging-to-production leak on this deployment.
+source_code:
+  github_org: https://github.com/belharra-tx
+  verified: >-
+    A real GitHub organization named "Belharra Therapeutics, Inc.", created 2021-09-05, location
+    "United States of America". Wired in apis.yml as GitHubOrganization.
+  public_repos: 1
+  first_party_code: false
+  detail: >-
+    The single public repository, belharra-tx/datawarrior, is an unmodified fork of
+    thsa/datawarrior — the open-source GPL-3.0 cheminformatics analysis tool — forked 2022-11-18
+    and last pushed the same day. It is a dependency mirror, not Belharra software. No SDK, no
+    client library and no first-party source is published, so no packages/ artifact is written and
+    no `SDKs` pointer is emitted. Registry searches on 2026-08-06 confirm the absence: npm search
+    "belharra" returned 0 packages, pypi.org/pypi/belharra returned 404,
+    rubygems.org/api/v1/gems/belharra returned 404, and crates.io returned 0 results.
+domains:
+  primary: belharratx.com
+  parked_alias:
+    domain: belharratherapeutics.com
+    status: 200
+    detail: >-
+      A domain-parking lander, not a Belharra property surface. Every path returns an identical
+      114-byte JavaScript redirect shell (window.location.href="/lander"), byte-identical to the
+      response for a nonsense control path. Its /robots.txt and /llms.txt are parking-service
+      boilerplate. Nothing served from this host is credited to Belharra anywhere in this repo.
+  unresolved:
+  - domain: belharra.com
+    detail: Connection timed out on HTTPS — not operated as a Belharra web property.

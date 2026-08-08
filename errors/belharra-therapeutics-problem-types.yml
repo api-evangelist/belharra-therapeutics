@@ -1,0 +1,121 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/belharra-therapeutics-content-openapi.yml + live anonymous error responses observed 2026-08-06
+format: wordpress-rest
+rfc9457: false
+note: >-
+  The Belharra Therapeutics content API does NOT use RFC 9457 problem+json. Every error is the
+  WordPress REST envelope — a flat JSON object of {code, message, data:{status}} served as
+  application/json, with no `type` URI, no `title`/`detail` split and no problem+json media type.
+  Belharra publishes no error reference of its own; every entry below was either returned by a
+  live anonymous request during this pass or is defined by the upstream WordPress REST contract for
+  a route catalogued in this repo. The `observed` flag distinguishes the two.
+envelope:
+  content_type: application/json
+  shape: '{ code: string, message: string, data: { status: integer, params?: object, details?: object } }'
+  fields:
+    code: A stable machine-readable error slug. This is the field to branch on.
+    message: A human-readable, localised sentence. Do not match on it.
+    data.status: The HTTP status, repeated inside the body.
+    data.params: On validation failures, a map of parameter name to a human-readable reason.
+    data.details: On validation failures, a per-parameter nested {code, message, data} block.
+problems:
+- code: rest_post_invalid_id
+  status: 404
+  title: Invalid post ID
+  message: Invalid post ID.
+  observed: true
+  remediation: >-
+    The numeric ID does not exist, is not published, or is of a different post type than the route.
+    Resolve IDs from a collection listing or from /wp/v2/search rather than guessing.
+  source_operation: openapi/belharra-therapeutics-content-openapi.yml#getPost
+- code: rest_post_invalid_id
+  status: 404
+  title: Invalid page ID
+  message: Invalid post ID.
+  observed: false
+  remediation: Same slug is reused for pages and for all three custom post types.
+  source_operation: openapi/belharra-therapeutics-content-openapi.yml#getPage
+- code: rest_invalid_param
+  status: 400
+  title: Invalid parameter
+  message: 'Invalid parameter(s): per_page'
+  observed: true
+  remediation: >-
+    A query parameter failed validation. Read data.params for the per-parameter reason. Verified
+    live: per_page above 100 returns rest_out_of_bounds inside data.details with the message
+    "per_page must be between 1 (inclusive) and 100 (inclusive)". Note that the API rejects rather
+    than clamps.
+  source_operation: openapi/belharra-therapeutics-content-openapi.yml#listPosts
+- code: rest_out_of_bounds
+  status: 400
+  title: Parameter out of bounds
+  message: per_page must be between 1 (inclusive) and 100 (inclusive)
+  observed: true
+  remediation: >-
+    Nested inside data.details of a rest_invalid_param response, not returned as a top-level code.
+  source_operation: openapi/belharra-therapeutics-content-openapi.yml#listPosts
+- code: rest_forbidden
+  status: 401
+  title: Forbidden
+  message: Sorry, you are not allowed to do that.
+  observed: true
+  remediation: >-
+    The route requires an authenticated WordPress user. Returned anonymously by /wp/v2/settings,
+    every /wp-abilities/v1/ route, /wp-site-health/v1/directory-sizes and /podcastplayer/v1/. None
+    of these is catalogued in the OpenAPI. There is no consumer-obtainable credential — see
+    authentication/belharra-therapeutics-authentication.yml.
+  source_operation: null
+- code: rest_comment_disabled
+  status: 403
+  title: Comments are disabled
+  message: Sorry, comments are not open on this site.
+  observed: true
+  remediation: >-
+    Commenting is switched off site-wide, so /wp/v2/comments is refused rather than returning an
+    empty collection. The route is deliberately excluded from the OpenAPI for that reason.
+  source_operation: null
+- code: rest_no_route
+  status: 404
+  title: No route was found
+  message: 'No route was found matching the URL and request method.'
+  observed: false
+  remediation: >-
+    The path is not registered in the 198-route index. Fetch GET / to enumerate the live route
+    table rather than assuming a route exists.
+  source_operation: openapi/belharra-therapeutics-content-openapi.yml#getApiIndex
+- code: rest_cannot_view
+  status: 401
+  title: Cannot view
+  message: Sorry, you are not allowed to view this resource.
+  observed: true
+  remediation: >-
+    Returned anonymously by /wp/v2/menus, /wp/v2/menu-locations, /wp/v2/icons and the
+    /wp/v2/block-patterns/* routes. All are excluded from the OpenAPI.
+  source_operation: null
+- code: rest_oembed_invalid_url
+  status: 404
+  title: Invalid oEmbed URL
+  message: Invalid URL parameter.
+  observed: false
+  remediation: >-
+    /oembed/1.0/embed only resolves belharratx.com permalinks. Passing a foreign or unresolvable
+    URL yields this. Omitting `url` entirely yields rest_missing_callback_param (400), which was
+    observed live.
+  source_operation: openapi/belharra-therapeutics-content-openapi.yml#getOembed
+- code: rest_missing_callback_param
+  status: 400
+  title: Missing required parameter
+  message: 'Missing parameter(s): url'
+  observed: true
+  remediation: A required parameter was omitted. data.params lists which.
+  source_operation: openapi/belharra-therapeutics-content-openapi.yml#getOembed
+client_guidance:
+  branch_on: data.code
+  never_branch_on: data.message
+  retry: >-
+    No Retry-After header and no RateLimit-* headers are returned. 4xx responses here are
+    deterministic and should not be retried; only 5xx and transport failures warrant a backoff.
+  cross_links:
+    conventions: conventions/belharra-therapeutics-conventions.yml
+    authentication: authentication/belharra-therapeutics-authentication.yml

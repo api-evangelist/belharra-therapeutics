@@ -1,0 +1,130 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/belharra-therapeutics-content-openapi.yml + live response headers observed 2026-08-06
+note: >-
+  Cross-cutting request/response semantics of the Belharra Therapeutics content API. Belharra
+  publishes no API conventions documentation of its own; everything below is the WordPress REST
+  contract as it is actually deployed here, derived from the route index and confirmed against live
+  anonymous responses. Idempotency is deliberately NOT claimed — this deployment exposes no
+  idempotency key, no request-deduplication contract, and no anonymous write surface at all, so no
+  `Idempotency` pointer is emitted in apis.yml.
+authentication:
+  style: none
+  detail: >-
+    No credentials required for any catalogued operation. The /wp-json/ index does advertise
+    WordPress application passwords, but that is the core admin credential flow for site staff and
+    is not obtainable by an API consumer. See
+    authentication/belharra-therapeutics-authentication.yml.
+idempotency:
+  supported: false
+  header: null
+  detail: >-
+    No Idempotency-Key header, no client-supplied request identifier, and no documented replay
+    semantics. All catalogued operations are GET and therefore idempotent by HTTP method alone,
+    which is not an idempotency contract.
+pagination:
+  style: page-number
+  params:
+    page: Current page of the collection (1-based).
+    per_page: Items per page. Minimum 1, maximum 100, default 10.
+    offset: Alternative absolute offset into the result set.
+  response_headers:
+    X-WP-Total: Total number of matching items.
+    X-WP-TotalPages: Total number of pages available.
+  link_header: >-
+    RFC 8288 Link header carrying rel="next" and rel="prev". Observed on
+    /wp/v2/posts?per_page=2 as
+    <https://belharratx.com/wp-json/wp/v2/posts?per_page=2&page=2>; rel="next".
+  cors_exposure: >-
+    Access-Control-Expose-Headers advertises X-WP-Total, X-WP-TotalPages and Link, so browser
+    clients can read the pagination headers cross-origin.
+  bounds_error: >-
+    per_page above 100 returns 400 rest_invalid_param with a per-parameter details block, not a
+    clamp. Verified: {"code":"rest_invalid_param","message":"Invalid parameter(s): per_page",
+    "data":{"status":400,"params":{"per_page":"per_page must be between 1 (inclusive) and 100
+    (inclusive)"}}}.
+field_selection:
+  supported: true
+  params:
+    _fields: Comma-separated allow-list of top-level response fields.
+    _embed: Inline embeddable resources (author, featured media, terms) under _embedded.
+    _envelope: Wrap the response body, status and headers in a single JSON envelope.
+  context:
+    param: context
+    values: [view, embed, edit]
+    detail: >-
+      Anonymously only `view` and `embed` return data; `edit` requires an authenticated user and
+      returns 401.
+sorting_and_filtering:
+  order: asc | desc (default desc)
+  orderby: Per-collection enum — date, id, title, slug, modified, author, include, relevance, menu_order.
+  date_windows: after, before, modified_after, modified_before (ISO 8601).
+  identity: include / exclude / slug.
+  full_text: search, with search_columns and search_semantics.
+  taxonomy: >-
+    categories, categories_exclude, tags, tags_exclude, tax_relation (AND | OR) — on /wp/v2/posts
+    only. None of Belharra's three custom post types declares a taxonomy, so those collections are
+    filterable by date, slug, menu_order and search alone.
+  custom_type_ordering: >-
+    press-release, company-news and multimedia-file all accept menu_order as both a filter and an
+    orderby value, which is how the site controls display order independently of publish date.
+metadata:
+  field: meta
+  detail: >-
+    A `meta` object is present on every post-like resource but only registered meta keys are
+    exposed; no custom keys are surfaced anonymously on this deployment.
+  extensions_observed:
+  - acf — an Advanced Custom Fields payload is inlined on every post, page, media item, term, user
+    and custom-type record. This is where the multimedia-file video/podcast references and the
+    company-news outbound coverage links live, and it is the only route to Belharra's structured
+    editorial data.
+  - class_list — the CSS class list WordPress would render for the object.
+  - filename and filesize — added to media records alongside the core source_url and media_details.
+  absent:
+  - No SEO plugin fields. Unlike many WordPress deployments there is no yoast_head or
+    yoast_head_json block, so no schema.org graph is inlined in API responses.
+request_tracing:
+  request_id_header: null
+  detail: >-
+    No provider request identifier. Cloudflare returns a cf-ray value on every response, which is
+    an edge trace token and not an application-level correlation id.
+versioning:
+  scheme: uri-path-namespace
+  current: wp/v2
+  detail: >-
+    Version is carried in the route namespace (wp/v2, oembed/1.0, wp-abilities/v1,
+    contact-form-7/v1, redirection/v1, podcastplayer/v1). Belharra does not version this surface
+    itself; it moves when WordPress core and the installed plugins move. See
+    lifecycle/belharra-therapeutics-lifecycle.yml.
+error_envelope:
+  format: wordpress-rest
+  rfc9457: false
+  content_type: application/json
+  shape: '{ code: string, message: string, data: { status: int, params?: object, details?: object } }'
+  detail: >-
+    Not RFC 9457 problem+json — there is no `type` URI and no problem+json media type. See
+    errors/belharra-therapeutics-problem-types.yml.
+rate_limiting:
+  signaled: false
+  headers: []
+  detail: >-
+    No RateLimit-* or X-RateLimit-* headers are returned on /wp-json responses. robots.txt
+    advertises Crawl-delay: 10 for HTML crawling, which is a politeness directive and not an
+    enforced API rate limit.
+caching:
+  cache_control: 'max-age=600, must-revalidate on /wp-json collection responses'
+  headers_observed: [x-cacheable, x-cache, x-cache-group, cf-cache-status, last-modified, vary]
+  vary: 'Accept-Encoding, Cookie'
+  detail: >-
+    WP Engine object cache (x-cacheable: SHORT, x-cache-group: normal) in front of the origin,
+    Cloudflare in front of that. Responses also carry x-robots-tag: noindex and
+    x-content-type-options: nosniff.
+cors:
+  allow_headers: [Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type]
+  expose_headers: [X-WP-Total, X-WP-TotalPages, Link]
+cross_links:
+  authentication: authentication/belharra-therapeutics-authentication.yml
+  errors: errors/belharra-therapeutics-problem-types.yml
+  lifecycle: lifecycle/belharra-therapeutics-lifecycle.yml
+  data_model: data-model/belharra-therapeutics-data-model.yml
+  conformance: conformance/belharra-therapeutics-conformance.yml
