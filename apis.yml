@@ -42,36 +42,18 @@ tags:
 - immunology
 - content-api
 apis:
-- aid: belharra-therapeutics:belharra-therapeutics-content-api
-  name: Belharra Therapeutics Content API
+- aid: belharra-therapeutics:belharra-therapeutics-custom-types-api
+  name: Belharra Therapeutics Custom Types API
   description: >-
-    The anonymously readable WordPress REST API behind belharratx.com. It exposes the company's
-    editorial and corporate content: four press releases spanning the January 2023 $130 million
-    debut and Genentech collaboration, the June 2024 Sanofi immunology collaboration and the
-    January 2025 chief scientific officer appointment; twenty-one company-news items; ten blog
-    posts across the Company News and Press Releases categories; ten multimedia-file records; the
-    twenty-nine published corporate pages (About, Our Story, Our Values, Our Team with Leadership,
-    Founders, Board of Directors, Senior Advisors and BTX Crew, Our Approach with Platform and
-    Publications, Science, Program, Partners, Patients, Careers, Newsroom, Podcast, Multimedia
-    Library, Contact, Privacy and Terms); the 430-item media library; the two news categories; the
-    registered post types, taxonomies and post statuses; cross-content search across 74 records;
-    and the oEmbed 1.0 provider endpoint. This is not a developer product Belharra markets; it is
-    the site's own content surface, registered at /wp-json/ and verified to return data without
-    credentials. The OpenAPI in this repo is derived from the published route index.
+    Belharra's three custom post types — press-release (4 items), company-news (21 items) and multimedia-file
+    (10 items).
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://belharratx.com/wp-json
   tags:
-  - content
-  - wordpress
-  - corporate
-  - news
-  - press-releases
-  - media
+  - custom-types
   properties:
   - type: OpenAPI
-    url: openapi/belharra-therapeutics-content-openapi.yml
-  - type: Overlay
-    url: overlays/belharra-therapeutics-content-overlay.yaml
+    url: openapi/belharra-therapeutics-custom-types-api-openapi.yml
   - type: Authentication
     url: authentication/belharra-therapeutics-authentication.yml
   - type: ErrorCatalog
@@ -80,33 +62,143 @@ apis:
     url: conventions/belharra-therapeutics-conventions.yml
   - type: DataModel
     url: data-model/belharra-therapeutics-data-model.yml
-  x-contract-provenance: >-
-    Derived by the API Evangelist enrichment pipeline from the WordPress REST route index the site
-    publishes at https://belharratx.com/wp-json/ — 198 routes across 11 namespaces (oembed/1.0,
-    wpe/cache-plugin/v1, wpe_sign_on_plugin/v1, contact-form-7/v1, redirection/v1, podcastplayer/v1,
-    duplicate-post/v1, wp/v2, wp-site-health/v1, wp-block-editor/v1, wp-abilities/v1) — and verified
-    against live anonymous responses on 2026-08-06. Only operations that returned data without
-    credentials are modelled; every write route and the entire plugin-administration surface is
-    excluded. Anonymous denials recorded at harvest: /wp/v2/settings, /wp/v2/menus,
-    /wp/v2/menu-locations, /wp/v2/themes, /wp/v2/plugins, /wp/v2/block-types,
-    /wp/v2/font-collections, /wp/v2/icons, /wp/v2/sidebars, /wp/v2/widget-types, /wp/v2/templates,
-    /wp/v2/template-parts, /wp/v2/global-styles, /wp/v2/block-patterns/*,
-    /wp/v2/pattern-directory/patterns, /wp-site-health/v1/*, /podcastplayer/v1/* (401) and
-    /wp/v2/comments (403 rest_comment_disabled), /contact-form-7/v1/contact-forms (403
-    wpcf7_forbidden). Notably the site registers the WordPress Abilities API (wp-abilities/v1), an
-    agent-facing capability registry, but every wp-abilities/v1 route returned 401 rest_forbidden
-    anonymously, so no MCP or agent surface is claimed for this provider and no MCPServer pointer is
-    emitted. The site is served by WP Engine behind Cloudflare and sets x-robots-tag: noindex on API
-    responses. Belharra publishes no developer documentation, no API reference, no getting-started
-    guide and no support channel for this surface, so no Documentation / APIReference /
-    GettingStarted pointers are emitted; the humanURL above is the upstream WordPress REST handbook
-    that defines the wp/v2 contract.
+- aid: belharra-therapeutics:belharra-therapeutics-discovery-api
+  name: Belharra Therapeutics Discovery API
+  description: Route, type, taxonomy, status and author discovery documents.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://belharratx.com/wp-json
+  tags:
+  - discovery
+  properties:
+  - type: OpenAPI
+    url: openapi/belharra-therapeutics-discovery-api-openapi.yml
+  - type: Authentication
+    url: authentication/belharra-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/belharra-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/belharra-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/belharra-therapeutics-data-model.yml
+- aid: belharra-therapeutics:belharra-therapeutics-media-api
+  name: Belharra Therapeutics Media API
+  description: Media library (430 attachments at harvest time).
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://belharratx.com/wp-json
+  tags:
+  - media
+  properties:
+  - type: OpenAPI
+    url: openapi/belharra-therapeutics-media-api-openapi.yml
+  - type: Authentication
+    url: authentication/belharra-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/belharra-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/belharra-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/belharra-therapeutics-data-model.yml
+- aid: belharra-therapeutics:belharra-therapeutics-oembed-api
+  name: Belharra Therapeutics Oembed API
+  description: oEmbed 1.0 provider endpoint for belharratx.com URLs.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://belharratx.com/wp-json
+  tags:
+  - oembed
+  properties:
+  - type: OpenAPI
+    url: openapi/belharra-therapeutics-oembed-api-openapi.yml
+  - type: Authentication
+    url: authentication/belharra-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/belharra-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/belharra-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/belharra-therapeutics-data-model.yml
+- aid: belharra-therapeutics:belharra-therapeutics-pages-api
+  name: Belharra Therapeutics Pages API
+  description: Corporate pages (29 published at harvest time).
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://belharratx.com/wp-json
+  tags:
+  - pages
+  properties:
+  - type: OpenAPI
+    url: openapi/belharra-therapeutics-pages-api-openapi.yml
+  - type: Authentication
+    url: authentication/belharra-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/belharra-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/belharra-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/belharra-therapeutics-data-model.yml
+- aid: belharra-therapeutics:belharra-therapeutics-posts-api
+  name: Belharra Therapeutics Posts API
+  description: >-
+    Blog/news archive (10 published at harvest time), categorised as Company News or Press Releases.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://belharratx.com/wp-json
+  tags:
+  - posts
+  properties:
+  - type: OpenAPI
+    url: openapi/belharra-therapeutics-posts-api-openapi.yml
+  - type: Authentication
+    url: authentication/belharra-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/belharra-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/belharra-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/belharra-therapeutics-data-model.yml
+- aid: belharra-therapeutics:belharra-therapeutics-search-api
+  name: Belharra Therapeutics Search API
+  description: Cross-content search across published objects (74 searchable records at harvest time).
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://belharratx.com/wp-json
+  tags:
+  - search
+  properties:
+  - type: OpenAPI
+    url: openapi/belharra-therapeutics-search-api-openapi.yml
+  - type: Authentication
+    url: authentication/belharra-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/belharra-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/belharra-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/belharra-therapeutics-data-model.yml
+- aid: belharra-therapeutics:belharra-therapeutics-taxonomy-api
+  name: Belharra Therapeutics Taxonomy API
+  description: >-
+    Categories and tags. Two categories are registered (Company News, Press Releases); the post_tag taxonomy
+    is registered but empty.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://belharratx.com/wp-json
+  tags:
+  - taxonomy
+  properties:
+  - type: OpenAPI
+    url: openapi/belharra-therapeutics-taxonomy-api-openapi.yml
+  - type: Authentication
+    url: authentication/belharra-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/belharra-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/belharra-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/belharra-therapeutics-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/belharra-therapeutics-content-overlay.yaml
 - type: Website
   url: https://belharratx.com/
 - type: About
