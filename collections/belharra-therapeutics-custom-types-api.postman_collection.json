@@ -1,0 +1,1841 @@
+{
+  "item": [
+    {
+      "id": "1dece8af-749d-4147-8787-39080ab2feab",
+      "name": "custom-types",
+      "description": {
+        "content": "Belharra's three custom post types — press-release (4 items), company-news (21 items) and multimedia-file (10 items).",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b056ae4a-4e17-4d5e-a8e7-895b7e901179",
+          "name": "List press releases",
+          "request": {
+            "name": "List press releases",
+            "description": {
+              "content": "Lists the `press-release` custom post type — 4 published items at harvest time: the January 2023 debut with $130 million in funding, the January 2023 broad Genentech collaboration, the June 2024 Sanofi immunology collaboration, and the January 2025 appointment of Sean Buchanan as chief scientific officer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "press-release"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "context",
+                  "value": "view",
+                  "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Current page of the collection."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Maximum number of items to be returned in the result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Limit results to those matching a string."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_columns",
+                  "value": "<string>",
+                  "description": "Array of column names to be searched."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_columns",
+                  "value": "<string>",
+                  "description": "Array of column names to be searched."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_semantics",
+                  "value": "<string>",
+                  "description": "How to interpret the search input."
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<dateTime>",
+                  "description": "Limit response to items published after a given ISO 8601 compliant date."
+                },
+                {
+                  "disabled": false,
+                  "key": "before",
+                  "value": "<dateTime>",
+                  "description": "Limit response to items published before a given ISO 8601 compliant date."
+                },
+                {
+                  "disabled": false,
+                  "key": "modified_after",
+                  "value": "<dateTime>",
+                  "description": "Limit response to items modified after a given ISO 8601 compliant date."
+                },
+                {
+                  "disabled": false,
+                  "key": "modified_before",
+                  "value": "<dateTime>",
+                  "description": "Limit response to items modified before a given ISO 8601 compliant date."
+                },
+                {
+                  "disabled": false,
+                  "key": "exclude",
+                  "value": "<integer>",
+                  "description": "Ensure result set excludes specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "exclude",
+                  "value": "<integer>",
+                  "description": "Ensure result set excludes specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<integer>",
+                  "description": "Limit result set to specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<integer>",
+                  "description": "Limit result set to specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Offset the result set by a specific number of items."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Order sort attribute ascending or descending."
+                },
+                {
+                  "disabled": false,
+                  "key": "slug",
+                  "value": "<string>",
+                  "description": "Limit result set to items with one or more specific slugs."
+                },
+                {
+                  "disabled": false,
+                  "key": "slug",
+                  "value": "<string>",
+                  "description": "Limit result set to items with one or more specific slugs."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "publish",
+                  "description": "Limit result set to items assigned one or more statuses. Anonymous callers may only request `publish`."
+                },
+                {
+                  "disabled": false,
+                  "key": "menu_order",
+                  "value": "<integer>",
+                  "description": "Limit result set to items with a specific menu_order value."
+                },
+                {
+                  "disabled": false,
+                  "key": "orderby",
+                  "value": "date",
+                  "description": "Sort collection by object attribute."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4837651f-1253-4322-a088-9518c0ff854f",
+              "name": "A page of press releases",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "press-release"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "context",
+                      "value": "view"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_columns",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_columns",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_semantics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "modified_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "modified_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "publish"
+                    },
+                    {
+                      "key": "menu_order",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "orderby",
+                      "value": "date"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-WP-Total",
+                  "value": "672",
+                  "description": ""
+                },
+                {
+                  "disabled": false,
+                  "key": "X-WP-TotalPages",
+                  "value": "669",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 3611,\n    \"date\": \"1952-02-17T10:00:49.096Z\",\n    \"slug\": \"string\",\n    \"status\": \"string\",\n    \"type\": \"company-news\",\n    \"link\": \"https://ocCilZIABHevZedDCQyZzHouUuyJQP.bphltbXX3K\",\n    \"title\": {\n      \"rendered\": \"string\"\n    },\n    \"date_gmt\": \"1950-07-26T07:35:01.720Z\",\n    \"guid\": {\n      \"rendered\": \"string\"\n    },\n    \"modified\": \"1970-12-05T14:22:02.955Z\",\n    \"modified_gmt\": \"2008-03-17T10:59:32.304Z\",\n    \"content\": {\n      \"rendered\": \"string\",\n      \"protected\": false\n    },\n    \"featured_media\": 9011,\n    \"menu_order\": 3281,\n    \"template\": \"string\",\n    \"meta\": {\n      \"key_0\": 504,\n      \"key_1\": 670\n    },\n    \"class_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"acf\": {\n      \"key_0\": true\n    },\n    \"_links\": {\n      \"key_0\": [\n        {\n          \"href\": \"http://OEVWwkahJzBYGxWUHec.pukavGx.nHcAnjkyLX82P4jjqLMn2x7PdjwNqq3Pdk5AXvwmj.e+vFU\",\n          \"embeddable\": false,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"https://KSlLYuRyEDPKhqFmzjJdgqmHRuSoU.fnioxO9YOyH6c\",\n          \"embeddable\": false,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ],\n      \"key_1\": [\n        {\n          \"href\": \"https://nrNVjwGgMLcZTbJ.hysuCI1IJBNI9Y\",\n          \"embeddable\": false,\n          \"templated\": true,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"https://zibtVvu.kyqnXEBzrMwOnq+PB1OH5-xYulawq,4veZ36WEtPvzj\",\n          \"embeddable\": true,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ]\n    }\n  },\n  {\n    \"id\": 9241,\n    \"date\": \"1950-10-20T04:13:02.430Z\",\n    \"slug\": \"string\",\n    \"status\": \"string\",\n    \"type\": \"company-news\",\n    \"link\": \"http://pBZfkziqnajrQfknCsIyGHU.rzVeOHEFD.AAs2mMei2Tfa1EXyXU6O75ySpcARVVYkuCMShOJ+60M3a50Nog8\",\n    \"title\": {\n      \"rendered\": \"string\"\n    },\n    \"date_gmt\": \"1981-05-06T22:44:32.986Z\",\n    \"guid\": {\n      \"rendered\": \"string\"\n    },\n    \"modified\": \"2002-01-08T06:24:27.617Z\",\n    \"modified_gmt\": \"1971-12-23T22:17:24.048Z\",\n    \"content\": {\n      \"rendered\": \"string\",\n      \"protected\": true\n    },\n    \"featured_media\": 3808,\n    \"menu_order\": 2029,\n    \"template\": \"string\",\n    \"meta\": {\n      \"key_0\": 7568,\n      \"key_1\": \"string\"\n    },\n    \"class_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"acf\": {\n      \"key_0\": 2383.584795530851,\n      \"key_1\": true\n    },\n    \"_links\": {\n      \"key_0\": [\n        {\n          \"href\": \"https://NyMaC.awTFb0pTK1GnMTazQh.Zh7X3J6a-bJOWczhe-S7NJIUUQ5W12ApeXTw\",\n          \"embeddable\": true,\n          \"templated\": true,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"http://osEuQsaKnKIMEuHMHojYffx.tvwo3yaBrFebYaXc1Mx9ieJFHSE5RKzSPNC0A5OjO-T05TGWMvIqZOG.AJWGB\",\n          \"embeddable\": true,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ],\n      \"key_1\": [\n        {\n          \"href\": \"http://GXncpBLEDIFusIKOhIoLIWKAdfZc.iefwWZ8ADZaCMAOJHEoUKsEpZ4c-6Hm3SM-Y\",\n          \"embeddable\": true,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"https://itPUm.peeeJzK+jYg-KrB6u2BF9gi09Gc-XEykTPWXJO3I,9v,.4jG5odn0t3ZzmQ\",\n          \"embeddable\": false,\n          \"templated\": true,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ],\n      \"key_2\": [\n        {\n          \"href\": \"http://zoOyuHCWlvsiJYBAKUV.fmYBMK0hWxG600BK.G7Smt\",\n          \"embeddable\": true,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"https://MUvzKEgmCLNN.gsZemxTRzjbr7nxUcusHu0xXUTiX4Vc6qO9O\",\n          \"embeddable\": true,\n          \"templated\": true,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ],\n      \"key_3\": [\n        {\n          \"href\": \"https://YCZSMszSjfbHTZMp.dakvKP\",\n          \"embeddable\": false,\n          \"templated\": true,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"http://kw.dyxhFpLJVQ5sSzHc-MBaFN9..T\",\n          \"embeddable\": false,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ]\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "045497e3-65f0-4d57-b8cc-0843f48e16dc",
+              "name": "One or more query parameters failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "press-release"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "context",
+                      "value": "view"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_columns",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_columns",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_semantics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "modified_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "modified_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "publish"
+                    },
+                    {
+                      "key": "menu_order",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "orderby",
+                      "value": "date"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"rest_invalid_param\",\n  \"message\": \"Invalid parameter(s): per_page\",\n  \"data\": {\n    \"status\": 400,\n    \"params\": {\n      \"per_page\": \"per_page must be between 1 (inclusive) and 100 (inclusive)\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dae2d7e2-fcf3-4171-b71b-9ba3a8ac9b13",
+          "name": "Get a single press release",
+          "request": {
+            "name": "Get a single press release",
+            "description": {
+              "content": "Retrieves one published press release by its numeric ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "press-release",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "context",
+                  "value": "view",
+                  "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+                },
+                {
+                  "disabled": false,
+                  "key": "password",
+                  "value": "<string>",
+                  "description": "The password for the item if it is password protected."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) Unique identifier for the object."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2b7ca692-9af8-4830-ba57-f64671170bb8",
+              "name": "The press release",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "press-release",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "context",
+                      "value": "view"
+                    },
+                    {
+                      "key": "password",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier for the object."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1121,\n  \"date\": \"2012-03-12T02:35:06.904Z\",\n  \"slug\": \"string\",\n  \"status\": \"string\",\n  \"type\": \"company-news\",\n  \"link\": \"https://PPnEKxAFwsPO.jyvH,LjPia9\",\n  \"title\": {\n    \"rendered\": \"string\"\n  },\n  \"date_gmt\": \"1969-08-01T09:23:14.322Z\",\n  \"guid\": {\n    \"rendered\": \"string\"\n  },\n  \"modified\": \"1996-04-27T16:55:41.646Z\",\n  \"modified_gmt\": \"1978-11-26T03:38:57.460Z\",\n  \"content\": {\n    \"rendered\": \"string\",\n    \"protected\": true\n  },\n  \"featured_media\": 6345,\n  \"menu_order\": 9379,\n  \"template\": \"string\",\n  \"meta\": {\n    \"key_0\": true\n  },\n  \"class_list\": [\n    \"string\",\n    \"string\"\n  ],\n  \"acf\": {\n    \"key_0\": \"string\"\n  },\n  \"_links\": {\n    \"key_0\": [\n      {\n        \"href\": \"http://tshtzXbNedIUw.cyuFaSDRPu2LwYab-sMfGcZS2-h9trzR5y4RGwZnc9ni9zxd\",\n        \"embeddable\": false,\n        \"templated\": false,\n        \"name\": \"string\",\n        \"taxonomy\": \"string\"\n      },\n      {\n        \"href\": \"http://oIgXkSDnxCugWqKjN.mxvflntT50tjhk92yZebuSvYvucV9dbtc.YG1I6pv2CaE\",\n        \"embeddable\": true,\n        \"templated\": true,\n        \"name\": \"string\",\n        \"taxonomy\": \"string\"\n      }\n    ],\n    \"key_1\": [\n      {\n        \"href\": \"http://icvGHfeJuLcURgfTCfQEhI.wwWN2bGdVzVkzADlZHWZOaPz8xvaNjwebf5hQRfPvtyBE7IAaAHBIYeY,3\",\n        \"embeddable\": false,\n        \"templated\": true,\n        \"name\": \"string\",\n        \"taxonomy\": \"string\"\n      },\n      {\n        \"href\": \"https://ywxNBRnTGQEUIm.hvPNNq\",\n        \"embeddable\": true,\n        \"templated\": true,\n        \"name\": \"string\",\n        \"taxonomy\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "67f7cfbf-94ac-4bfd-a994-b49317dd8668",
+              "name": "The requested object does not exist or is not publicly visible.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "press-release",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "context",
+                      "value": "view"
+                    },
+                    {
+                      "key": "password",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier for the object."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"rest_post_invalid_id\",\n  \"message\": \"Invalid post ID.\",\n  \"data\": {\n    \"status\": 404\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cae86188-e0c5-40cf-b920-def367561309",
+          "name": "List company news items",
+          "request": {
+            "name": "List company news items",
+            "description": {
+              "content": "Lists the `company-news` custom post type — 21 published items at harvest time, the \"In the News\" third-party coverage archive that backs https://belharratx.com/company-news/.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "company-news"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "context",
+                  "value": "view",
+                  "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Current page of the collection."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Maximum number of items to be returned in the result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Limit results to those matching a string."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_columns",
+                  "value": "<string>",
+                  "description": "Array of column names to be searched."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_columns",
+                  "value": "<string>",
+                  "description": "Array of column names to be searched."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_semantics",
+                  "value": "<string>",
+                  "description": "How to interpret the search input."
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<dateTime>",
+                  "description": "Limit response to items published after a given ISO 8601 compliant date."
+                },
+                {
+                  "disabled": false,
+                  "key": "before",
+                  "value": "<dateTime>",
+                  "description": "Limit response to items published before a given ISO 8601 compliant date."
+                },
+                {
+                  "disabled": false,
+                  "key": "modified_after",
+                  "value": "<dateTime>",
+                  "description": "Limit response to items modified after a given ISO 8601 compliant date."
+                },
+                {
+                  "disabled": false,
+                  "key": "modified_before",
+                  "value": "<dateTime>",
+                  "description": "Limit response to items modified before a given ISO 8601 compliant date."
+                },
+                {
+                  "disabled": false,
+                  "key": "exclude",
+                  "value": "<integer>",
+                  "description": "Ensure result set excludes specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "exclude",
+                  "value": "<integer>",
+                  "description": "Ensure result set excludes specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<integer>",
+                  "description": "Limit result set to specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<integer>",
+                  "description": "Limit result set to specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Offset the result set by a specific number of items."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Order sort attribute ascending or descending."
+                },
+                {
+                  "disabled": false,
+                  "key": "slug",
+                  "value": "<string>",
+                  "description": "Limit result set to items with one or more specific slugs."
+                },
+                {
+                  "disabled": false,
+                  "key": "slug",
+                  "value": "<string>",
+                  "description": "Limit result set to items with one or more specific slugs."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "publish",
+                  "description": "Limit result set to items assigned one or more statuses. Anonymous callers may only request `publish`."
+                },
+                {
+                  "disabled": false,
+                  "key": "menu_order",
+                  "value": "<integer>",
+                  "description": "Limit result set to items with a specific menu_order value."
+                },
+                {
+                  "disabled": false,
+                  "key": "orderby",
+                  "value": "date",
+                  "description": "Sort collection by object attribute."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5c0202b4-0924-484a-afe1-f2b4e540ca0f",
+              "name": "A page of company news items",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "company-news"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "context",
+                      "value": "view"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_columns",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_columns",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_semantics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "modified_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "modified_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "publish"
+                    },
+                    {
+                      "key": "menu_order",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "orderby",
+                      "value": "date"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-WP-Total",
+                  "value": "9141",
+                  "description": ""
+                },
+                {
+                  "disabled": false,
+                  "key": "X-WP-TotalPages",
+                  "value": "4373",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 6270,\n    \"date\": \"1962-08-03T16:28:52.040Z\",\n    \"slug\": \"string\",\n    \"status\": \"string\",\n    \"type\": \"company-news\",\n    \"link\": \"http://i.rqSBiPtA8rXKgXfrm2FcBwb-9EaGwp-x.TPhrO1zgLiS\",\n    \"title\": {\n      \"rendered\": \"string\"\n    },\n    \"date_gmt\": \"1970-08-24T15:53:09.059Z\",\n    \"guid\": {\n      \"rendered\": \"string\"\n    },\n    \"modified\": \"1986-05-20T21:14:01.146Z\",\n    \"modified_gmt\": \"2001-04-19T17:32:27.652Z\",\n    \"content\": {\n      \"rendered\": \"string\",\n      \"protected\": true\n    },\n    \"featured_media\": 3566,\n    \"menu_order\": 9540,\n    \"template\": \"string\",\n    \"meta\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    \"class_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"acf\": {\n      \"key_0\": true,\n      \"key_1\": 7413.375477004328,\n      \"key_2\": 1399\n    },\n    \"_links\": {\n      \"key_0\": [\n        {\n          \"href\": \"http://HkAQuDJPzoFmSxBIVonarIESV.mywz2fs02NNcQ7b4HlQ-C5+Up0m7bxvBqt8zFp\",\n          \"embeddable\": true,\n          \"templated\": true,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"http://xQIHHVCimphakf.qdrnIKJdphi-7GIrk0osUNpmTW\",\n          \"embeddable\": true,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ]\n    }\n  },\n  {\n    \"id\": 8346,\n    \"date\": \"1970-01-04T10:31:04.704Z\",\n    \"slug\": \"string\",\n    \"status\": \"string\",\n    \"type\": \"multimedia-file\",\n    \"link\": \"http://ecCwrFpLLcMObwGGreBBuVeOPEkkKuC.dbmys0Dky-mVMv\",\n    \"title\": {\n      \"rendered\": \"string\"\n    },\n    \"date_gmt\": \"1975-01-04T10:42:34.190Z\",\n    \"guid\": {\n      \"rendered\": \"string\"\n    },\n    \"modified\": \"2017-04-25T20:33:45.755Z\",\n    \"modified_gmt\": \"1973-05-28T00:12:42.899Z\",\n    \"content\": {\n      \"rendered\": \"string\",\n      \"protected\": true\n    },\n    \"featured_media\": 263,\n    \"menu_order\": 9312,\n    \"template\": \"string\",\n    \"meta\": {\n      \"key_0\": 9836,\n      \"key_1\": \"string\"\n    },\n    \"class_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"acf\": {\n      \"key_0\": \"string\",\n      \"key_1\": true\n    },\n    \"_links\": {\n      \"key_0\": [\n        {\n          \"href\": \"http://Xap.squvdB-2ZAhu+kT5fSMb4qI6JMq\",\n          \"embeddable\": false,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"https://SCURP.scoJeYkx,RJjAwIMKxv-BApNVmDsRSBj\",\n          \"embeddable\": false,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ]\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2edee688-7dde-4ebc-8b22-9f8d0af188c0",
+              "name": "One or more query parameters failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "company-news"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "context",
+                      "value": "view"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_columns",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_columns",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_semantics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "modified_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "modified_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "publish"
+                    },
+                    {
+                      "key": "menu_order",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "orderby",
+                      "value": "date"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"rest_invalid_param\",\n  \"message\": \"Invalid parameter(s): per_page\",\n  \"data\": {\n    \"status\": 400,\n    \"params\": {\n      \"per_page\": \"per_page must be between 1 (inclusive) and 100 (inclusive)\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8f26475c-b05c-491f-a109-2903fad14bf1",
+          "name": "Get a single company news item",
+          "request": {
+            "name": "Get a single company news item",
+            "description": {
+              "content": "Retrieves one published company news item by its numeric ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "company-news",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "context",
+                  "value": "view",
+                  "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+                },
+                {
+                  "disabled": false,
+                  "key": "password",
+                  "value": "<string>",
+                  "description": "The password for the item if it is password protected."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) Unique identifier for the object."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0b8a5892-4162-4bf8-9590-5e33d82364ba",
+              "name": "The company news item",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "company-news",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "context",
+                      "value": "view"
+                    },
+                    {
+                      "key": "password",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier for the object."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1121,\n  \"date\": \"2012-03-12T02:35:06.904Z\",\n  \"slug\": \"string\",\n  \"status\": \"string\",\n  \"type\": \"company-news\",\n  \"link\": \"https://PPnEKxAFwsPO.jyvH,LjPia9\",\n  \"title\": {\n    \"rendered\": \"string\"\n  },\n  \"date_gmt\": \"1969-08-01T09:23:14.322Z\",\n  \"guid\": {\n    \"rendered\": \"string\"\n  },\n  \"modified\": \"1996-04-27T16:55:41.646Z\",\n  \"modified_gmt\": \"1978-11-26T03:38:57.460Z\",\n  \"content\": {\n    \"rendered\": \"string\",\n    \"protected\": true\n  },\n  \"featured_media\": 6345,\n  \"menu_order\": 9379,\n  \"template\": \"string\",\n  \"meta\": {\n    \"key_0\": true\n  },\n  \"class_list\": [\n    \"string\",\n    \"string\"\n  ],\n  \"acf\": {\n    \"key_0\": \"string\"\n  },\n  \"_links\": {\n    \"key_0\": [\n      {\n        \"href\": \"http://tshtzXbNedIUw.cyuFaSDRPu2LwYab-sMfGcZS2-h9trzR5y4RGwZnc9ni9zxd\",\n        \"embeddable\": false,\n        \"templated\": false,\n        \"name\": \"string\",\n        \"taxonomy\": \"string\"\n      },\n      {\n        \"href\": \"http://oIgXkSDnxCugWqKjN.mxvflntT50tjhk92yZebuSvYvucV9dbtc.YG1I6pv2CaE\",\n        \"embeddable\": true,\n        \"templated\": true,\n        \"name\": \"string\",\n        \"taxonomy\": \"string\"\n      }\n    ],\n    \"key_1\": [\n      {\n        \"href\": \"http://icvGHfeJuLcURgfTCfQEhI.wwWN2bGdVzVkzADlZHWZOaPz8xvaNjwebf5hQRfPvtyBE7IAaAHBIYeY,3\",\n        \"embeddable\": false,\n        \"templated\": true,\n        \"name\": \"string\",\n        \"taxonomy\": \"string\"\n      },\n      {\n        \"href\": \"https://ywxNBRnTGQEUIm.hvPNNq\",\n        \"embeddable\": true,\n        \"templated\": true,\n        \"name\": \"string\",\n        \"taxonomy\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8f9ec920-a37a-4328-a6a1-7a58c22cb203",
+              "name": "The requested object does not exist or is not publicly visible.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "company-news",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "context",
+                      "value": "view"
+                    },
+                    {
+                      "key": "password",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier for the object."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"rest_post_invalid_id\",\n  \"message\": \"Invalid post ID.\",\n  \"data\": {\n    \"status\": 404\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "33284ef5-17b2-47ed-9a62-b436be584eca",
+          "name": "List multimedia files",
+          "request": {
+            "name": "List multimedia files",
+            "description": {
+              "content": "Lists the `multimedia-file` custom post type — 10 published items at harvest time, the curated video/podcast library that backs https://belharratx.com/multimedia-library/, including the \"Birth of a Biotech\" podcast series.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "multimedia-file"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "context",
+                  "value": "view",
+                  "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Current page of the collection."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Maximum number of items to be returned in the result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Limit results to those matching a string."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_columns",
+                  "value": "<string>",
+                  "description": "Array of column names to be searched."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_columns",
+                  "value": "<string>",
+                  "description": "Array of column names to be searched."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_semantics",
+                  "value": "<string>",
+                  "description": "How to interpret the search input."
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<dateTime>",
+                  "description": "Limit response to items published after a given ISO 8601 compliant date."
+                },
+                {
+                  "disabled": false,
+                  "key": "before",
+                  "value": "<dateTime>",
+                  "description": "Limit response to items published before a given ISO 8601 compliant date."
+                },
+                {
+                  "disabled": false,
+                  "key": "modified_after",
+                  "value": "<dateTime>",
+                  "description": "Limit response to items modified after a given ISO 8601 compliant date."
+                },
+                {
+                  "disabled": false,
+                  "key": "modified_before",
+                  "value": "<dateTime>",
+                  "description": "Limit response to items modified before a given ISO 8601 compliant date."
+                },
+                {
+                  "disabled": false,
+                  "key": "exclude",
+                  "value": "<integer>",
+                  "description": "Ensure result set excludes specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "exclude",
+                  "value": "<integer>",
+                  "description": "Ensure result set excludes specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<integer>",
+                  "description": "Limit result set to specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<integer>",
+                  "description": "Limit result set to specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Offset the result set by a specific number of items."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Order sort attribute ascending or descending."
+                },
+                {
+                  "disabled": false,
+                  "key": "slug",
+                  "value": "<string>",
+                  "description": "Limit result set to items with one or more specific slugs."
+                },
+                {
+                  "disabled": false,
+                  "key": "slug",
+                  "value": "<string>",
+                  "description": "Limit result set to items with one or more specific slugs."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "publish",
+                  "description": "Limit result set to items assigned one or more statuses. Anonymous callers may only request `publish`."
+                },
+                {
+                  "disabled": false,
+                  "key": "menu_order",
+                  "value": "<integer>",
+                  "description": "Limit result set to items with a specific menu_order value."
+                },
+                {
+                  "disabled": false,
+                  "key": "orderby",
+                  "value": "date",
+                  "description": "Sort collection by object attribute."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "305ad971-8dca-4d1f-8c1f-454d9817cedb",
+              "name": "A page of multimedia file records",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "multimedia-file"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "context",
+                      "value": "view"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_columns",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_columns",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_semantics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "modified_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "modified_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "publish"
+                    },
+                    {
+                      "key": "menu_order",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "orderby",
+                      "value": "date"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-WP-Total",
+                  "value": "6361",
+                  "description": ""
+                },
+                {
+                  "disabled": false,
+                  "key": "X-WP-TotalPages",
+                  "value": "669",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 6270,\n    \"date\": \"1962-08-03T16:28:52.040Z\",\n    \"slug\": \"string\",\n    \"status\": \"string\",\n    \"type\": \"company-news\",\n    \"link\": \"http://i.rqSBiPtA8rXKgXfrm2FcBwb-9EaGwp-x.TPhrO1zgLiS\",\n    \"title\": {\n      \"rendered\": \"string\"\n    },\n    \"date_gmt\": \"1970-08-24T15:53:09.059Z\",\n    \"guid\": {\n      \"rendered\": \"string\"\n    },\n    \"modified\": \"1986-05-20T21:14:01.146Z\",\n    \"modified_gmt\": \"2001-04-19T17:32:27.652Z\",\n    \"content\": {\n      \"rendered\": \"string\",\n      \"protected\": true\n    },\n    \"featured_media\": 3566,\n    \"menu_order\": 9540,\n    \"template\": \"string\",\n    \"meta\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    \"class_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"acf\": {\n      \"key_0\": true,\n      \"key_1\": 7413.375477004328,\n      \"key_2\": 1399\n    },\n    \"_links\": {\n      \"key_0\": [\n        {\n          \"href\": \"http://HkAQuDJPzoFmSxBIVonarIESV.mywz2fs02NNcQ7b4HlQ-C5+Up0m7bxvBqt8zFp\",\n          \"embeddable\": true,\n          \"templated\": true,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"http://xQIHHVCimphakf.qdrnIKJdphi-7GIrk0osUNpmTW\",\n          \"embeddable\": true,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ]\n    }\n  },\n  {\n    \"id\": 8346,\n    \"date\": \"1970-01-04T10:31:04.704Z\",\n    \"slug\": \"string\",\n    \"status\": \"string\",\n    \"type\": \"multimedia-file\",\n    \"link\": \"http://ecCwrFpLLcMObwGGreBBuVeOPEkkKuC.dbmys0Dky-mVMv\",\n    \"title\": {\n      \"rendered\": \"string\"\n    },\n    \"date_gmt\": \"1975-01-04T10:42:34.190Z\",\n    \"guid\": {\n      \"rendered\": \"string\"\n    },\n    \"modified\": \"2017-04-25T20:33:45.755Z\",\n    \"modified_gmt\": \"1973-05-28T00:12:42.899Z\",\n    \"content\": {\n      \"rendered\": \"string\",\n      \"protected\": true\n    },\n    \"featured_media\": 263,\n    \"menu_order\": 9312,\n    \"template\": \"string\",\n    \"meta\": {\n      \"key_0\": 9836,\n      \"key_1\": \"string\"\n    },\n    \"class_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"acf\": {\n      \"key_0\": \"string\",\n      \"key_1\": true\n    },\n    \"_links\": {\n      \"key_0\": [\n        {\n          \"href\": \"http://Xap.squvdB-2ZAhu+kT5fSMb4qI6JMq\",\n          \"embeddable\": false,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"https://SCURP.scoJeYkx,RJjAwIMKxv-BApNVmDsRSBj\",\n          \"embeddable\": false,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ]\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "10663dcd-9aa9-4ce9-bbcb-9b125fe8bae5",
+              "name": "One or more query parameters failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "multimedia-file"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "context",
+                      "value": "view"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_columns",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_columns",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_semantics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "modified_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "modified_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "publish"
+                    },
+                    {
+                      "key": "menu_order",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "orderby",
+                      "value": "date"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"rest_invalid_param\",\n  \"message\": \"Invalid parameter(s): per_page\",\n  \"data\": {\n    \"status\": 400,\n    \"params\": {\n      \"per_page\": \"per_page must be between 1 (inclusive) and 100 (inclusive)\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5eb47b86-5370-42a5-a7ed-2db05efd2f00",
+          "name": "Get a single multimedia file record",
+          "request": {
+            "name": "Get a single multimedia file record",
+            "description": {
+              "content": "Retrieves one published multimedia file record by its numeric ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "multimedia-file",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "context",
+                  "value": "view",
+                  "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+                },
+                {
+                  "disabled": false,
+                  "key": "password",
+                  "value": "<string>",
+                  "description": "The password for the item if it is password protected."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) Unique identifier for the object."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "be4cd4ce-dc97-48e8-8b15-063cf2afd4e9",
+              "name": "The multimedia file record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "multimedia-file",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "context",
+                      "value": "view"
+                    },
+                    {
+                      "key": "password",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier for the object."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1121,\n  \"date\": \"2012-03-12T02:35:06.904Z\",\n  \"slug\": \"string\",\n  \"status\": \"string\",\n  \"type\": \"company-news\",\n  \"link\": \"https://PPnEKxAFwsPO.jyvH,LjPia9\",\n  \"title\": {\n    \"rendered\": \"string\"\n  },\n  \"date_gmt\": \"1969-08-01T09:23:14.322Z\",\n  \"guid\": {\n    \"rendered\": \"string\"\n  },\n  \"modified\": \"1996-04-27T16:55:41.646Z\",\n  \"modified_gmt\": \"1978-11-26T03:38:57.460Z\",\n  \"content\": {\n    \"rendered\": \"string\",\n    \"protected\": true\n  },\n  \"featured_media\": 6345,\n  \"menu_order\": 9379,\n  \"template\": \"string\",\n  \"meta\": {\n    \"key_0\": true\n  },\n  \"class_list\": [\n    \"string\",\n    \"string\"\n  ],\n  \"acf\": {\n    \"key_0\": \"string\"\n  },\n  \"_links\": {\n    \"key_0\": [\n      {\n        \"href\": \"http://tshtzXbNedIUw.cyuFaSDRPu2LwYab-sMfGcZS2-h9trzR5y4RGwZnc9ni9zxd\",\n        \"embeddable\": false,\n        \"templated\": false,\n        \"name\": \"string\",\n        \"taxonomy\": \"string\"\n      },\n      {\n        \"href\": \"http://oIgXkSDnxCugWqKjN.mxvflntT50tjhk92yZebuSvYvucV9dbtc.YG1I6pv2CaE\",\n        \"embeddable\": true,\n        \"templated\": true,\n        \"name\": \"string\",\n        \"taxonomy\": \"string\"\n      }\n    ],\n    \"key_1\": [\n      {\n        \"href\": \"http://icvGHfeJuLcURgfTCfQEhI.wwWN2bGdVzVkzADlZHWZOaPz8xvaNjwebf5hQRfPvtyBE7IAaAHBIYeY,3\",\n        \"embeddable\": false,\n        \"templated\": true,\n        \"name\": \"string\",\n        \"taxonomy\": \"string\"\n      },\n      {\n        \"href\": \"https://ywxNBRnTGQEUIm.hvPNNq\",\n        \"embeddable\": true,\n        \"templated\": true,\n        \"name\": \"string\",\n        \"taxonomy\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "94dd3939-957d-4059-abbd-ab9f2c1a1a49",
+              "name": "The requested object does not exist or is not publicly visible.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "multimedia-file",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "context",
+                      "value": "view"
+                    },
+                    {
+                      "key": "password",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier for the object."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"rest_post_invalid_id\",\n  \"message\": \"Invalid post ID.\",\n  \"data\": {\n    \"status\": 404\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://belharratx.com/wp-json",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "46185313-cbc6-4aee-80ee-dc6d8ca5a02f",
+    "name": "Belharra Therapeutics Content Custom Types API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The read-only content surface Belharra Therapeutics exposes at https://belharratx.com/wp-json. Belharra Therapeutics is a privately held, next-generation chemoproteomics company in San Diego building small molecule therapeutics against undruggable targets with its Searchlight platform, incubated by Versant Ventures out of chemoproteomics research at The Scripps Research Institute and partnered with Genentech (January 2023) and Sanofi (June 2024). It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations that were verified to return data anonymously on 2026-08-06. Write operations, `/wp/v2/settings`, `/wp/v2/menus`, `/wp/v2/menu-locations`, `/wp/v2/themes`, `/wp/v2/plugins`, `/wp/v2/block-types`, `/wp/v2/font-collections`, `/wp/v2/icons`, `/wp/v2/sidebars`, `/wp/v2/widget-types`, `/wp/v2/templates`, `/wp/v2/template-parts`, `/wp/v2/global-styles`, `/wp/v2/block-patterns/*`, `/wp/v2/pattern-directory/patterns`, the `wp-abilities/v1` capability registry, the `wp-site-health/v1`, `podcastplayer/v1`, `redirection/v1`, `contact-form-7/v1`, `duplicate-post/v1`, `wpe/cache-plugin/v1` and `wpe_sign_on_plugin/v1` namespaces, and the whole plugin-administration surface all require authentication or were denied anonymously, and are deliberately excluded — see x-api-evangelist-provenance.\n\nContact Support:\n Name: Belharra Therapeutics\n Email: info@belharratx.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Belharra Therapeutics Content Media API",
+    "version": "wp/v2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "media",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List media attachments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://belharratx.com/wp-json/wp/v2/media",
+            "params": [
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Current page of the collection."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of items to be returned in the result set."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to those matching a string."
+              },
+              {
+                "name": "search_columns",
+                "value": "",
+                "type": "query",
+                "description": "Array of column names to be searched."
+              },
+              {
+                "name": "search_semantics",
+                "value": "",
+                "type": "query",
+                "description": "How to interpret the search input."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Limit response to items published after a given ISO 8601 compliant date."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Limit response to items published before a given ISO 8601 compliant date."
+              },
+              {
+                "name": "modified_after",
+                "value": "",
+                "type": "query",
+                "description": "Limit response to items modified after a given ISO 8601 compliant date."
+              },
+              {
+                "name": "modified_before",
+                "value": "",
+                "type": "query",
+                "description": "Limit response to items modified before a given ISO 8601 compliant date."
+              },
+              {
+                "name": "exclude",
+                "value": "",
+                "type": "query",
+                "description": "Ensure result set excludes specific IDs."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to specific IDs."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset the result set by a specific number of items."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Order sort attribute ascending or descending."
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to items with one or more specific slugs."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to items assigned one or more statuses. Anonymous callers may only request `publish`."
+              },
+              {
+                "name": "author",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to attachments assigned to specific authors."
+              },
+              {
+                "name": "author_exclude",
+                "value": "",
+                "type": "query",
+                "description": "Ensure result set excludes attachments assigned to specific authors."
+              },
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to items with particular parent IDs."
+              },
+              {
+                "name": "parent_exclude",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to all items except those of a particular parent ID."
+              },
+              {
+                "name": "media_type",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to attachments of a particular media type."
+              },
+              {
+                "name": "mime_type",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to attachments of a particular MIME type."
+              },
+              {
+                "name": "orderby",
+                "value": "",
+                "type": "query",
+                "description": "Sort collection by attachment attribute."
+              }
+            ]
+          },
+          "docs": "Lists the media library — 430 attachments at harvest time, including the Belharra and Searchlight logos, team photography, podcast artwork and the press-outlet logos used on the newsroom pages. Each record carries `source_url`, `mime_type`, `media_details` with the generated size variants, `alt_text` and `filesize`."
+        },
+        {
+          "info": {
+            "name": "Get a single media attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://belharratx.com/wp-json/wp/v2/media/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the object."
+              },
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+              }
+            ]
+          },
+          "docs": "Retrieves one media attachment by its numeric ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

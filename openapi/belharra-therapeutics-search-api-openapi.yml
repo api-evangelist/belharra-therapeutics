@@ -1,0 +1,224 @@
+openapi: 3.2.0
+info:
+  title: Belharra Therapeutics Content Search API
+  version: wp/v2
+  summary: Anonymously readable WordPress REST content API behind belharratx.com.
+  description: The read-only content surface Belharra Therapeutics exposes at https://belharratx.com/wp-json. Belharra Therapeutics is a privately held, next-generation chemoproteomics company in San Diego building small molecule therapeutics against undruggable targets with its Searchlight platform, incubated by Versant Ventures out of chemoproteomics research at The Scripps Research Institute and partnered with Genentech (January 2023) and Sanofi (June 2024). It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations that were verified to return data anonymously on 2026-08-06. Write operations, `/wp/v2/settings`, `/wp/v2/menus`, `/wp/v2/menu-locations`, `/wp/v2/themes`, `/wp/v2/plugins`, `/wp/v2/block-types`, `/wp/v2/font-collections`, `/wp/v2/icons`, `/wp/v2/sidebars`, `/wp/v2/widget-types`, `/wp/v2/templates`, `/wp/v2/template-parts`, `/wp/v2/global-styles`, `/wp/v2/block-patterns/*`, `/wp/v2/pattern-directory/patterns`, the `wp-abilities/v1` capability registry, the `wp-site-health/v1`, `podcastplayer/v1`, `redirection/v1`, `contact-form-7/v1`, `duplicate-post/v1`, `wpe/cache-plugin/v1` and `wpe_sign_on_plugin/v1` namespaces, and the whole plugin-administration surface all require authentication or were denied anonymously, and are deliberately excluded — see x-api-evangelist-provenance.
+  contact:
+    name: Belharra Therapeutics
+    url: https://belharratx.com/contact/
+    email: info@belharratx.com
+  x-api-evangelist-provenance: 'Derived by the API Evangelist enrichment pipeline from the live WordPress REST route index at https://belharratx.com/wp-json/ (198 routes across 11 namespaces) and verified against live anonymous responses on 2026-08-06. Every parameter below appears verbatim in the route index `args` for that endpoint, every schema property was read from a live anonymous response body, and every collection count in a description was read from the `X-WP-Total` response header on that date. Belharra Therapeutics publishes no OpenAPI, no developer documentation and no API reference for this surface; the humanURL in apis.yml points at the upstream WordPress REST handbook that defines the wp/v2 contract. The deployment is served by WP Engine behind Cloudflare, and API responses carry `x-robots-tag: noindex` and `cache-control: max-age=600, must-revalidate`. Nothing here was obtained with credentials.'
+servers:
+- url: https://belharratx.com/wp-json
+  description: Production content API
+tags:
+- name: search
+  description: Cross-content search across published objects (74 searchable records at harvest time).
+paths:
+  /wp/v2/search:
+    get:
+      tags:
+      - search
+      operationId: search
+      summary: Search across published content
+      description: Cross-content search returning lightweight `{id, title, url, type, subtype}` records. 74 objects were searchable at harvest time, spanning the post, page and the three custom post types.
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Exclude'
+      - $ref: '#/components/parameters/Include'
+      - name: type
+        in: query
+        description: Limit results to items of an object type.
+        schema:
+          type: string
+          enum:
+          - post
+          - term
+          - post-format
+          default: post
+      - name: subtype
+        in: query
+        description: Limit results to items of one or more object subtypes.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - post
+            - page
+            - company-news
+            - multimedia-file
+            - press-release
+            - any
+          default:
+          - any
+      responses:
+        '200':
+          description: A page of search results
+          headers:
+            X-WP-Total:
+              schema:
+                type: integer
+                examples:
+                - 74
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchResult'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+components:
+  parameters:
+    PerPage:
+      name: per_page
+      in: query
+      description: Maximum number of items to be returned in the result set.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    Page:
+      name: page
+      in: query
+      description: Current page of the collection.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    Include:
+      name: include
+      in: query
+      description: Limit result set to specific IDs.
+      schema:
+        type: array
+        items:
+          type: integer
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a string.
+      schema:
+        type: string
+    Exclude:
+      name: exclude
+      in: query
+      description: Ensure result set excludes specific IDs.
+      schema:
+        type: array
+        items:
+          type: integer
+    Context:
+      name: context
+      in: query
+      description: Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`.
+      schema:
+        type: string
+        enum:
+        - view
+        - embed
+        - edit
+        default: view
+  schemas:
+    SearchResult:
+      type: object
+      description: A lightweight cross-content search hit.
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        type:
+          type: string
+          examples:
+          - post
+        subtype:
+          type: string
+          enum:
+          - post
+          - page
+          - company-news
+          - multimedia-file
+          - press-release
+        _links:
+          $ref: '#/components/schemas/Links'
+      required:
+      - id
+      - title
+      - url
+      - type
+      - subtype
+    Links:
+      type: object
+      description: HAL-style `_links` hypermedia block WordPress attaches to every resource.
+      additionalProperties:
+        type: array
+        items:
+          type: object
+          properties:
+            href:
+              type: string
+              format: uri
+            embeddable:
+              type: boolean
+            templated:
+              type: boolean
+            name:
+              type: string
+            taxonomy:
+              type: string
+    Error:
+      type: object
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a `code` / `message` / `data.status` shape.
+      properties:
+        code:
+          type: string
+          examples:
+          - rest_post_invalid_id
+        message:
+          type: string
+          examples:
+          - Invalid post ID.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              examples:
+              - 404
+            params:
+              type: object
+              additionalProperties:
+                type: string
+            details:
+              type: object
+              additionalProperties: true
+      required:
+      - code
+      - message
+      - data
+  responses:
+    InvalidParam:
+      description: One or more query parameters failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            perPageOutOfBounds:
+              value:
+                code: rest_invalid_param
+                message: 'Invalid parameter(s): per_page'
+                data:
+                  status: 400
+                  params:
+                    per_page: per_page must be between 1 (inclusive) and 100 (inclusive)

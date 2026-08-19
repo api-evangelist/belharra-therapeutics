@@ -1,0 +1,224 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Belharra Therapeutics Content Posts API",
+    "version": "wp/v2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "posts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List blog and news posts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://belharratx.com/wp-json/wp/v2/posts",
+            "params": [
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Current page of the collection."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of items to be returned in the result set."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to those matching a string."
+              },
+              {
+                "name": "search_columns",
+                "value": "",
+                "type": "query",
+                "description": "Array of column names to be searched."
+              },
+              {
+                "name": "search_semantics",
+                "value": "",
+                "type": "query",
+                "description": "How to interpret the search input."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Limit response to items published after a given ISO 8601 compliant date."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Limit response to items published before a given ISO 8601 compliant date."
+              },
+              {
+                "name": "modified_after",
+                "value": "",
+                "type": "query",
+                "description": "Limit response to items modified after a given ISO 8601 compliant date."
+              },
+              {
+                "name": "modified_before",
+                "value": "",
+                "type": "query",
+                "description": "Limit response to items modified before a given ISO 8601 compliant date."
+              },
+              {
+                "name": "exclude",
+                "value": "",
+                "type": "query",
+                "description": "Ensure result set excludes specific IDs."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to specific IDs."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset the result set by a specific number of items."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Order sort attribute ascending or descending."
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to items with one or more specific slugs."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to items assigned one or more statuses. Anonymous callers may only request `publish`."
+              },
+              {
+                "name": "author",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to posts assigned to specific authors."
+              },
+              {
+                "name": "author_exclude",
+                "value": "",
+                "type": "query",
+                "description": "Ensure result set excludes posts assigned to specific authors."
+              },
+              {
+                "name": "categories",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to items with specific category terms (1 = Company News, 7 = Press Releases)."
+              },
+              {
+                "name": "categories_exclude",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to items except those with specific category terms."
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to items with specific tag terms. The post_tag taxonomy is empty on this deployment."
+              },
+              {
+                "name": "tags_exclude",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to items except those with specific tag terms."
+              },
+              {
+                "name": "tax_relation",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set based on relationship between multiple taxonomies."
+              },
+              {
+                "name": "sticky",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to items that are sticky."
+              },
+              {
+                "name": "ignore_sticky",
+                "value": "",
+                "type": "query",
+                "description": "Whether to ignore sticky posts."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to items assigned one or more given formats."
+              },
+              {
+                "name": "orderby",
+                "value": "",
+                "type": "query",
+                "description": "Sort collection by post attribute."
+              }
+            ]
+          },
+          "docs": "Lists published posts. On this deployment the collection is the company's blog/news archive — 10 items spanning January 2023 (the $130 million debut and the Genentech collaboration) through June 2024 (the Sanofi immunology collaboration), including press coverage in Endpoints News, Fierce Pharma, C&EN and the Timmerman Report. Paginated; `X-WP-Total` and `X-WP-TotalPages` are exposed via `Access-Control-Expose-Headers`."
+        },
+        {
+          "info": {
+            "name": "Get a single post",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://belharratx.com/wp-json/wp/v2/posts/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the object."
+              },
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+              },
+              {
+                "name": "password",
+                "value": "",
+                "type": "query",
+                "description": "The password for the post if it is password protected."
+              }
+            ]
+          },
+          "docs": "Retrieves one published post by its numeric ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

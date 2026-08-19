@@ -1,0 +1,504 @@
+openapi: 3.2.0
+info:
+  title: Belharra Therapeutics Content Posts API
+  version: wp/v2
+  summary: Anonymously readable WordPress REST content API behind belharratx.com.
+  description: The read-only content surface Belharra Therapeutics exposes at https://belharratx.com/wp-json. Belharra Therapeutics is a privately held, next-generation chemoproteomics company in San Diego building small molecule therapeutics against undruggable targets with its Searchlight platform, incubated by Versant Ventures out of chemoproteomics research at The Scripps Research Institute and partnered with Genentech (January 2023) and Sanofi (June 2024). It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations that were verified to return data anonymously on 2026-08-06. Write operations, `/wp/v2/settings`, `/wp/v2/menus`, `/wp/v2/menu-locations`, `/wp/v2/themes`, `/wp/v2/plugins`, `/wp/v2/block-types`, `/wp/v2/font-collections`, `/wp/v2/icons`, `/wp/v2/sidebars`, `/wp/v2/widget-types`, `/wp/v2/templates`, `/wp/v2/template-parts`, `/wp/v2/global-styles`, `/wp/v2/block-patterns/*`, `/wp/v2/pattern-directory/patterns`, the `wp-abilities/v1` capability registry, the `wp-site-health/v1`, `podcastplayer/v1`, `redirection/v1`, `contact-form-7/v1`, `duplicate-post/v1`, `wpe/cache-plugin/v1` and `wpe_sign_on_plugin/v1` namespaces, and the whole plugin-administration surface all require authentication or were denied anonymously, and are deliberately excluded — see x-api-evangelist-provenance.
+  contact:
+    name: Belharra Therapeutics
+    url: https://belharratx.com/contact/
+    email: info@belharratx.com
+  x-api-evangelist-provenance: 'Derived by the API Evangelist enrichment pipeline from the live WordPress REST route index at https://belharratx.com/wp-json/ (198 routes across 11 namespaces) and verified against live anonymous responses on 2026-08-06. Every parameter below appears verbatim in the route index `args` for that endpoint, every schema property was read from a live anonymous response body, and every collection count in a description was read from the `X-WP-Total` response header on that date. Belharra Therapeutics publishes no OpenAPI, no developer documentation and no API reference for this surface; the humanURL in apis.yml points at the upstream WordPress REST handbook that defines the wp/v2 contract. The deployment is served by WP Engine behind Cloudflare, and API responses carry `x-robots-tag: noindex` and `cache-control: max-age=600, must-revalidate`. Nothing here was obtained with credentials.'
+servers:
+- url: https://belharratx.com/wp-json
+  description: Production content API
+tags:
+- name: posts
+  description: Blog/news archive (10 published at harvest time), categorised as Company News or Press Releases.
+paths:
+  /wp/v2/posts:
+    get:
+      tags:
+      - posts
+      operationId: listPosts
+      summary: List blog and news posts
+      description: Lists published posts. On this deployment the collection is the company's blog/news archive — 10 items spanning January 2023 (the $130 million debut and the Genentech collaboration) through June 2024 (the Sanofi immunology collaboration), including press coverage in Endpoints News, Fierce Pharma, C&EN and the Timmerman Report. Paginated; `X-WP-Total` and `X-WP-TotalPages` are exposed via `Access-Control-Expose-Headers`.
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/SearchColumns'
+      - $ref: '#/components/parameters/SearchSemantics'
+      - $ref: '#/components/parameters/After'
+      - $ref: '#/components/parameters/Before'
+      - $ref: '#/components/parameters/ModifiedAfter'
+      - $ref: '#/components/parameters/ModifiedBefore'
+      - $ref: '#/components/parameters/Exclude'
+      - $ref: '#/components/parameters/Include'
+      - $ref: '#/components/parameters/Offset'
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Slug'
+      - $ref: '#/components/parameters/Status'
+      - name: author
+        in: query
+        description: Limit result set to posts assigned to specific authors.
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: author_exclude
+        in: query
+        description: Ensure result set excludes posts assigned to specific authors.
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: categories
+        in: query
+        description: Limit result set to items with specific category terms (1 = Company News, 7 = Press Releases).
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: categories_exclude
+        in: query
+        description: Limit result set to items except those with specific category terms.
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: tags
+        in: query
+        description: Limit result set to items with specific tag terms. The post_tag taxonomy is empty on this deployment.
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: tags_exclude
+        in: query
+        description: Limit result set to items except those with specific tag terms.
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: tax_relation
+        in: query
+        description: Limit result set based on relationship between multiple taxonomies.
+        schema:
+          type: string
+          enum:
+          - AND
+          - OR
+      - name: sticky
+        in: query
+        description: Limit result set to items that are sticky.
+        schema:
+          type: boolean
+      - name: ignore_sticky
+        in: query
+        description: Whether to ignore sticky posts.
+        schema:
+          type: boolean
+      - name: format
+        in: query
+        description: Limit result set to items assigned one or more given formats.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: orderby
+        in: query
+        description: Sort collection by post attribute.
+        schema:
+          type: string
+          enum:
+          - author
+          - date
+          - id
+          - include
+          - modified
+          - parent
+          - relevance
+          - slug
+          - include_slugs
+          - title
+          default: date
+      responses:
+        '200':
+          description: A page of posts
+          headers:
+            X-WP-Total:
+              description: Total number of matching posts.
+              schema:
+                type: integer
+                examples:
+                - 10
+            X-WP-TotalPages:
+              description: Total number of pages available.
+              schema:
+                type: integer
+                examples:
+                - 1
+            Link:
+              description: RFC 8288 pagination links (rel="next" / rel="prev").
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/posts/{id}:
+    get:
+      tags:
+      - posts
+      operationId: getPost
+      summary: Get a single post
+      description: Retrieves one published post by its numeric ID.
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      - $ref: '#/components/parameters/Context'
+      - name: password
+        in: query
+        description: The password for the post if it is password protected.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: Current page of the collection.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    After:
+      name: after
+      in: query
+      description: Limit response to items published after a given ISO 8601 compliant date.
+      schema:
+        type: string
+        format: date-time
+    Context:
+      name: context
+      in: query
+      description: Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`.
+      schema:
+        type: string
+        enum:
+        - view
+        - embed
+        - edit
+        default: view
+    Order:
+      name: order
+      in: query
+      description: Order sort attribute ascending or descending.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    PerPage:
+      name: per_page
+      in: query
+      description: Maximum number of items to be returned in the result set.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    Offset:
+      name: offset
+      in: query
+      description: Offset the result set by a specific number of items.
+      schema:
+        type: integer
+    ModifiedAfter:
+      name: modified_after
+      in: query
+      description: Limit response to items modified after a given ISO 8601 compliant date.
+      schema:
+        type: string
+        format: date-time
+    SearchSemantics:
+      name: search_semantics
+      in: query
+      description: How to interpret the search input.
+      schema:
+        type: string
+        enum:
+        - exact
+    IdPath:
+      name: id
+      in: path
+      required: true
+      description: Unique identifier for the object.
+      schema:
+        type: integer
+    Include:
+      name: include
+      in: query
+      description: Limit result set to specific IDs.
+      schema:
+        type: array
+        items:
+          type: integer
+    Slug:
+      name: slug
+      in: query
+      description: Limit result set to items with one or more specific slugs.
+      schema:
+        type: array
+        items:
+          type: string
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a string.
+      schema:
+        type: string
+    SearchColumns:
+      name: search_columns
+      in: query
+      description: Array of column names to be searched.
+      schema:
+        type: array
+        items:
+          type: string
+    Status:
+      name: status
+      in: query
+      description: Limit result set to items assigned one or more statuses. Anonymous callers may only request `publish`.
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+          - publish
+          - acf-disabled
+        default:
+        - publish
+    Before:
+      name: before
+      in: query
+      description: Limit response to items published before a given ISO 8601 compliant date.
+      schema:
+        type: string
+        format: date-time
+    Exclude:
+      name: exclude
+      in: query
+      description: Ensure result set excludes specific IDs.
+      schema:
+        type: array
+        items:
+          type: integer
+    ModifiedBefore:
+      name: modified_before
+      in: query
+      description: Limit response to items modified before a given ISO 8601 compliant date.
+      schema:
+        type: string
+        format: date-time
+  responses:
+    InvalidParam:
+      description: One or more query parameters failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            perPageOutOfBounds:
+              value:
+                code: rest_invalid_param
+                message: 'Invalid parameter(s): per_page'
+                data:
+                  status: 400
+                  params:
+                    per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
+    NotFound:
+      description: The requested object does not exist or is not publicly visible.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            invalidPostId:
+              value:
+                code: rest_post_invalid_id
+                message: Invalid post ID.
+                data:
+                  status: 404
+  schemas:
+    RenderedText:
+      type: object
+      description: A WordPress rendered-text field. `rendered` carries HTML-escaped markup.
+      properties:
+        rendered:
+          type: string
+      required:
+      - rendered
+    Post:
+      type: object
+      description: A blog/news post. Field set observed on a live anonymous `context=view` response.
+      properties:
+        id:
+          type: integer
+          examples:
+          - 1234
+        date:
+          type: string
+          format: date-time
+        date_gmt:
+          type: string
+          format: date-time
+        guid:
+          $ref: '#/components/schemas/RenderedText'
+        modified:
+          type: string
+          format: date-time
+        modified_gmt:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        status:
+          type: string
+          examples:
+          - publish
+        type:
+          type: string
+          const: post
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/RenderedText'
+        content:
+          allOf:
+          - $ref: '#/components/schemas/RenderedText'
+          - type: object
+            properties:
+              protected:
+                type: boolean
+        excerpt:
+          allOf:
+          - $ref: '#/components/schemas/RenderedText'
+          - type: object
+            properties:
+              protected:
+                type: boolean
+        author:
+          type: integer
+        featured_media:
+          type: integer
+        comment_status:
+          type: string
+          enum:
+          - open
+          - closed
+        ping_status:
+          type: string
+          enum:
+          - open
+          - closed
+        sticky:
+          type: boolean
+        template:
+          type: string
+        format:
+          type: string
+        meta:
+          type: object
+          additionalProperties: true
+        categories:
+          type: array
+          items:
+            type: integer
+        tags:
+          type: array
+          items:
+            type: integer
+        class_list:
+          type: array
+          items:
+            type: string
+        acf:
+          type: object
+          description: Advanced Custom Fields payload exposed on this deployment.
+          additionalProperties: true
+        _links:
+          $ref: '#/components/schemas/Links'
+      required:
+      - id
+      - date
+      - slug
+      - status
+      - type
+      - link
+      - title
+    Links:
+      type: object
+      description: HAL-style `_links` hypermedia block WordPress attaches to every resource.
+      additionalProperties:
+        type: array
+        items:
+          type: object
+          properties:
+            href:
+              type: string
+              format: uri
+            embeddable:
+              type: boolean
+            templated:
+              type: boolean
+            name:
+              type: string
+            taxonomy:
+              type: string
+    Error:
+      type: object
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a `code` / `message` / `data.status` shape.
+      properties:
+        code:
+          type: string
+          examples:
+          - rest_post_invalid_id
+        message:
+          type: string
+          examples:
+          - Invalid post ID.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              examples:
+              - 404
+            params:
+              type: object
+              additionalProperties:
+                type: string
+            details:
+              type: object
+              additionalProperties: true
+      required:
+      - code
+      - message
+      - data

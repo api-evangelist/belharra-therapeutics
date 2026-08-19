@@ -1,0 +1,486 @@
+openapi: 3.2.0
+info:
+  title: Belharra Therapeutics Content Discovery API
+  version: wp/v2
+  summary: Anonymously readable WordPress REST content API behind belharratx.com.
+  description: The read-only content surface Belharra Therapeutics exposes at https://belharratx.com/wp-json. Belharra Therapeutics is a privately held, next-generation chemoproteomics company in San Diego building small molecule therapeutics against undruggable targets with its Searchlight platform, incubated by Versant Ventures out of chemoproteomics research at The Scripps Research Institute and partnered with Genentech (January 2023) and Sanofi (June 2024). It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations that were verified to return data anonymously on 2026-08-06. Write operations, `/wp/v2/settings`, `/wp/v2/menus`, `/wp/v2/menu-locations`, `/wp/v2/themes`, `/wp/v2/plugins`, `/wp/v2/block-types`, `/wp/v2/font-collections`, `/wp/v2/icons`, `/wp/v2/sidebars`, `/wp/v2/widget-types`, `/wp/v2/templates`, `/wp/v2/template-parts`, `/wp/v2/global-styles`, `/wp/v2/block-patterns/*`, `/wp/v2/pattern-directory/patterns`, the `wp-abilities/v1` capability registry, the `wp-site-health/v1`, `podcastplayer/v1`, `redirection/v1`, `contact-form-7/v1`, `duplicate-post/v1`, `wpe/cache-plugin/v1` and `wpe_sign_on_plugin/v1` namespaces, and the whole plugin-administration surface all require authentication or were denied anonymously, and are deliberately excluded — see x-api-evangelist-provenance.
+  contact:
+    name: Belharra Therapeutics
+    url: https://belharratx.com/contact/
+    email: info@belharratx.com
+  x-api-evangelist-provenance: 'Derived by the API Evangelist enrichment pipeline from the live WordPress REST route index at https://belharratx.com/wp-json/ (198 routes across 11 namespaces) and verified against live anonymous responses on 2026-08-06. Every parameter below appears verbatim in the route index `args` for that endpoint, every schema property was read from a live anonymous response body, and every collection count in a description was read from the `X-WP-Total` response header on that date. Belharra Therapeutics publishes no OpenAPI, no developer documentation and no API reference for this surface; the humanURL in apis.yml points at the upstream WordPress REST handbook that defines the wp/v2 contract. The deployment is served by WP Engine behind Cloudflare, and API responses carry `x-robots-tag: noindex` and `cache-control: max-age=600, must-revalidate`. Nothing here was obtained with credentials.'
+servers:
+- url: https://belharratx.com/wp-json
+  description: Production content API
+tags:
+- name: discovery
+  description: Route, type, taxonomy, status and author discovery documents.
+paths:
+  /:
+    get:
+      tags:
+      - discovery
+      operationId: getApiIndex
+      summary: Get the REST API index
+      description: Returns the site index — name, description, URL, home, the registered namespaces, the supported authentication methods (WordPress application passwords), the site logo and icon, and the full 198-entry route table.
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      - name: namespace
+        in: query
+        description: Restrict the response to a single namespace.
+        schema:
+          type: string
+          examples:
+          - wp/v2
+      responses:
+        '200':
+          description: Site index
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiIndex'
+  /wp/v2/users:
+    get:
+      tags:
+      - discovery
+      operationId: listAuthors
+      summary: List content authors
+      description: Lists the users who have published content. Anonymous callers receive the `embed`-level public author projection only — id, name, url, description, link, slug and avatar URLs. No email addresses, roles or capabilities are exposed anonymously. Three authors were listed at harvest time.
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/SearchColumns'
+      - $ref: '#/components/parameters/Exclude'
+      - $ref: '#/components/parameters/Include'
+      - $ref: '#/components/parameters/Offset'
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Slug'
+      - name: orderby
+        in: query
+        description: Sort collection by user attribute.
+        schema:
+          type: string
+          enum:
+          - id
+          - include
+          - name
+          - registered_date
+          - slug
+          - include_slugs
+          - email
+          - url
+          default: name
+      - name: has_published_posts
+        in: query
+        description: Limit result set to users who have published posts.
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: A page of public author records
+          headers:
+            X-WP-Total:
+              schema:
+                type: integer
+                examples:
+                - 3
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/types:
+    get:
+      tags:
+      - discovery
+      operationId: listPostTypes
+      summary: List registered post types
+      description: 'Returns the registered post types keyed by name. Fourteen are registered on this deployment: post, page, attachment, nav_menu_item, wp_block, wp_template, wp_template_part, wp_global_styles, wp_navigation, wp_font_family, wp_font_face, plus Belharra''s three custom types company-news, multimedia-file and press-release.'
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      responses:
+        '200':
+          description: Registered post types keyed by name
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/PostType'
+  /wp/v2/taxonomies:
+    get:
+      tags:
+      - discovery
+      operationId: listTaxonomies
+      summary: List registered taxonomies
+      description: Returns the registered taxonomies keyed by name — category, post_tag, nav_menu and wp_pattern_category. Note that none of Belharra's three custom post types declares a taxonomy.
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      - name: type
+        in: query
+        description: Limit results to taxonomies associated with a specific post type.
+        schema:
+          type: string
+          examples:
+          - post
+      responses:
+        '200':
+          description: Registered taxonomies keyed by name
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Taxonomy'
+  /wp/v2/statuses:
+    get:
+      tags:
+      - discovery
+      operationId: listPostStatuses
+      summary: List registered post statuses
+      description: Returns the post statuses visible anonymously. Two are exposed on this deployment — `publish` and `acf-disabled` (an Advanced Custom Fields status).
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      responses:
+        '200':
+          description: Registered post statuses keyed by slug
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/PostStatus'
+components:
+  parameters:
+    PerPage:
+      name: per_page
+      in: query
+      description: Maximum number of items to be returned in the result set.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    SearchColumns:
+      name: search_columns
+      in: query
+      description: Array of column names to be searched.
+      schema:
+        type: array
+        items:
+          type: string
+    Offset:
+      name: offset
+      in: query
+      description: Offset the result set by a specific number of items.
+      schema:
+        type: integer
+    Page:
+      name: page
+      in: query
+      description: Current page of the collection.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    Include:
+      name: include
+      in: query
+      description: Limit result set to specific IDs.
+      schema:
+        type: array
+        items:
+          type: integer
+    Slug:
+      name: slug
+      in: query
+      description: Limit result set to items with one or more specific slugs.
+      schema:
+        type: array
+        items:
+          type: string
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a string.
+      schema:
+        type: string
+    Exclude:
+      name: exclude
+      in: query
+      description: Ensure result set excludes specific IDs.
+      schema:
+        type: array
+        items:
+          type: integer
+    Context:
+      name: context
+      in: query
+      description: Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`.
+      schema:
+        type: string
+        enum:
+        - view
+        - embed
+        - edit
+        default: view
+    Order:
+      name: order
+      in: query
+      description: Order sort attribute ascending or descending.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+  schemas:
+    PostStatus:
+      type: object
+      description: A registered post status descriptor.
+      properties:
+        name:
+          type: string
+          examples:
+          - Published
+        slug:
+          type: string
+          enum:
+          - publish
+          - acf-disabled
+        public:
+          type: boolean
+        queryable:
+          type: boolean
+        date_floating:
+          type: boolean
+        _links:
+          $ref: '#/components/schemas/Links'
+    Links:
+      type: object
+      description: HAL-style `_links` hypermedia block WordPress attaches to every resource.
+      additionalProperties:
+        type: array
+        items:
+          type: object
+          properties:
+            href:
+              type: string
+              format: uri
+            embeddable:
+              type: boolean
+            templated:
+              type: boolean
+            name:
+              type: string
+            taxonomy:
+              type: string
+    Author:
+      type: object
+      description: The public author projection returned to anonymous callers. No email, roles or capabilities are exposed.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        url:
+          type: string
+        description:
+          type: string
+        link:
+          type: string
+          format: uri
+        slug:
+          type: string
+        avatar_urls:
+          type: object
+          description: Gravatar URLs keyed by pixel size (24, 48, 96).
+          additionalProperties:
+            type: string
+            format: uri
+        meta:
+          type: object
+          additionalProperties: true
+        acf:
+          type: object
+          additionalProperties: true
+        _links:
+          $ref: '#/components/schemas/Links'
+      required:
+      - id
+      - name
+      - slug
+      - link
+    Taxonomy:
+      type: object
+      description: A registered taxonomy descriptor.
+      properties:
+        name:
+          type: string
+          examples:
+          - Categories
+        slug:
+          type: string
+          examples:
+          - category
+        rest_base:
+          type: string
+          examples:
+          - categories
+        rest_namespace:
+          type: string
+          examples:
+          - wp/v2
+        description:
+          type: string
+        hierarchical:
+          type: boolean
+        types:
+          type: array
+          items:
+            type: string
+        _links:
+          $ref: '#/components/schemas/Links'
+    PostType:
+      type: object
+      description: A registered post type descriptor.
+      properties:
+        name:
+          type: string
+          examples:
+          - Press Releases
+        slug:
+          type: string
+          examples:
+          - press-release
+        rest_base:
+          type: string
+          examples:
+          - press-release
+        rest_namespace:
+          type: string
+          examples:
+          - wp/v2
+        description:
+          type: string
+        hierarchical:
+          type: boolean
+        has_archive:
+          type:
+          - boolean
+          - string
+        taxonomies:
+          type: array
+          items:
+            type: string
+        supports:
+          type: object
+          additionalProperties:
+            type: boolean
+        icon:
+          type:
+          - string
+          - 'null'
+        _links:
+          $ref: '#/components/schemas/Links'
+    Error:
+      type: object
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a `code` / `message` / `data.status` shape.
+      properties:
+        code:
+          type: string
+          examples:
+          - rest_post_invalid_id
+        message:
+          type: string
+          examples:
+          - Invalid post ID.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              examples:
+              - 404
+            params:
+              type: object
+              additionalProperties:
+                type: string
+            details:
+              type: object
+              additionalProperties: true
+      required:
+      - code
+      - message
+      - data
+    ApiIndex:
+      type: object
+      description: The REST API root index document.
+      properties:
+        name:
+          type: string
+          examples:
+          - Belharra Therapeutics
+        description:
+          type: string
+        url:
+          type: string
+          format: uri
+        home:
+          type: string
+          format: uri
+        gmt_offset:
+          type:
+          - integer
+          - string
+        timezone_string:
+          type: string
+        namespaces:
+          type: array
+          items:
+            type: string
+          description: The 11 registered namespaces at harvest time — oembed/1.0, wpe/cache-plugin/v1, wpe_sign_on_plugin/v1, contact-form-7/v1, redirection/v1, podcastplayer/v1, duplicate-post/v1, wp/v2, wp-site-health/v1, wp-block-editor/v1, wp-abilities/v1.
+        authentication:
+          type: object
+          description: The supported authentication methods. This deployment advertises WordPress application passwords with an authorization endpoint at /wp-admin/authorize-application.php.
+          additionalProperties: true
+        routes:
+          type: object
+          description: The full route table keyed by route pattern.
+          additionalProperties: true
+        site_logo:
+          type: integer
+        site_icon:
+          type: integer
+        site_icon_url:
+          type: string
+        _links:
+          $ref: '#/components/schemas/Links'
+      required:
+      - name
+      - url
+      - namespaces
+      - routes
+  responses:
+    InvalidParam:
+      description: One or more query parameters failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            perPageOutOfBounds:
+              value:
+                code: rest_invalid_param
+                message: 'Invalid parameter(s): per_page'
+                data:
+                  status: 400
+                  params:
+                    per_page: per_page must be between 1 (inclusive) and 100 (inclusive)

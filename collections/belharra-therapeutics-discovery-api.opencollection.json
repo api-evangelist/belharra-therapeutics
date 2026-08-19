@@ -1,0 +1,191 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Belharra Therapeutics Content Discovery API",
+    "version": "wp/v2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "discovery",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the REST API index",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://belharratx.com/wp-json/",
+            "params": [
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "Restrict the response to a single namespace."
+              }
+            ]
+          },
+          "docs": "Returns the site index — name, description, URL, home, the registered namespaces, the supported authentication methods (WordPress application passwords), the site logo and icon, and the full 198-entry route table."
+        },
+        {
+          "info": {
+            "name": "List content authors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://belharratx.com/wp-json/wp/v2/users",
+            "params": [
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Current page of the collection."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of items to be returned in the result set."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to those matching a string."
+              },
+              {
+                "name": "search_columns",
+                "value": "",
+                "type": "query",
+                "description": "Array of column names to be searched."
+              },
+              {
+                "name": "exclude",
+                "value": "",
+                "type": "query",
+                "description": "Ensure result set excludes specific IDs."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to specific IDs."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset the result set by a specific number of items."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Order sort attribute ascending or descending."
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to items with one or more specific slugs."
+              },
+              {
+                "name": "orderby",
+                "value": "",
+                "type": "query",
+                "description": "Sort collection by user attribute."
+              },
+              {
+                "name": "has_published_posts",
+                "value": "",
+                "type": "query",
+                "description": "Limit result set to users who have published posts."
+              }
+            ]
+          },
+          "docs": "Lists the users who have published content. Anonymous callers receive the `embed`-level public author projection only — id, name, url, description, link, slug and avatar URLs. No email addresses, roles or capabilities are exposed anonymously. Three authors were listed at harvest time."
+        },
+        {
+          "info": {
+            "name": "List registered post types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://belharratx.com/wp-json/wp/v2/types",
+            "params": [
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+              }
+            ]
+          },
+          "docs": "Returns the registered post types keyed by name. Fourteen are registered on this deployment: post, page, attachment, nav_menu_item, wp_block, wp_template, wp_template_part, wp_global_styles, wp_navigation, wp_font_family, wp_font_face, plus Belharra's three custom types company-news, multimedia-file and press-release."
+        },
+        {
+          "info": {
+            "name": "List registered taxonomies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://belharratx.com/wp-json/wp/v2/taxonomies",
+            "params": [
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to taxonomies associated with a specific post type."
+              }
+            ]
+          },
+          "docs": "Returns the registered taxonomies keyed by name — category, post_tag, nav_menu and wp_pattern_category. Note that none of Belharra's three custom post types declares a taxonomy."
+        },
+        {
+          "info": {
+            "name": "List registered post statuses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://belharratx.com/wp-json/wp/v2/statuses",
+            "params": [
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+              }
+            ]
+          },
+          "docs": "Returns the post statuses visible anonymously. Two are exposed on this deployment — `publish` and `acf-disabled` (an Advanced Custom Fields status)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

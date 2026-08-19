@@ -1,0 +1,38 @@
+{
+  "provider": "belharra-therapeutics",
+  "sources": [
+    "belharra-therapeutics-custom-types-api-openapi.yml",
+    "belharra-therapeutics-discovery-api-openapi.yml",
+    "belharra-therapeutics-media-api-openapi.yml",
+    "belharra-therapeutics-oembed-api-openapi.yml",
+    "belharra-therapeutics-pages-api-openapi.yml",
+    "belharra-therapeutics-posts-api-openapi.yml",
+    "belharra-therapeutics-search-api-openapi.yml",
+    "belharra-therapeutics-taxonomy-api-openapi.yml"
+  ],
+  "outputs": [
+    "belharra-therapeutics-custom-types-api-openapi.yml",
+    "belharra-therapeutics-discovery-api-openapi.yml",
+    "belharra-therapeutics-media-api-openapi.yml",
+    "belharra-therapeutics-oembed-api-openapi.yml",
+    "belharra-therapeutics-pages-api-openapi.yml",
+    "belharra-therapeutics-posts-api-openapi.yml",
+    "belharra-therapeutics-search-api-openapi.yml",
+    "belharra-therapeutics-taxonomy-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "belharra-therapeutics-custom-types-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "belharra-therapeutics-discovery-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "belharra-therapeutics-media-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "belharra-therapeutics-oembed-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "belharra-therapeutics-pages-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "belharra-therapeutics-posts-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "belharra-therapeutics-search-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "belharra-therapeutics-taxonomy-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": []
+}

@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Belharra Therapeutics Content Oembed API",
+    "version": "wp/v2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "oembed",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get an oEmbed response for a belharratx.com URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://belharratx.com/wp-json/oembed/1.0/embed",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query",
+                "description": "The URL of the resource for which to fetch oEmbed data."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "The oEmbed format to use."
+              },
+              {
+                "name": "maxwidth",
+                "value": "",
+                "type": "query",
+                "description": "The maximum width of the embed frame in pixels."
+              }
+            ]
+          },
+          "docs": "The oEmbed 1.0 provider endpoint. Given a belharratx.com permalink it returns the standard oEmbed rich payload — version, provider_name, provider_url, author_name, author_url, title, type, width, height and the iframe `html`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,557 @@
+openapi: 3.2.0
+info:
+  title: Belharra Therapeutics Content Custom Types API
+  version: wp/v2
+  summary: Anonymously readable WordPress REST content API behind belharratx.com.
+  description: The read-only content surface Belharra Therapeutics exposes at https://belharratx.com/wp-json. Belharra Therapeutics is a privately held, next-generation chemoproteomics company in San Diego building small molecule therapeutics against undruggable targets with its Searchlight platform, incubated by Versant Ventures out of chemoproteomics research at The Scripps Research Institute and partnered with Genentech (January 2023) and Sanofi (June 2024). It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations that were verified to return data anonymously on 2026-08-06. Write operations, `/wp/v2/settings`, `/wp/v2/menus`, `/wp/v2/menu-locations`, `/wp/v2/themes`, `/wp/v2/plugins`, `/wp/v2/block-types`, `/wp/v2/font-collections`, `/wp/v2/icons`, `/wp/v2/sidebars`, `/wp/v2/widget-types`, `/wp/v2/templates`, `/wp/v2/template-parts`, `/wp/v2/global-styles`, `/wp/v2/block-patterns/*`, `/wp/v2/pattern-directory/patterns`, the `wp-abilities/v1` capability registry, the `wp-site-health/v1`, `podcastplayer/v1`, `redirection/v1`, `contact-form-7/v1`, `duplicate-post/v1`, `wpe/cache-plugin/v1` and `wpe_sign_on_plugin/v1` namespaces, and the whole plugin-administration surface all require authentication or were denied anonymously, and are deliberately excluded — see x-api-evangelist-provenance.
+  contact:
+    name: Belharra Therapeutics
+    url: https://belharratx.com/contact/
+    email: info@belharratx.com
+  x-api-evangelist-provenance: 'Derived by the API Evangelist enrichment pipeline from the live WordPress REST route index at https://belharratx.com/wp-json/ (198 routes across 11 namespaces) and verified against live anonymous responses on 2026-08-06. Every parameter below appears verbatim in the route index `args` for that endpoint, every schema property was read from a live anonymous response body, and every collection count in a description was read from the `X-WP-Total` response header on that date. Belharra Therapeutics publishes no OpenAPI, no developer documentation and no API reference for this surface; the humanURL in apis.yml points at the upstream WordPress REST handbook that defines the wp/v2 contract. The deployment is served by WP Engine behind Cloudflare, and API responses carry `x-robots-tag: noindex` and `cache-control: max-age=600, must-revalidate`. Nothing here was obtained with credentials.'
+servers:
+- url: https://belharratx.com/wp-json
+  description: Production content API
+tags:
+- name: custom-types
+  description: Belharra's three custom post types — press-release (4 items), company-news (21 items) and multimedia-file (10 items).
+paths:
+  /wp/v2/press-release:
+    get:
+      tags:
+      - custom-types
+      operationId: listPressReleases
+      summary: List press releases
+      description: 'Lists the `press-release` custom post type — 4 published items at harvest time: the January 2023 debut with $130 million in funding, the January 2023 broad Genentech collaboration, the June 2024 Sanofi immunology collaboration, and the January 2025 appointment of Sean Buchanan as chief scientific officer.'
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/SearchColumns'
+      - $ref: '#/components/parameters/SearchSemantics'
+      - $ref: '#/components/parameters/After'
+      - $ref: '#/components/parameters/Before'
+      - $ref: '#/components/parameters/ModifiedAfter'
+      - $ref: '#/components/parameters/ModifiedBefore'
+      - $ref: '#/components/parameters/Exclude'
+      - $ref: '#/components/parameters/Include'
+      - $ref: '#/components/parameters/Offset'
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Slug'
+      - $ref: '#/components/parameters/Status'
+      - $ref: '#/components/parameters/MenuOrder'
+      - $ref: '#/components/parameters/OrderByCustomType'
+      responses:
+        '200':
+          description: A page of press releases
+          headers:
+            X-WP-Total:
+              schema:
+                type: integer
+                examples:
+                - 4
+            X-WP-TotalPages:
+              schema:
+                type: integer
+                examples:
+                - 1
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomPost'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/press-release/{id}:
+    get:
+      tags:
+      - custom-types
+      operationId: getPressRelease
+      summary: Get a single press release
+      description: Retrieves one published press release by its numeric ID.
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      - $ref: '#/components/parameters/Context'
+      - name: password
+        in: query
+        description: The password for the item if it is password protected.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The press release
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomPost'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/company-news:
+    get:
+      tags:
+      - custom-types
+      operationId: listCompanyNews
+      summary: List company news items
+      description: Lists the `company-news` custom post type — 21 published items at harvest time, the "In the News" third-party coverage archive that backs https://belharratx.com/company-news/.
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/SearchColumns'
+      - $ref: '#/components/parameters/SearchSemantics'
+      - $ref: '#/components/parameters/After'
+      - $ref: '#/components/parameters/Before'
+      - $ref: '#/components/parameters/ModifiedAfter'
+      - $ref: '#/components/parameters/ModifiedBefore'
+      - $ref: '#/components/parameters/Exclude'
+      - $ref: '#/components/parameters/Include'
+      - $ref: '#/components/parameters/Offset'
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Slug'
+      - $ref: '#/components/parameters/Status'
+      - $ref: '#/components/parameters/MenuOrder'
+      - $ref: '#/components/parameters/OrderByCustomType'
+      responses:
+        '200':
+          description: A page of company news items
+          headers:
+            X-WP-Total:
+              schema:
+                type: integer
+                examples:
+                - 21
+            X-WP-TotalPages:
+              schema:
+                type: integer
+                examples:
+                - 3
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomPost'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/company-news/{id}:
+    get:
+      tags:
+      - custom-types
+      operationId: getCompanyNewsItem
+      summary: Get a single company news item
+      description: Retrieves one published company news item by its numeric ID.
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      - $ref: '#/components/parameters/Context'
+      - name: password
+        in: query
+        description: The password for the item if it is password protected.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The company news item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomPost'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/multimedia-file:
+    get:
+      tags:
+      - custom-types
+      operationId: listMultimediaFiles
+      summary: List multimedia files
+      description: Lists the `multimedia-file` custom post type — 10 published items at harvest time, the curated video/podcast library that backs https://belharratx.com/multimedia-library/, including the "Birth of a Biotech" podcast series.
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/SearchColumns'
+      - $ref: '#/components/parameters/SearchSemantics'
+      - $ref: '#/components/parameters/After'
+      - $ref: '#/components/parameters/Before'
+      - $ref: '#/components/parameters/ModifiedAfter'
+      - $ref: '#/components/parameters/ModifiedBefore'
+      - $ref: '#/components/parameters/Exclude'
+      - $ref: '#/components/parameters/Include'
+      - $ref: '#/components/parameters/Offset'
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Slug'
+      - $ref: '#/components/parameters/Status'
+      - $ref: '#/components/parameters/MenuOrder'
+      - $ref: '#/components/parameters/OrderByCustomType'
+      responses:
+        '200':
+          description: A page of multimedia file records
+          headers:
+            X-WP-Total:
+              schema:
+                type: integer
+                examples:
+                - 10
+            X-WP-TotalPages:
+              schema:
+                type: integer
+                examples:
+                - 1
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomPost'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/multimedia-file/{id}:
+    get:
+      tags:
+      - custom-types
+      operationId: getMultimediaFile
+      summary: Get a single multimedia file record
+      description: Retrieves one published multimedia file record by its numeric ID.
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      - $ref: '#/components/parameters/Context'
+      - name: password
+        in: query
+        description: The password for the item if it is password protected.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The multimedia file record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomPost'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: Current page of the collection.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    After:
+      name: after
+      in: query
+      description: Limit response to items published after a given ISO 8601 compliant date.
+      schema:
+        type: string
+        format: date-time
+    Context:
+      name: context
+      in: query
+      description: Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`.
+      schema:
+        type: string
+        enum:
+        - view
+        - embed
+        - edit
+        default: view
+    Order:
+      name: order
+      in: query
+      description: Order sort attribute ascending or descending.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    PerPage:
+      name: per_page
+      in: query
+      description: Maximum number of items to be returned in the result set.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    Offset:
+      name: offset
+      in: query
+      description: Offset the result set by a specific number of items.
+      schema:
+        type: integer
+    ModifiedAfter:
+      name: modified_after
+      in: query
+      description: Limit response to items modified after a given ISO 8601 compliant date.
+      schema:
+        type: string
+        format: date-time
+    SearchSemantics:
+      name: search_semantics
+      in: query
+      description: How to interpret the search input.
+      schema:
+        type: string
+        enum:
+        - exact
+    IdPath:
+      name: id
+      in: path
+      required: true
+      description: Unique identifier for the object.
+      schema:
+        type: integer
+    Include:
+      name: include
+      in: query
+      description: Limit result set to specific IDs.
+      schema:
+        type: array
+        items:
+          type: integer
+    Slug:
+      name: slug
+      in: query
+      description: Limit result set to items with one or more specific slugs.
+      schema:
+        type: array
+        items:
+          type: string
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a string.
+      schema:
+        type: string
+    SearchColumns:
+      name: search_columns
+      in: query
+      description: Array of column names to be searched.
+      schema:
+        type: array
+        items:
+          type: string
+    Status:
+      name: status
+      in: query
+      description: Limit result set to items assigned one or more statuses. Anonymous callers may only request `publish`.
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+          - publish
+          - acf-disabled
+        default:
+        - publish
+    OrderByCustomType:
+      name: orderby
+      in: query
+      description: Sort collection by object attribute.
+      schema:
+        type: string
+        enum:
+        - author
+        - date
+        - id
+        - include
+        - modified
+        - parent
+        - relevance
+        - slug
+        - include_slugs
+        - title
+        - menu_order
+        default: date
+    Before:
+      name: before
+      in: query
+      description: Limit response to items published before a given ISO 8601 compliant date.
+      schema:
+        type: string
+        format: date-time
+    MenuOrder:
+      name: menu_order
+      in: query
+      description: Limit result set to items with a specific menu_order value.
+      schema:
+        type: integer
+    Exclude:
+      name: exclude
+      in: query
+      description: Ensure result set excludes specific IDs.
+      schema:
+        type: array
+        items:
+          type: integer
+    ModifiedBefore:
+      name: modified_before
+      in: query
+      description: Limit response to items modified before a given ISO 8601 compliant date.
+      schema:
+        type: string
+        format: date-time
+  responses:
+    InvalidParam:
+      description: One or more query parameters failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            perPageOutOfBounds:
+              value:
+                code: rest_invalid_param
+                message: 'Invalid parameter(s): per_page'
+                data:
+                  status: 400
+                  params:
+                    per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
+    NotFound:
+      description: The requested object does not exist or is not publicly visible.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            invalidPostId:
+              value:
+                code: rest_post_invalid_id
+                message: Invalid post ID.
+                data:
+                  status: 404
+  schemas:
+    RenderedText:
+      type: object
+      description: A WordPress rendered-text field. `rendered` carries HTML-escaped markup.
+      properties:
+        rendered:
+          type: string
+      required:
+      - rendered
+    CustomPost:
+      type: object
+      description: 'A record from one of Belharra''s three custom post types — press-release, company-news or multimedia-file. All three share the identical anonymous projection: unlike core posts they carry no excerpt, author, comment_status, ping_status or taxonomy fields, and they do carry menu_order. Field set observed on live anonymous `context=view` responses for all three.'
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        date_gmt:
+          type: string
+          format: date-time
+        guid:
+          $ref: '#/components/schemas/RenderedText'
+        modified:
+          type: string
+          format: date-time
+        modified_gmt:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        status:
+          type: string
+          examples:
+          - publish
+        type:
+          type: string
+          enum:
+          - press-release
+          - company-news
+          - multimedia-file
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/RenderedText'
+        content:
+          allOf:
+          - $ref: '#/components/schemas/RenderedText'
+          - type: object
+            properties:
+              protected:
+                type: boolean
+        featured_media:
+          type: integer
+        menu_order:
+          type: integer
+        template:
+          type: string
+        meta:
+          type: object
+          additionalProperties: true
+        class_list:
+          type: array
+          items:
+            type: string
+        acf:
+          type: object
+          description: Advanced Custom Fields payload. On multimedia-file records this is where the video and podcast references live; on company-news records it carries the outbound link to the third-party coverage.
+          additionalProperties: true
+        _links:
+          $ref: '#/components/schemas/Links'
+      required:
+      - id
+      - date
+      - slug
+      - status
+      - type
+      - link
+      - title
+    Links:
+      type: object
+      description: HAL-style `_links` hypermedia block WordPress attaches to every resource.
+      additionalProperties:
+        type: array
+        items:
+          type: object
+          properties:
+            href:
+              type: string
+              format: uri
+            embeddable:
+              type: boolean
+            templated:
+              type: boolean
+            name:
+              type: string
+            taxonomy:
+              type: string
+    Error:
+      type: object
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a `code` / `message` / `data.status` shape.
+      properties:
+        code:
+          type: string
+          examples:
+          - rest_post_invalid_id
+        message:
+          type: string
+          examples:
+          - Invalid post ID.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              examples:
+              - 404
+            params:
+              type: object
+              additionalProperties:
+                type: string
+            details:
+              type: object
+              additionalProperties: true
+      required:
+      - code
+      - message
+      - data

@@ -1,0 +1,161 @@
+openapi: 3.2.0
+info:
+  title: Belharra Therapeutics Content Oembed API
+  version: wp/v2
+  summary: Anonymously readable WordPress REST content API behind belharratx.com.
+  description: The read-only content surface Belharra Therapeutics exposes at https://belharratx.com/wp-json. Belharra Therapeutics is a privately held, next-generation chemoproteomics company in San Diego building small molecule therapeutics against undruggable targets with its Searchlight platform, incubated by Versant Ventures out of chemoproteomics research at The Scripps Research Institute and partnered with Genentech (January 2023) and Sanofi (June 2024). It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations that were verified to return data anonymously on 2026-08-06. Write operations, `/wp/v2/settings`, `/wp/v2/menus`, `/wp/v2/menu-locations`, `/wp/v2/themes`, `/wp/v2/plugins`, `/wp/v2/block-types`, `/wp/v2/font-collections`, `/wp/v2/icons`, `/wp/v2/sidebars`, `/wp/v2/widget-types`, `/wp/v2/templates`, `/wp/v2/template-parts`, `/wp/v2/global-styles`, `/wp/v2/block-patterns/*`, `/wp/v2/pattern-directory/patterns`, the `wp-abilities/v1` capability registry, the `wp-site-health/v1`, `podcastplayer/v1`, `redirection/v1`, `contact-form-7/v1`, `duplicate-post/v1`, `wpe/cache-plugin/v1` and `wpe_sign_on_plugin/v1` namespaces, and the whole plugin-administration surface all require authentication or were denied anonymously, and are deliberately excluded — see x-api-evangelist-provenance.
+  contact:
+    name: Belharra Therapeutics
+    url: https://belharratx.com/contact/
+    email: info@belharratx.com
+  x-api-evangelist-provenance: 'Derived by the API Evangelist enrichment pipeline from the live WordPress REST route index at https://belharratx.com/wp-json/ (198 routes across 11 namespaces) and verified against live anonymous responses on 2026-08-06. Every parameter below appears verbatim in the route index `args` for that endpoint, every schema property was read from a live anonymous response body, and every collection count in a description was read from the `X-WP-Total` response header on that date. Belharra Therapeutics publishes no OpenAPI, no developer documentation and no API reference for this surface; the humanURL in apis.yml points at the upstream WordPress REST handbook that defines the wp/v2 contract. The deployment is served by WP Engine behind Cloudflare, and API responses carry `x-robots-tag: noindex` and `cache-control: max-age=600, must-revalidate`. Nothing here was obtained with credentials.'
+servers:
+- url: https://belharratx.com/wp-json
+  description: Production content API
+tags:
+- name: oembed
+  description: oEmbed 1.0 provider endpoint for belharratx.com URLs.
+paths:
+  /oembed/1.0/embed:
+    get:
+      tags:
+      - oembed
+      operationId: getOembed
+      summary: Get an oEmbed response for a belharratx.com URL
+      description: The oEmbed 1.0 provider endpoint. Given a belharratx.com permalink it returns the standard oEmbed rich payload — version, provider_name, provider_url, author_name, author_url, title, type, width, height and the iframe `html`.
+      parameters:
+      - name: url
+        in: query
+        required: true
+        description: The URL of the resource for which to fetch oEmbed data.
+        schema:
+          type: string
+          format: uri
+          examples:
+          - https://belharratx.com/
+      - name: format
+        in: query
+        description: The oEmbed format to use.
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      - name: maxwidth
+        in: query
+        description: The maximum width of the embed frame in pixels.
+        schema:
+          type: integer
+          default: 600
+      responses:
+        '200':
+          description: The oEmbed response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OembedResponse'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Error:
+      type: object
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a `code` / `message` / `data.status` shape.
+      properties:
+        code:
+          type: string
+          examples:
+          - rest_post_invalid_id
+        message:
+          type: string
+          examples:
+          - Invalid post ID.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              examples:
+              - 404
+            params:
+              type: object
+              additionalProperties:
+                type: string
+            details:
+              type: object
+              additionalProperties: true
+      required:
+      - code
+      - message
+      - data
+    OembedResponse:
+      type: object
+      description: An oEmbed 1.0 rich response.
+      properties:
+        version:
+          type: string
+          const: '1.0'
+        provider_name:
+          type: string
+          examples:
+          - Belharra Therapeutics
+        provider_url:
+          type: string
+          format: uri
+          examples:
+          - https://belharratx.com
+        author_name:
+          type: string
+        author_url:
+          type: string
+          format: uri
+        title:
+          type: string
+        type:
+          type: string
+          examples:
+          - rich
+        width:
+          type: integer
+        height:
+          type: integer
+        html:
+          type: string
+          description: The iframe embed markup.
+      required:
+      - version
+      - provider_name
+      - provider_url
+      - type
+  responses:
+    InvalidParam:
+      description: One or more query parameters failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            perPageOutOfBounds:
+              value:
+                code: rest_invalid_param
+                message: 'Invalid parameter(s): per_page'
+                data:
+                  status: 400
+                  params:
+                    per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
+    NotFound:
+      description: The requested object does not exist or is not publicly visible.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            invalidPostId:
+              value:
+                code: rest_post_invalid_id
+                message: Invalid post ID.
+                data:
+                  status: 404

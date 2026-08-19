@@ -1,0 +1,292 @@
+{
+  "item": [
+    {
+      "id": "2d35a236-be4d-4e71-a1b8-d794c497c4bd",
+      "name": "search",
+      "description": {
+        "content": "Cross-content search across published objects (74 searchable records at harvest time).",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "59fa714b-67c6-4c95-bf05-1d52ce146f7b",
+          "name": "Search across published content",
+          "request": {
+            "name": "Search across published content",
+            "description": {
+              "content": "Cross-content search returning lightweight `{id, title, url, type, subtype}` records. 74 objects were searchable at harvest time, spanning the post, page and the three custom post types.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "context",
+                  "value": "view",
+                  "description": "Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Current page of the collection."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Maximum number of items to be returned in the result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Limit results to those matching a string."
+                },
+                {
+                  "disabled": false,
+                  "key": "exclude",
+                  "value": "<integer>",
+                  "description": "Ensure result set excludes specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "exclude",
+                  "value": "<integer>",
+                  "description": "Ensure result set excludes specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<integer>",
+                  "description": "Limit result set to specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<integer>",
+                  "description": "Limit result set to specific IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "post",
+                  "description": "Limit results to items of an object type."
+                },
+                {
+                  "disabled": false,
+                  "key": "subtype",
+                  "value": "any",
+                  "description": "Limit results to items of one or more object subtypes."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f2f869ff-44da-4780-8338-5306f59f470d",
+              "name": "A page of search results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "context",
+                      "value": "view"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "post"
+                    },
+                    {
+                      "key": "subtype",
+                      "value": "any"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-WP-Total",
+                  "value": "5886",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 51,\n    \"title\": \"string\",\n    \"url\": \"https://CXeYPADtZqSONmTJwxGxbXnQOHDrmoiu.nkahDdEs9M3VRlLFj35KNrrbag1RYrIWei-I1HzdI3aK4jBke0a\",\n    \"type\": \"string\",\n    \"subtype\": \"multimedia-file\",\n    \"_links\": {\n      \"key_0\": [\n        {\n          \"href\": \"https://HkNBhEqlz.ncxXi9ULDyRcQgCSY9Qi9mI0FUGKujRuxCPvrS2.51-OKJgtv,SiU4GmfZOSmLJh4pgub2axi\",\n          \"embeddable\": true,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"https://rAGAYarudACURjEKhhT.vtce..JbBf5mb7eSGy6DlzLb8mQ2rBqgVykXIbQ.kGV5bA8NP9ZC+21JIWLktKDdr\",\n          \"embeddable\": true,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ],\n      \"key_1\": [\n        {\n          \"href\": \"https://ENtOftmVbbsBOibBWwKxwMWl.ifbvNfwO2QMhennsEApCUL7WodMVVWJCHS1tboVNIrO-J+ctUNgfKm+ucMzy.lU2\",\n          \"embeddable\": false,\n          \"templated\": true,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"http://TyNVcRQMzL.ndOk.Kml5PpSPgTSKk6IlGy+Qabw-lyHDASljbSgi+k3qsXMrYj7cP4jk\",\n          \"embeddable\": true,\n          \"templated\": true,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ],\n      \"key_2\": [\n        {\n          \"href\": \"https://DAaXxXntHiGBjGzHIwtFplVt.ypqrkIpyi-OiqbwoY2kBkT1kKOlof8BJ5XeI.Sz2,oSmUCxSHmn3tHkFOejzA99\",\n          \"embeddable\": false,\n          \"templated\": true,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"https://qbDbwjaJHREztP.znmWvc9RffE\",\n          \"embeddable\": false,\n          \"templated\": false,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ]\n    }\n  },\n  {\n    \"id\": 7548,\n    \"title\": \"string\",\n    \"url\": \"http://vDEsSKfJzdhgc.jkQWcw6QYQ1JYnVa\",\n    \"type\": \"string\",\n    \"subtype\": \"page\",\n    \"_links\": {\n      \"key_0\": [\n        {\n          \"href\": \"http://zRntMSMKw.tlkICdYJ\",\n          \"embeddable\": true,\n          \"templated\": true,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"http://DUFxKZEmigdxzmWbOkoB.wzwvp1vQ93XJ4cLSaOMWumyjA.ANupLnBu3zxe4IUs6mBLtjY+.NAYXVT.\",\n          \"embeddable\": true,\n          \"templated\": true,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ],\n      \"key_1\": [\n        {\n          \"href\": \"https://JINhQuKfJuGPiIUTTMKcOuiKKJuPwI.mwkzX6KLlBZLiijRXaWUqzJGhKVaklq05kcqrQtuz1aWhDBzKTDNmD.VZ\",\n          \"embeddable\": false,\n          \"templated\": true,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        },\n        {\n          \"href\": \"http://jbNrVGijiFhZrabRV.lcnsj-Z9GAmhJhY-SqAgRCA07lmbNCTe\",\n          \"embeddable\": true,\n          \"templated\": true,\n          \"name\": \"string\",\n          \"taxonomy\": \"string\"\n        }\n      ]\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b8dee523-0297-4b18-9449-817c0859eadc",
+              "name": "One or more query parameters failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "context",
+                      "value": "view"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "exclude",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "post"
+                    },
+                    {
+                      "key": "subtype",
+                      "value": "any"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"rest_invalid_param\",\n  \"message\": \"Invalid parameter(s): per_page\",\n  \"data\": {\n    \"status\": 400,\n    \"params\": {\n      \"per_page\": \"per_page must be between 1 (inclusive) and 100 (inclusive)\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://belharratx.com/wp-json",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c78674be-421b-4b5c-b9e5-7258e0e93901",
+    "name": "Belharra Therapeutics Content Search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The read-only content surface Belharra Therapeutics exposes at https://belharratx.com/wp-json. Belharra Therapeutics is a privately held, next-generation chemoproteomics company in San Diego building small molecule therapeutics against undruggable targets with its Searchlight platform, incubated by Versant Ventures out of chemoproteomics research at The Scripps Research Institute and partnered with Genentech (January 2023) and Sanofi (June 2024). It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations that were verified to return data anonymously on 2026-08-06. Write operations, `/wp/v2/settings`, `/wp/v2/menus`, `/wp/v2/menu-locations`, `/wp/v2/themes`, `/wp/v2/plugins`, `/wp/v2/block-types`, `/wp/v2/font-collections`, `/wp/v2/icons`, `/wp/v2/sidebars`, `/wp/v2/widget-types`, `/wp/v2/templates`, `/wp/v2/template-parts`, `/wp/v2/global-styles`, `/wp/v2/block-patterns/*`, `/wp/v2/pattern-directory/patterns`, the `wp-abilities/v1` capability registry, the `wp-site-health/v1`, `podcastplayer/v1`, `redirection/v1`, `contact-form-7/v1`, `duplicate-post/v1`, `wpe/cache-plugin/v1` and `wpe_sign_on_plugin/v1` namespaces, and the whole plugin-administration surface all require authentication or were denied anonymously, and are deliberately excluded — see x-api-evangelist-provenance.\n\nContact Support:\n Name: Belharra Therapeutics\n Email: info@belharratx.com",
+      "type": "text/plain"
+    }
+  }
+}
