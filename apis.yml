@@ -31,6 +31,18 @@ created: '2026-08-06'
 modified: '2026-08-06'
 tags:
 - Company
+- Biotechnology
+- Pharmaceuticals
+- Chemoproteomics
+- Drug Discovery
+- Small Molecule Therapeutics
+- Proteomics
+- Life Sciences
+- Oncology
+- Immunology
+- content-api
+tags_raw:
+- Company
 - biotechnology
 - pharmaceuticals
 - chemoproteomics
@@ -68,6 +80,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://belharratx.com/wp-json
   tags:
+  - Discovery
+  tags_raw:
   - discovery
   properties:
   - type: OpenAPI
@@ -86,6 +100,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://belharratx.com/wp-json
   tags:
+  - Media
+  tags_raw:
   - media
   properties:
   - type: OpenAPI
@@ -104,6 +120,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://belharratx.com/wp-json
   tags:
+  - oEmbed
+  tags_raw:
   - oembed
   properties:
   - type: OpenAPI
@@ -122,6 +140,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://belharratx.com/wp-json
   tags:
+  - Pages
+  tags_raw:
   - pages
   properties:
   - type: OpenAPI
@@ -141,6 +161,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://belharratx.com/wp-json
   tags:
+  - Posts
+  tags_raw:
   - posts
   properties:
   - type: OpenAPI
@@ -159,6 +181,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://belharratx.com/wp-json
   tags:
+  - Search
+  tags_raw:
   - search
   properties:
   - type: OpenAPI
@@ -179,6 +203,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://belharratx.com/wp-json
   tags:
+  - Taxonomy
+  tags_raw:
   - taxonomy
   properties:
   - type: OpenAPI
