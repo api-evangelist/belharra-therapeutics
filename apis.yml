@@ -20,6 +20,18 @@ description: >-
   scientific officer. Belharra runs no developer program and publishes no product API, developer
   portal, API reference, or SDK. The only machine-readable surface reachable without credentials is
   the WordPress REST content API behind belharratx.com, catalogued here.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://belharratx.com/wp-content/uploads/2024/12/belharra-logo.png
 url: https://raw.githubusercontent.com/api-evangelist/belharra-therapeutics/refs/heads/main/apis.yml
 x-type: company
