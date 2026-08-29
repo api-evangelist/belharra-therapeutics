@@ -235,6 +235,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/belharra-therapeutics-capability-edges.yml
+  name: Belharra Therapeutics Business Capability Map
 - type: Overlay
   url: overlays/belharra-therapeutics-content-overlay.yaml
 - type: Website

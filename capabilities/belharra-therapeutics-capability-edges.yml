@@ -1,0 +1,27 @@
+slug: belharra-therapeutics
+provider: Belharra Therapeutics
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Pharmaceuticals & Life Sciences
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: custom-types
+  spec_file: belharra-therapeutics-custom-types-api-openapi.yml
+  capability_id: BC-850.40
+  capability_id_l1: BC-850
+  capability_name: Media Relations Management
+  confidence: 0.7
+  evidence: GET /wp/v2/press-release listPressReleases List press releases; GET /wp/v2/company-news listCompanyNews
+    List company news items
+  reason: The operations expose the company's published press releases, company news and multimedia assets
+    from a WordPress content surface — corporate communications content, with press releases pointing
+    to media relations. Confidence held at 0.7 because it is a generic CMS read surface and the L2 split
+    between external communications and media relations is arguable.
