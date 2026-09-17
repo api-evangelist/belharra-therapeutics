@@ -139,26 +139,6 @@ apis:
     url: conventions/belharra-therapeutics-conventions.yml
   - type: DataModel
     url: data-model/belharra-therapeutics-data-model.yml
-- aid: belharra-therapeutics:belharra-therapeutics-oembed-api
-  name: Belharra Therapeutics Oembed API
-  description: oEmbed 1.0 provider endpoint for belharratx.com URLs.
-  humanURL: https://developer.wordpress.org/rest-api/
-  baseURL: https://belharratx.com/wp-json
-  tags:
-  - oEmbed
-  tags_raw:
-  - oembed
-  properties:
-  - type: OpenAPI
-    url: openapi/belharra-therapeutics-oembed-api-openapi.yml
-  - type: Authentication
-    url: authentication/belharra-therapeutics-authentication.yml
-  - type: ErrorCatalog
-    url: errors/belharra-therapeutics-problem-types.yml
-  - type: Conventions
-    url: conventions/belharra-therapeutics-conventions.yml
-  - type: DataModel
-    url: data-model/belharra-therapeutics-data-model.yml
 - aid: belharra-therapeutics:belharra-therapeutics-pages-api
   name: Belharra Therapeutics Pages API
   description: Corporate pages (29 published at harvest time).
@@ -234,6 +214,24 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/belharra-therapeutics-taxonomy-api-openapi.yml
+  - type: Authentication
+    url: authentication/belharra-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/belharra-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/belharra-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/belharra-therapeutics-data-model.yml
+- aid: belharra-therapeutics:belharra-therapeutics-o-embed-api
+  name: Belharra Therapeutics o Embed API
+  description: oEmbed 1.0 provider endpoint for belharratx.com URLs.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://belharratx.com/wp-json
+  tags:
+  - o Embed
+  properties:
+  - type: OpenAPI
+    url: openapi/belharra-therapeutics-o-embed-api-openapi.yml
   - type: Authentication
     url: authentication/belharra-therapeutics-authentication.yml
   - type: ErrorCatalog
