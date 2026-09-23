@@ -3,7 +3,7 @@ info:
   title: Belharra Therapeutics Content Search API
   version: wp/v2
   summary: Anonymously readable WordPress REST content API behind belharratx.com.
-  description: The read-only content surface Belharra Therapeutics exposes at https://belharratx.com/wp-json. Belharra Therapeutics is a privately held, next-generation chemoproteomics company in San Diego building small molecule therapeutics against undruggable targets with its Searchlight platform, incubated by Versant Ventures out of chemoproteomics research at The Scripps Research Institute and partnered with Genentech (January 2023) and Sanofi (June 2024). It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations that were verified to return data anonymously on 2026-08-06. Write operations, `/wp/v2/settings`, `/wp/v2/menus`, `/wp/v2/menu-locations`, `/wp/v2/themes`, `/wp/v2/plugins`, `/wp/v2/block-types`, `/wp/v2/font-collections`, `/wp/v2/icons`, `/wp/v2/sidebars`, `/wp/v2/widget-types`, `/wp/v2/templates`, `/wp/v2/template-parts`, `/wp/v2/global-styles`, `/wp/v2/block-patterns/*`, `/wp/v2/pattern-directory/patterns`, the `wp-abilities/v1` capability registry, the `wp-site-health/v1`, `podcastplayer/v1`, `redirection/v1`, `contact-form-7/v1`, `duplicate-post/v1`, `wpe/cache-plugin/v1` and `wpe_sign_on_plugin/v1` namespaces, and the whole plugin-administration surface all require authentication or were denied anonymously, and are deliberately excluded — see x-api-evangelist-provenance.
+  description: The read-only content surface Belharra Therapeutics exposes at https://belharratx.com/wp-json.
   contact:
     name: Belharra Therapeutics
     url: https://belharratx.com/contact/
@@ -13,13 +13,13 @@ servers:
 - url: https://belharratx.com/wp-json
   description: Production content API
 tags:
-- name: search
+- name: Search
   description: Cross-content search across published objects (74 searchable records at harvest time).
 paths:
   /wp/v2/search:
     get:
       tags:
-      - search
+      - Search
       operationId: search
       summary: Search across published content
       description: Cross-content search returning lightweight `{id, title, url, type, subtype}` records. 74 objects were searchable at harvest time, spanning the post, page and the three custom post types.
@@ -74,7 +74,34 @@ paths:
         '400':
           $ref: '#/components/responses/InvalidParam'
 components:
+  responses:
+    InvalidParam:
+      description: One or more query parameters failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            perPageOutOfBounds:
+              value:
+                code: rest_invalid_param
+                message: 'Invalid parameter(s): per_page'
+                data:
+                  status: 400
+                  params:
+                    per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
   parameters:
+    Context:
+      name: context
+      in: query
+      description: Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`.
+      schema:
+        type: string
+        enum:
+        - view
+        - embed
+        - edit
+        default: view
     PerPage:
       name: per_page
       in: query
@@ -92,10 +119,10 @@ components:
         type: integer
         minimum: 1
         default: 1
-    Include:
-      name: include
+    Exclude:
+      name: exclude
       in: query
-      description: Limit result set to specific IDs.
+      description: Ensure result set excludes specific IDs.
       schema:
         type: array
         items:
@@ -106,26 +133,64 @@ components:
       description: Limit results to those matching a string.
       schema:
         type: string
-    Exclude:
-      name: exclude
+    Include:
+      name: include
       in: query
-      description: Ensure result set excludes specific IDs.
+      description: Limit result set to specific IDs.
       schema:
         type: array
         items:
           type: integer
-    Context:
-      name: context
-      in: query
-      description: Scope under which the request is made; determines fields present in the response. Anonymous callers are limited to `view` and `embed`.
-      schema:
-        type: string
-        enum:
-        - view
-        - embed
-        - edit
-        default: view
   schemas:
+    Error:
+      type: object
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a `code` / `message` / `data.status` shape.
+      properties:
+        code:
+          type: string
+          examples:
+          - rest_post_invalid_id
+        message:
+          type: string
+          examples:
+          - Invalid post ID.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              examples:
+              - 404
+            params:
+              type: object
+              additionalProperties:
+                type: string
+            details:
+              type: object
+              additionalProperties: true
+      required:
+      - code
+      - message
+      - data
+    Links:
+      type: object
+      description: HAL-style `_links` hypermedia block WordPress attaches to every resource.
+      additionalProperties:
+        type: array
+        items:
+          type: object
+          properties:
+            href:
+              type: string
+              format: uri
+            embeddable:
+              type: boolean
+            templated:
+              type: boolean
+            name:
+              type: string
+            taxonomy:
+              type: string
     SearchResult:
       type: object
       description: A lightweight cross-content search hit.
@@ -157,68 +222,3 @@ components:
       - url
       - type
       - subtype
-    Links:
-      type: object
-      description: HAL-style `_links` hypermedia block WordPress attaches to every resource.
-      additionalProperties:
-        type: array
-        items:
-          type: object
-          properties:
-            href:
-              type: string
-              format: uri
-            embeddable:
-              type: boolean
-            templated:
-              type: boolean
-            name:
-              type: string
-            taxonomy:
-              type: string
-    Error:
-      type: object
-      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a `code` / `message` / `data.status` shape.
-      properties:
-        code:
-          type: string
-          examples:
-          - rest_post_invalid_id
-        message:
-          type: string
-          examples:
-          - Invalid post ID.
-        data:
-          type: object
-          properties:
-            status:
-              type: integer
-              examples:
-              - 404
-            params:
-              type: object
-              additionalProperties:
-                type: string
-            details:
-              type: object
-              additionalProperties: true
-      required:
-      - code
-      - message
-      - data
-  responses:
-    InvalidParam:
-      description: One or more query parameters failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            perPageOutOfBounds:
-              value:
-                code: rest_invalid_param
-                message: 'Invalid parameter(s): per_page'
-                data:
-                  status: 400
-                  params:
-                    per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
